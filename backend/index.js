@@ -2,16 +2,36 @@ const express = require("express");
 const ConnectDb = require("./Config/config.js");
 const app = express();
 app.use(express.json());
-
+const session = require("express-session");
+const passport = require("passport");
 const dotenv = require("dotenv");
 dotenv.config();
 
 const cors = require("cors");
 app.use(
   cors({
-    origin: "*",
+    origin: "http://localhost:3000",
+    methods: "GET, POST, PATCH, DELETE, PUT",
+    credentials: true,
   })
 );
+
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: false, // Set to true if using HTTPS
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000 // 1 day
+  }
+}));
+
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+require("./controller/auth/Passport/UserPassport.js");
+require("./controller/auth/Passport/LinkedinUserPassport.js")
 
 //!  Assessments Related  Routes and import
 const { assessmentRoute } = require("./Routes/Assessment.Route");
@@ -25,6 +45,12 @@ app.use("/api", userRoutes);
 
 const HrRoutes = require("./Routes/HrRoutes");
 app.use("/api/hr", HrRoutes);
+
+const googleRoutes = require("./Routes/GoogleRoutes.js");
+app.use("/", googleRoutes);
+
+const linkedinRoutes = require("./Routes/LinkedinRoutes.js");
+app.use("/", linkedinRoutes);
 
 //! Interview Schedule Related Routes and import
 const AptitudeQuestionRouter = require("./Routes/InterviewScheduleRoutes/AptitudeRoundRoute");
@@ -43,51 +69,54 @@ app.use("/uploads", express.static("uploads"));
 const myJobRoutes = require("./Routes/MyJob.Route");
 app.use("/api/user/My-jobs", myJobRoutes);
 
-
 // !Bookmarked Routes
 const { bookmarkRoutes } = require("./Routes/Bookmark.Route.js");
-app.use("/api/user/bookmarkd", bookmarkRoutes)
+app.use("/api/user/bookmarkd", bookmarkRoutes);
 
 // ! Notifications Route
-const {notificationRoutes} = require("./Routes/Notification.Route.js");
-app.use("/api/user/notifications", notificationRoutes)
+const { notificationRoutes } = require("./Routes/Notification.Route.js");
+app.use("/api/user/notifications", notificationRoutes);
 
 const Port = process.env.PORT;
 
-
-// Socket IO 
-const httpServer = require('http').createServer(app);
-const connectedUser = []
+// Socket IO
+const httpServer = require("http").createServer(app);
+const connectedUser = [];
 const io = require("socket.io")(httpServer, {
   cors: {
     origin: "*",
-  }
-})
+  },
+});
 io.on("connection", (socket) => {
   socket.on("userConnect", (data) => {
-    const user = connectedUser?.find(user => user.email === JSON.parse(data).userEmail);
+    const user = connectedUser?.find(
+      (user) => user.email === JSON.parse(data).userEmail
+    );
     if (user) {
       user.socketId = socket.id;
     } else {
-      connectedUser.push({ email: JSON.parse(data).userEmail, socketId: socket.id });
+      connectedUser.push({
+        email: JSON.parse(data).userEmail,
+        socketId: socket.id,
+      });
     }
     // console.log(connectedUser)
-  })
-
-
-  socket.on("HrSendNotification", (data) => {
-    const currentSocketID = connectedUser.filter(user => user.email === JSON.parse(data).userEmail)[0]?.socketId;
-
-    if (currentSocketID) {
-      io.to(currentSocketID).emit("receiveNotification", data)
-    }
   });
 
+  socket.on("HrSendNotification", (data) => {
+    const currentSocketID = connectedUser.filter(
+      (user) => user.email === JSON.parse(data).userEmail
+    )[0]?.socketId;
+
+    if (currentSocketID) {
+      io.to(currentSocketID).emit("receiveNotification", data);
+    }
+  });
 
   // socket.on("disconnect", () => {
   //   console.log("user disconnected");
   // });
-})
+});
 
 httpServer.listen(Port, async () => {
   try {

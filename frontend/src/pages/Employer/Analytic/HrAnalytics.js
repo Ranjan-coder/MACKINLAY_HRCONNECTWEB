@@ -3,7 +3,19 @@ import mailICON from "../../../Assets/mailICON.jpg";
 import clockICON from "../../../Assets/clockICON.jpg";
 import activeICON from "../../../Assets/ActiveICON.jpg";
 import callICON from "../../../Assets/callICON.png";
-import { BarChart, Bar, XAxis,Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  // Brush,
+  ResponsiveContainer,
+  Legend,
+  BarChart,
+  Bar
+} from "recharts";
 import { PieChart, pieArcLabelClasses } from "@mui/x-charts/PieChart";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
@@ -47,7 +59,8 @@ const HRAnalytic = () => {
       <div className={hrAnalyticStyle.hr_analytic_container}>
         <HRAnalyticsPageCarousel />
         {/* <SplineChart /> */}
-        <DummyBarChart data={dummyData} />
+        <HiringLineChart/>
+        <EmailSentBarGraph data={dummyData} />
         <PieArcLabel />
       </div>
     </>
@@ -144,52 +157,71 @@ function HRAnalyticsPageCarousel() {
   );
 }
 
-// function SplineChart() {
-//   const [data, setData] = useState({
-//     labels: [
-//       "Jan",
-//       "Feb",
-//       "March",
-//       "April",
-//       "May",
-//       "June",
-//       "July",
-//       "August",
-//       "September",
-//       "Oct",
-//       "Nov",
-//       "Dec",
-//     ],
-//     datasets: [
-//       {
-//         label: "Hiring",
-//         data: [50, 100, 150, 80, 120, 140, 100, 90, 150, 180, 200, 250],
-//         backgroundColor: "rgba(0, 0, 255, 0.1)",
-//         borderColor: "rgb(53, 168, 191)",
-//         tension: 0.4,
-//         fill: true,
-//         pointStyle: "rect",
-//         pointBorderColor: "blue",
-//         pointBackgroundColor: "#fff",
-//         showLine: true,
-//       },
-//     ],
-//   });
-//   console.log(setData);
-//   return (
-//     <>
-//       <div className={hrAnalyticStyle.spline_chart_container}>
-//         <div>Hiring In past few months</div>
-//         <div style={{ height: "300px",}}>
-//           <Line data={data}>Hello</Line>
-//         </div>
-//       </div>
-//     </>
-//   );
-// }
+const Hiringdata = [
+  {
+    name: "January",
+    uv: 50,
+    pv: 90,
+  },
+  {
+    name: "February",
+    uv: 100,
+    pv: 120,
+  },
+  {
+    name: "March",
+    uv: 150,
+    pv: 100,
+  },
+  {
+    name: "April",
+    uv: 200,
+    pv: 180,
+  },
+  {
+    name: "May",
+    uv: 250,
+    pv: 205,
+  },
+  {
+    name: "June",
+    uv: 300,
+    pv: 190,
+  },
+  {
+    name: "July",
+    uv: 350,
+    pv: 250,
+  }
+];
 
+const HiringLineChart = ()=>{
+  return(
+    <div className={hrAnalyticStyle.hr_bar_container}>
+    <div style={{paddingBottom:'10px'}}><strong>Hiring in past few months</strong></div>
+  <LineChart
+  width={500}
+  height={200}
+  data={Hiringdata}
+  syncId="anyId"
+  margin={{
+    top: 10,
+    right: 30,
+    left: 0,
+    bottom: 0
+  }}
+>
+  <CartesianGrid strokeDasharray="3 3" />
+  <XAxis dataKey="name" />
+  <YAxis />
+  <Tooltip />
+  <Line type="monotone" dataKey="pv" stroke="#82ca9d" fill="#82ca9d" />
+</LineChart>
+    </div>
+  )
+}
 
-const DummyBarChart = ({ data }) => {
+ const EmailSentBarGraph = ({ data }) => {
   return (
     <>
        <div className={hrAnalyticStyle.hr_bar_container}>
