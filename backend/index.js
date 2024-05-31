@@ -30,7 +30,8 @@ app.use(session({
 // Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
-require("./controller/auth/UserPassport.js");
+require("./controller/auth/Passport/UserPassport.js");
+require("./controller/auth/Passport/LinkedinUserPassport.js")
 
 //!  Assessments Related  Routes and import
 const { assessmentRoute } = require("./routes/Assessment.Route");
@@ -47,6 +48,9 @@ app.use("/api/hr", HrRoutes);
 
 const googleRoutes = require("./Routes/GoogleRoutes.js");
 app.use("/", googleRoutes);
+
+const linkedinRoutes = require("./Routes/LinkedinRoutes.js");
+app.use("/", linkedinRoutes);
 
 //! Interview Schedule Related Routes and import
 const AptitudeQuestionRouter = require("./Routes/InterviewScheduleRoutes/AptitudeRoundRoute");

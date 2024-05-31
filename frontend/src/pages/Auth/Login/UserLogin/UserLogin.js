@@ -126,12 +126,22 @@ function UserLogin({ toggleLoginType, isHRLogin }) {
 
   const handleGoogleSignup = (userType) => {
     try {
-      const googleSignupUrl = `http://localhost:8080/auth/google?userType=${userType}`;
+      const googleSignupUrl = `http://localhost:8585/auth/google?userType=${userType}`;
       window.location.href = googleSignupUrl;
     } catch (error) {
       console.error('Google signup error:', error);
     }
   };
+
+  const handleLinkedInSignup = (userType) => {
+    try {
+      const linkedInSignupUrl = `http://localhost:8585/auth/linkedin?userType=${userType}`;
+      window.location.href = linkedInSignupUrl;
+    } catch (error) {
+      console.error('LinkedIn signup error:', error);
+    }
+  };
+  
 
   return (
       <div onKeyDown={handleEnterKey}>
@@ -245,6 +255,7 @@ function UserLogin({ toggleLoginType, isHRLogin }) {
                           src={linkedin}
                           alt="network-error"
                           className={LoginStyle.social_image_linkedin}
+                          onClick={() => handleLinkedInSignup(formData.userType)}
                         />
                       </li>
 

@@ -15,7 +15,6 @@ import { useDispatch } from "react-redux";
 import { handleUserLogin } from "../../../../Redux/ReduxSlice";
 
 const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
-const clientUrl = process.env.REACT_APP_CLIENT_URL;
 
 const Signup = () => {
   const dispatchTO = useDispatch();
@@ -288,24 +287,24 @@ const Signup = () => {
     }
   };
 
-  // const handleGoogleSignup = async () => {
-  //   try {
-  //     window.location.href = 'http://localhost:8080/auth/google'
-  //     // // Redirect to dashboard after successful authentication
-  //     // window.location.href = `${clientUrl}/dashboard`;
-  //   } catch (error) {
-  //     console.error('Google signup error:', error);
-  //   }
-  // };
-
   const handleGoogleSignup = (userType) => {
     try {
-      const googleSignupUrl = `http://localhost:8080/auth/google?userType=${userType}`;
+      const googleSignupUrl = `http://localhost:8585/auth/google?userType=${userType}`;
       window.location.href = googleSignupUrl;
     } catch (error) {
       console.error('Google signup error:', error);
     }
   };
+
+  const handleLinkedInSignup = (userType) => {
+    try {
+      const linkedInSignupUrl = `http://localhost:8585/auth/linkedin?userType=${userType}`;
+      window.location.href = linkedInSignupUrl;
+    } catch (error) {
+      console.error('LinkedIn signup error:', error);
+    }
+  };
+  
 
   return (
     <>
@@ -379,6 +378,7 @@ const Signup = () => {
                       src={linkedin}
                       alt="network-error"
                       className={signupStyle.social_image_linkedin}
+                      onClick={() => handleLinkedInSignup(formData.userType)}
                     />
                   </li>
 

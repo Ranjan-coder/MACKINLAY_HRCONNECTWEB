@@ -101,7 +101,7 @@ function SideNavbar() {
     try {
       dispatch(handleUserLogOut());
   
-      const response = await axios.get(`${baseUrl}/google-logout`);
+      const response = await axios.get(`${baseUrl}/logout`);
   
       if (response.status !== 200) {
         throw new Error('Logout failed');

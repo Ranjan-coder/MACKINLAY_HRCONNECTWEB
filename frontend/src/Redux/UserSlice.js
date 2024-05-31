@@ -18,14 +18,14 @@ export const fetchUserData = createAsyncThunk(
 
 // Async thunk to check authentication status
 export const checkAuth = createAsyncThunk('auth/checkAuth', async () => {
-  const response = await axios.get('http://localhost:8080/auth/status', { withCredentials: true });
+  const response = await axios.get('http://localhost:8585/auth/status', { withCredentials: true });
   // console.log(response.data);
   return response.data;
 });
 
 // Async thunk to handle logout
 export const logout = createAsyncThunk('auth/logout', async () => {
-  await axios.get('http://localhost:8080/google-logout', { withCredentials: true });
+  await axios.get('http://localhost:8585/logout', { withCredentials: true });
 });
 
 // Define the initial state

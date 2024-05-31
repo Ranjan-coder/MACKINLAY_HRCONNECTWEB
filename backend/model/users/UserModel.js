@@ -21,7 +21,8 @@ const userSchema = new mongoose.Schema({
     type: Number,
     unique: true,
     minlength: 10,
-    maxlength: 10
+    maxlength: 10,
+    sparse: true
   },
   dob: {
     type: Date,

@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { checkAuth } from "../Redux/UserSlice.js"; 
 import GoogleCallback from "../pages/Auth/GoogleCallback.js";
+import LinkedInCallback from "../pages/Auth/LinkedinCallback.js";
 //! These All Files are imported for the JobSeeker Routes
 const JobSeekerLayout = lazy(() =>
   import("../pages/Job_Seeker/JobSeekerLayout")
@@ -121,7 +122,6 @@ const HrForgotPassword = lazy(() =>
 //! These All Files are imported for the Auth Routes
 
 function AppRoute() {
-  // const { userType } = useSelector((state) => state.Assessment.currentUser);
   const { userType } = useSelector((state) => state.Assessment.currentUser);
 
   const dispatch = useDispatch();
@@ -272,6 +272,7 @@ function AuthRouter() {
       <Route path="/hr/forgot-password" element={<Suspense>    <HrForgotPassword /></Suspense>} />
       <Route path="/*" element={<Suspense>    <LoginPage /></Suspense>} />
       <Route path="/auth/google/callback" element={<GoogleCallback />} />
+      <Route path="/auth/linkedin/callback" element={<LinkedInCallback />} />
     </Routes>
   );
 }
