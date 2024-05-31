@@ -29,7 +29,7 @@ function MyResume() {
     formData.append("resumefile", selectedFile);
 
     try {
-      const response = await axios.post("http://localhost:8585/resume/upload", formData, {
+      const response = await axios.post("https://mackinlay-hrconnectweb.onrender.com/resume/upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

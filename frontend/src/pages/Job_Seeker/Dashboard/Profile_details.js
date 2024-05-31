@@ -11,7 +11,7 @@ import { fetchJobDetails } from "../../../Redux/JobSlice";
 import { io } from "socket.io-client"
 const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
 const Profile_details = () => {
-  const socket = io("http://localhost:8585")
+  const socket = io("https://mackinlay-hrconnectweb.onrender.com")
   const [start_popup, setstart_popup] = useState(false);
   const [cancelpopup, setcancelpopup] = useState(false);
   const [IsLoading, setIsLoading] = useState(false);

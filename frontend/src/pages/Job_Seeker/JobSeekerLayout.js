@@ -85,7 +85,7 @@ export default JobSeekerLayout;
 
 // Topnavbar Components
 function DashboardTopComponent({ CbToggle }) {
-  const socket = io("http://localhost:8585");
+  const socket = io("https://mackinlay-hrconnectweb.onrender.com");
   const { email } = useSelector((state) => state.Assessment.currentUser);
   const [notificationCount, setNotificationCount] = useState(0);
   const [ToggleNotification, SetToggleNotification] = useState(false);
