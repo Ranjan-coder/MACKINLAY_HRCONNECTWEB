@@ -10,7 +10,7 @@ dotenv.config();
 const cors = require("cors");
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "https://mackinlay-hrconnectweb-lgy0d076p-ranjan-kumar-chandas-projects.vercel.app",
     methods: "GET, POST, PATCH, DELETE, PUT",
     credentials: true,
   })
