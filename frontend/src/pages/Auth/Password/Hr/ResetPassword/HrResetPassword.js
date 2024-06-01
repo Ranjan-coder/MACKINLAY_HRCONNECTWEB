@@ -13,7 +13,7 @@ function HrResetPassword() {
     email: "",
     password: "",
   });
-
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const nav = useNavigate();
   const { password } = formData;
   const { token } = useParams();
@@ -25,6 +25,7 @@ function HrResetPassword() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     try {
       const response = await axios.post(
         `${baseUrl}/hr/reset-password/${token}`,
@@ -46,6 +47,8 @@ function HrResetPassword() {
     } catch (error) {
       console.error("Error resetting password:", error);
       toast.error("Failed to reset password. Please try again later.");
+    }finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -80,8 +83,8 @@ function HrResetPassword() {
               </InputGroup>
             </Form.Group>
 
-            <Button variant="primary" type="submit" className="submit-button">
-              Submit
+            <Button variant="primary" type="submit" className="submit-button"  disabled={isSubmitting}>
+            {isSubmitting ? "Submitting..." : "Submit "}
             </Button>
 
             <div className="login-link">

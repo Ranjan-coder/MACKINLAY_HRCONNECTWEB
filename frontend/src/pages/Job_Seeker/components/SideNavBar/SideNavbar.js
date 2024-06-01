@@ -18,8 +18,7 @@ import { useNavigate } from "react-router-dom";
 import toast from 'react-hot-toast';
 import axios from 'axios'
 
-// const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL
-const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL_WITHOUT_API
+const newUrl = process.env.REACT_APP_BACKEND_BASE_URL_WITHOUT_API
 
 const menuItems = [
   {
@@ -73,35 +72,12 @@ function SideNavbar() {
   const dispatch = useDispatch();
   const navigateTO = useNavigate()
   const { name,profileImage } = useSelector((state) => state.Assessment.currentUser);
-  const email = localStorage.getItem("email")
-
-
-  // const handleLogoutClick = async () => {
-  //   try {
-  //     dispatch(handleUserLogOut());
-
-  //     const response = await axios.post(`${baseUrl}/logout?email=${email}`,);
-      
-  //     if (response.status !== 200) {
-  //       throw new Error('Logout failed');
-  //     }
-  
-  //     toast.success(`${name} Logged out !!`);
-  //     setTimeout(() => {
-  //       navigateTO("/login");
-  //     }, 1000);
-  //   } catch (error) {
-  //     console.error('Logout failed:', error);
-  //     toast.error('Logout failed. Please try again.');
-  //   }
-  // };
-  
   
   const handleLogoutClick = async () => {
     try {
       dispatch(handleUserLogOut());
   
-      const response = await axios.get(`${baseUrl}/logout`);
+      const response = await axios.get(`${newUrl}/logout`);
   
       if (response.status !== 200) {
         throw new Error('Logout failed');

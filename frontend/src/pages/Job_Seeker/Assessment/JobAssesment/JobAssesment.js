@@ -11,6 +11,8 @@ import Loader from '../../../Common-Components/Loaders/Loader';
 import { handleSelectedOption, calculatedResult, handleClearResult } from '../../../../Redux/ReduxSlice';
 import toast from 'react-hot-toast';
 
+const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL
+
 function JobAssesment() {
     const navigateTO = useNavigate();
     const [ShowPopup, setShowPopup] = useState(false);
@@ -125,7 +127,7 @@ function JobAssesment() {
             setLoading(true);
             axios
                 .get(
-                    `http://localhost:8080/api/questions/list-question/${state.id}?page=${num ? num : 1
+                    `${baseUrl}/questions/list-question/${state.id}?page=${num ? num : 1
                     }`
                 )
                 .then((response) => {

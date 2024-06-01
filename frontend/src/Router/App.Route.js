@@ -106,6 +106,7 @@ const LoginPage = lazy(() =>
 );
 const Signup = lazy(() => import("../pages/Auth/Signup/UserSignup/UserSignup"));
 const HrLogin = lazy(() => import("../pages/Auth/Login/HrLogin/HrLogin"));
+const HrSignup = lazy(() => import("../pages/Auth/Signup/HrSignup/HrSignup.js"));
 const ResetPassword = lazy(() =>
   import("../pages/Auth/Password/User/ResetPassword/ResetPassword.js")
 );
@@ -265,6 +266,7 @@ function AuthRouter() {
     <Routes>
       <Route path="/login" element={<Suspense>    <LoginPage /></Suspense>} />
       <Route path="/user-signup" element={<Suspense>    <Signup /></Suspense>} />
+      <Route path="/hr-signup" element={<Suspense>    <HrSignup /></Suspense>} />
       <Route path="/hr-login" element={<Suspense>    <HrLogin /></Suspense>} />
       <Route path="/reset-password/:token" element={<Suspense>    <ResetPassword /></Suspense>} />
       <Route path="/forgot-password" element={<Suspense>    <ForgotPassword /></Suspense>} />

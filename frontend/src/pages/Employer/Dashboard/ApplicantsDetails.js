@@ -14,8 +14,9 @@ import {
 } from "../../../Redux/ReduxSlice";
 import { io } from "socket.io-client"
 const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
+const newUrl = process.env.REACT_APP_BACKEND_BASE_URL_WITHOUT_API;
 function ApplicantsDetails({ jobData, selectedUser, CbToogleDetails }) {
-  const socket = io("https://mackinlay-hrconnectweb.onrender.com")
+  const socket = io(`${newUrl}`)
   const { bookmarkUser } = useSelector((state) => state.Assessment.currentUser);
   const dispatch = useDispatch();
   const [selectedUserEmail, setSelectedUserEmail] = useState(selectedUser);

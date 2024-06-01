@@ -5,8 +5,9 @@ import { FaRegBookmark } from "react-icons/fa";
 import ApplicantsDetails from "./ApplicantsDetails.js"
 import { io } from "socket.io-client"
 const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
+const newUrl = process.env.REACT_APP_BACKEND_BASE_URL_WITHOUT_API;
 const  HrJobDetail = ({ jobId, ShowApplicantDetails, CbToggleDetails }) => {
-  const socket = io("https://mackinlay-hrconnectweb.onrender.com")
+  const socket = io(`${newUrl}`)
   const [job, setJob] = useState(null);
   const [selectedUser, setUsers] = useState([]);
 
