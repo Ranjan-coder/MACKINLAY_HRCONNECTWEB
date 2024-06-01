@@ -73,7 +73,7 @@ function SideNavbar() {
   const dispatch = useDispatch();
   const navigateTO = useNavigate()
   const { name,profileImage } = useSelector((state) => state.Assessment.currentUser);
-  const email = localStorage.getItem("email")
+  // const email = localStorage.getItem("email")
 
 
   // const handleLogoutClick = async () => {
