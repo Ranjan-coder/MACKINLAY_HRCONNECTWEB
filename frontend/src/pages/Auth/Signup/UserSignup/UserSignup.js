@@ -287,6 +287,25 @@ const Signup = () => {
     }
   };
 
+  const handleGoogleSignup = (userType) => {
+    try {
+      const googleSignupUrl = `http://localhost:8585/auth/google?userType=${userType}`;
+      window.location.href = googleSignupUrl;
+    } catch (error) {
+      console.error('Google signup error:', error);
+    }
+  };
+
+  const handleLinkedInSignup = (userType) => {
+    try {
+      const linkedInSignupUrl = `http://localhost:8585/auth/linkedin?userType=${userType}`;
+      window.location.href = linkedInSignupUrl;
+    } catch (error) {
+      console.error('LinkedIn signup error:', error);
+    }
+  };
+  
+
   return (
     <>
       {/* first card */}
@@ -350,6 +369,7 @@ const Signup = () => {
                       src={google}
                       alt="network-error"
                       className={signupStyle.social_image_google}
+                      onClick={() => handleGoogleSignup(formData.userType)}
                     />
                   </li>
 
@@ -358,6 +378,7 @@ const Signup = () => {
                       src={linkedin}
                       alt="network-error"
                       className={signupStyle.social_image_linkedin}
+                      onClick={() => handleLinkedInSignup(formData.userType)}
                     />
                   </li>
 

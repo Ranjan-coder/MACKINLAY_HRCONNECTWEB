@@ -124,6 +124,25 @@ function UserLogin({ toggleLoginType, isHRLogin }) {
     nav("/forgot-password");
   };
 
+  const handleGoogleSignup = (userType) => {
+    try {
+      const googleSignupUrl = `http://localhost:8585/auth/google?userType=${userType}`;
+      window.location.href = googleSignupUrl;
+    } catch (error) {
+      console.error('Google signup error:', error);
+    }
+  };
+
+  const handleLinkedInSignup = (userType) => {
+    try {
+      const linkedInSignupUrl = `http://localhost:8585/auth/linkedin?userType=${userType}`;
+      window.location.href = linkedInSignupUrl;
+    } catch (error) {
+      console.error('LinkedIn signup error:', error);
+    }
+  };
+  
+
   return (
       <div onKeyDown={handleEnterKey}>
         {formData.step === 1 ? (
@@ -227,6 +246,7 @@ function UserLogin({ toggleLoginType, isHRLogin }) {
                           src={google}
                           alt="network-error"
                           className={LoginStyle.social_image_google}
+                          onClick={() => handleGoogleSignup(formData.userType)}
                         />
                       </li>
 
@@ -235,6 +255,7 @@ function UserLogin({ toggleLoginType, isHRLogin }) {
                           src={linkedin}
                           alt="network-error"
                           className={LoginStyle.social_image_linkedin}
+                          onClick={() => handleLinkedInSignup(formData.userType)}
                         />
                       </li>
 

@@ -1,17 +1,18 @@
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
+  googleId:{
+    type: String
+  },
   name: {
     type: String,
   },
   email: {
     type: String,
-    required: true,
     unique: true,
   },
   password: {
     type: String,
-    required: true,
   },
   conf_password: {
     type: String,
@@ -19,44 +20,36 @@ const userSchema = new mongoose.Schema({
   phone_number: {
     type: Number,
     unique: true,
-    required: true,
     minlength: 10,
-    maxlength: 10
+    maxlength: 10,
+    sparse: true
   },
   dob: {
     type: Date,
-    required: true,
   },
   country: {
     type: String,
-    required: true,
   },
   state: {
     type: String,
-    required: true,
   },
   college: {
     type: String,
-    required: true,
   },
   course: {
     type: String,
-    required: true,
   },
   course_start_date: {
     type: Date,
-    required: true,
   },
   experience: {
     type: String
   },
   course_end_date: {
     type: Date,
-    required: true,
   },
   percentage: {
     type: Number,
-    required: true,
   },
   job_title: {
     type: String,

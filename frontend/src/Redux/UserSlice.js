@@ -16,6 +16,18 @@ export const fetchUserData = createAsyncThunk(
   }
 );
 
+// Async thunk to check authentication status
+export const checkAuth = createAsyncThunk('auth/checkAuth', async () => {
+  const response = await axios.get('http://localhost:8585/auth/status', { withCredentials: true });
+  // console.log(response.data);
+  return response.data;
+});
+
+// Async thunk to handle logout
+export const logout = createAsyncThunk('auth/logout', async () => {
+  await axios.get('http://localhost:8585/logout', { withCredentials: true });
+});
+
 // Define the initial state
 const initialState = {
   UserDetails: null,
@@ -46,6 +58,37 @@ const UserDetailSlice = createSlice({
   },
 });
 
-// Export the async action creator and the slice reducer
-// export { fetchUserData };
+export const authSlice = createSlice({
+  name: 'auth',
+  initialState: {
+    user: null,
+    loading: false,
+    error: null,
+  },
+  reducers: {
+    setUser: (state, action) => {
+      state.user = action.payload;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(checkAuth.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(checkAuth.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.user;
+      })
+      .addCase(checkAuth.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.user = null;
+      });
+  },
+});
+
 export default UserDetailSlice.reducer;
+export const { logoutSuccess,setUser } = authSlice.actions;
+export const authReducer = authSlice.reducer;

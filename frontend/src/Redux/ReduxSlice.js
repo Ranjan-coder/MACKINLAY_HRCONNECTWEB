@@ -1,34 +1,50 @@
 import { createSlice } from "@reduxjs/toolkit";
+
+const initialState = {
+  currentUser: {
+    token: localStorage.getItem("token") || "",
+    profileImage: localStorage.getItem("profileImage") || "",
+    email: localStorage.getItem("email") || "",
+    name: localStorage.getItem("name") || "",
+    userType: localStorage.getItem("userType") || "",
+    savedJob: localStorage.getItem("savedJob") ? JSON.parse(localStorage.getItem("savedJob")) : [],
+    appliedJob: localStorage.getItem("appliedJob") ? JSON.parse(localStorage.getItem("appliedJob")) : [],
+    bookmarkUser: localStorage.getItem("bookmarkUser") ? JSON.parse(localStorage.getItem("bookmarkUser")) : [],
+  },
+};
+
 const ReduxSlice = createSlice({
   name: "ReduxSlice",
-  initialState: {
-    selectedOption: {},
-    result: 0,
-    percentageResult: 0,
-    currentUser: {
-      token: localStorage.getItem("token") ? localStorage.getItem("token") : "",
-      profileImage: localStorage.getItem("profileImage")
-        ? localStorage.getItem("profileImage")
-        : "",
-      email: localStorage.getItem("email") ? localStorage.getItem("email") : "",
-      name: localStorage.getItem("name") ? localStorage.getItem("name") : "",
-      userType: localStorage.getItem("userType")
-        ? localStorage.getItem("userType")
-        : "",
-      savedJob:
-        localStorage.getItem("userType") !== "employee"
-          ? JSON.parse(localStorage.getItem("savedJob"))
-          : [],
-      appliedJob:
-        localStorage.getItem("userType") !== "employee"
-          ? JSON.parse(localStorage.getItem("appliedJob"))
-          : [],
-      bookmarkUser:
-        localStorage.getItem("userType") === "employee"
-          ? JSON.parse(localStorage.getItem("bookmarkUser")) ?? []
-          : [],
-    },
-  },
+  // initialState: {
+  //   selectedOption: {},
+  //   result: 0,
+  //   percentageResult: 0,
+  //   currentUser: {
+  //     token: localStorage.getItem("token") ? localStorage.getItem("token") : "",
+  //     profileImage: localStorage.getItem("profileImage")
+  //       ? localStorage.getItem("profileImage")
+  //       : "",
+  //     email: localStorage.getItem("email") ? localStorage.getItem("email") : "",
+  //     name: localStorage.getItem("name") ? localStorage.getItem("name") : "",
+  //     userType: localStorage.getItem("userType")
+  //       ? localStorage.getItem("userType")
+  //       : "",
+  //     savedJob:
+  //       localStorage.getItem("userType") !== "employee"
+  //         ? JSON.parse(localStorage.getItem("savedJob"))
+  //         : [],
+  //     appliedJob:
+  //       localStorage.getItem("userType") !== "employee"
+  //         ? JSON.parse(localStorage.getItem("appliedJob"))
+  //         : [],
+  //     bookmarkUser:
+  //       localStorage.getItem("userType") === "employee"
+  //         ? JSON.parse(localStorage.getItem("bookmarkUser")) ?? []
+  //         : [],
+  //   },
+  // },
+
+  initialState,
   reducers: {
     handleSelectedOption(state, action) {
       state.selectedOption[`${action.payload.questionNum}`] =
@@ -51,14 +67,14 @@ const ReduxSlice = createSlice({
       state.currentUser.email = action.payload.email;
       state.currentUser.name = action.payload.name;
       state.currentUser.userType = action.payload.userType;
-      state.currentUser.profileImage = action.payload.profileImage;
+      state.currentUser.profileImage = action.payload.profileImage || "";
       if (action.payload.userType !== "employee") {
-        state.currentUser.savedJob = action.payload.savedJob;
-        state.currentUser.appliedJob = action.payload.appliedJob;
+        state.currentUser.savedJob = action.payload.savedJob || [];
+        state.currentUser.appliedJob = action.payload.appliedJob || [];
       }
 
       if (action.payload.userType === "employee") {
-        state.currentUser.bookmarkUser = action.payload.bookmarkUser;
+        state.currentUser.bookmarkUser = action.payload.bookmarkUser || [];
       }
 
       localStorage.setItem("token", state.currentUser.token);
