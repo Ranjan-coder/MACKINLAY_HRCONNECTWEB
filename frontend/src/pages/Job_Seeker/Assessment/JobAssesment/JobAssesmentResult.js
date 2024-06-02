@@ -7,8 +7,12 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { useEffect } from "react";
 import { io } from "socket.io-client"
+
+const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL
+const newUrl = process.env.REACT_APP_BACKEND_BASE_URL_WITHOUT_API
+
 function JobAssesmentResult() {
-  const socket = io("http://localhost:8080")
+  const socket =  io(`${newUrl}`)
   const { result, percentageResult } = useSelector((state) => state.Assessment);
   const { jobDetails } = useSelector((state) => state.Job);
   const User = useSelector((state) => state.User.UserDetails);
@@ -28,7 +32,7 @@ function JobAssesmentResult() {
   const handleDoneButtonClick = (e, item) => {
     e.preventDefault();
     axios
-      .post(`http://localhost:8080/api/user/My-jobs/create/apply-job`, {
+      .post(`${baseUrl}/user/My-jobs/create/apply-job`, {
         ...item,
         email,
         userData,

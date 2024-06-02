@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import ResumeStyle from "../MyResume.module.css";
 import axios from "axios";
 import PdfComp from "../PdfComp";
-// const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
+const newURl = process.env.REACT_APP_BACKEND_BASE_URL_WITHOUT_API;
 const CurrentResume = ({ email }) => {
   const [latestResume, setLatestResume] = useState(null); // Initialize latestResume as null
   // console.log(email);
@@ -11,7 +11,7 @@ const CurrentResume = ({ email }) => {
   useEffect(() => {
     const fetchResumes = async () => {
       try {
-        const response = await axios.get(`https://mackinlay-hrconnectweb.onrender.com/resume/getall/${email}`);
+        const response = await axios.get(`${newURl}/resume/getall/${email}`);
         const resumesData = response.data.resumes;
         // console.log(resumesData);
 
@@ -42,7 +42,7 @@ const CurrentResume = ({ email }) => {
 
       {latestResume &&
         latestResume.path && ( // Render PdfComp only if latestResume and latestResume.path are defined
-          <PdfComp key={latestResume._id} pdf={`http://localhost:8585/${latestResume.path}`} />
+          <PdfComp key={latestResume._id} pdf={`${newURl}/${latestResume.path}`} />
         )}
     </div>
   );

@@ -11,6 +11,7 @@ const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
 function ForgotPassword() {
   const [email, setEmail] = useState("");
   const nav = useNavigate()
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     setEmail(e.target.value);
@@ -18,6 +19,7 @@ function ForgotPassword() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     try {
       const response = await axios.post(`${baseUrl}/forgot-password`, {
         email,
@@ -33,6 +35,8 @@ function ForgotPassword() {
     } catch (error) {
       console.error('Error:', error);
       toast.error("Failed to initiate password reset. Please try again later.");
+    }finally {
+      setIsSubmitting(false);
     }
   };
   
@@ -58,8 +62,8 @@ function ForgotPassword() {
               />
             </Form.Group>
 
-            <Button variant="primary" type="submit" className="submit-button">
-              Submit
+            <Button variant="primary" type="submit" className="submit-button"  disabled={isSubmitting}>
+            {isSubmitting ? "Submitting..." : "Submit "}
             </Button>
 
             <div className="login-link">

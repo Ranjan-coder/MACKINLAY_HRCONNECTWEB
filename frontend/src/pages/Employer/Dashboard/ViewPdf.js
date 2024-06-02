@@ -4,6 +4,7 @@ import { GiTireIronCross } from "react-icons/gi";
 import axios from "axios";
 import Loader from "../../Common-Components/Loaders/Loader";
 const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
+const newUrl = process.env.REACT_APP_BACKEND_BASE_URL_WITHOUT_API
 function ViewPdf({ CbTogglePDF, SelectedResume }) {
   const [resumeError, setError] = useState(false);
   const [Loading, setLoading] = useState(false);
@@ -47,7 +48,7 @@ function ViewPdf({ CbTogglePDF, SelectedResume }) {
             ) : (
               <iframe
                 id={pageStyle.__viewPDF}
-                src={`http://localhost:8080/${SelectedResume?.userResume?.path}`}
+                src={`${newUrl}/${SelectedResume?.userResume?.path}`}
                 width="100%"
                 height="100%"
                 title="user-resume"

@@ -10,6 +10,7 @@ const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
 
 function HrForgotPassword() {
   const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const nav = useNavigate();
 
   const handleChange = (e) => {
@@ -18,6 +19,7 @@ function HrForgotPassword() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     try {
       const response = await axios.post(`${baseUrl}/hr/forgot-password`, {
         email,
@@ -33,6 +35,8 @@ function HrForgotPassword() {
     } catch (error) {
       console.error("Error:", error);
       toast.error("Failed to initiate password reset. Please try again later.");
+    }finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -57,8 +61,8 @@ function HrForgotPassword() {
               />
             </Form.Group>
 
-            <Button variant="primary" type="submit" className="submit-button">
-              Submit
+            <Button variant="primary" type="submit" className="submit-button"  disabled={isSubmitting}>
+            {isSubmitting ? "Submitting..." : "Submit "}
             </Button>
 
             <div className="login-link">
