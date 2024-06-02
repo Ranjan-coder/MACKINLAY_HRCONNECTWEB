@@ -19,6 +19,7 @@ import Badge from '@mui/material/Badge';
 import axios from "axios";
 import NotificationBox from "../Common-Components/NotificationBox";
 const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL
+const newUrl = process.env.REACT_APP_BACKEND_BASE_URL_WITHOUT_API
 function JobSeekerLayout() {
   const { pathname } = useLocation();
   const navigateTO = useNavigate();
@@ -85,7 +86,7 @@ export default JobSeekerLayout;
 
 // Topnavbar Components
 function DashboardTopComponent({ CbToggle }) {
-  const socket = io("https://mackinlay-hrconnectweb.onrender.com");
+  const socket = io(`${newUrl}`);
   const { email } = useSelector((state) => state.Assessment.currentUser);
   const [notificationCount, setNotificationCount] = useState(0);
   const [ToggleNotification, SetToggleNotification] = useState(false);

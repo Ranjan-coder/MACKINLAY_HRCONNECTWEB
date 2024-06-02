@@ -7,6 +7,8 @@ import CurrentResume from "./CurrentResume/CurrentResume";
 import PreviousResume from "./PreviousResume/PreviousResume";
 import axios from "axios";
 
+const newUrl = process.env.REACT_APP_BACKEND_BASE_URL_WITHOUT_API
+
 function MyResume() {
   const [resume_type, setresume_type] = useState("myresume");
   const [btn_Popup, setbtnPopup] = useState(false);
@@ -29,7 +31,7 @@ function MyResume() {
     formData.append("resumefile", selectedFile);
 
     try {
-      const response = await axios.post("https://mackinlay-hrconnectweb.onrender.com/resume/upload", formData, {
+      const response = await axios.post(`${newUrl}/resume/upload`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

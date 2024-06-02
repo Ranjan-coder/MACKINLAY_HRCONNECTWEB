@@ -53,7 +53,7 @@ function EditProfile() {
     formData.append("email", userDetails?.email);
     formData.append("profileImage", selectedImgPath);
 
-    axios.patch(`http://localhost:8080/api/hr/update-hr/${email}`, formData, {
+    axios.patch(`${baseURL}/hr/update-hr/${email}`, formData, {
       headers: { "Content-Type": "multipart/form-data" }
     }).then((response) => {
       if (response.data.success) {

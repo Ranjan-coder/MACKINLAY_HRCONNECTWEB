@@ -76,8 +76,7 @@ function HrLogin({ toggleLoginType, isHRLogin }) {
       }
     }
   };
-  
-  
+
   const nextStep = async () => {
     if (formData.email) {
       try {
@@ -106,7 +105,7 @@ function HrLogin({ toggleLoginType, isHRLogin }) {
         headers: { "Content-Type": "application/json" },
       });
 
-      const { name, email, token,bookmarkUser } = response.data;
+      const { name, email, token, bookmarkUser } = response.data;
 
       // Store user details in local storage
       localStorage.setItem("token", token);
@@ -118,7 +117,7 @@ function HrLogin({ toggleLoginType, isHRLogin }) {
           email: email,
           name: name,
           userType: "employee",
-          bookmarkUser : bookmarkUser,
+          bookmarkUser: bookmarkUser,
         })
       );
       toast.success(`Welcome Back Recruiter, ${name}`);
@@ -135,94 +134,101 @@ function HrLogin({ toggleLoginType, isHRLogin }) {
     nav("/hr/forgot-password");
   };
 
-
+  const handleHrSignup = () =>{
+    nav('/hr-signup')
+  }
   return (
-      <div onKeyDown={handleEnterKey}>
-        {formData.step === 1 ? (
-          <div className={hrLoginStyle.sub_container1}>
-            <div className={hrLoginStyle.sub_container2}>
-              <div className={hrLoginStyle.main_whole_container}>
-                <div className={hrLoginStyle.part_first}>
+    <div onKeyDown={handleEnterKey}>
+      {formData.step === 1 ? (
+        <div className={hrLoginStyle.sub_container1}>
+          <div className={hrLoginStyle.sub_container2}>
+            <div className={hrLoginStyle.main_whole_container}>
+              <div className={hrLoginStyle.part_first}>
+                <div>
+                  <h1
+                    className={`${hrLoginStyle.kumar_one_regular} ${hrLoginStyle.step_1_banner_heading_login}`}
+                  >
+                    <span style={{ color: "#0050D1" }}>HR</span> Connect{" "}
+                    <div style={{ color: "#00296B" }}>Pro</div>
+                  </h1>
                   <div>
-                    <h1
-                      className={`${hrLoginStyle.kumar_one_regular} ${hrLoginStyle.step_1_banner_heading_login}`}
-                    >
-                      <span style={{ color: "#0050D1" }}>HR</span> Connect{" "}
-                      <div style={{ color: "#00296B" }}>Pro</div>
-                    </h1>
-                    <div>
-                      <img
-                        src={loginImage}
-                        alt="network error"
-                        className={hrLoginStyle.login_image}
-                      />
-                    </div>
+                    <img
+                      src={loginImage}
+                      alt="network error"
+                      className={hrLoginStyle.login_image}
+                    />
                   </div>
                 </div>
+              </div>
 
-                <div className={hrLoginStyle.part_second}>
-                  <div className={hrLoginStyle.sub_container3}>
-                    <div>
-                      <img
-                        className={hrLoginStyle.sub_container3_imgstyl}
-                        src="https://mackinlay.in/img/title_logo.png"
-                        alt="not_loaded"
-                      />
-                    </div>
-                    <div style={{ textAlign: "center", marginTop: "20px" }}>
-                      <span
-                        style={{
-                          borderBottom: isHRLogin
-                            ? "2px solid #FF0000"
-                            : "none",
-                          cursor: "pointer",
-                        }}
-                        onClick={toggleLoginType}
-                      >
-                        Job Seeker
-                      </span>
-                      <span
-                        style={{
-                          borderBottom: isHRLogin
-                            ? "none"
-                            : "2px solid #FF0000",
-                          marginLeft: "20px",
-                          cursor: "pointer",
-                        }}
-                      >
-                        Employer
-                      </span>
-                    </div>
-                    <div className={hrLoginStyle.sub_container3_styl1}>
-                      {" "}
-                      HR LOGIN
-                    </div>
+              <div className={hrLoginStyle.part_second}>
+                <div className={hrLoginStyle.sub_container3}>
+                  <div>
+                    <img
+                      className={hrLoginStyle.sub_container3_imgstyl}
+                      src="https://mackinlay.in/img/title_logo.png"
+                      alt="not_loaded"
+                    />
                   </div>
-                  <div className={hrLoginStyle.sub_container_style}>
-                    <div className="email_form">
-                      <Form onSubmit={handleSubmit}>
-                        <Form.Control
-                          type="email"
-                          name="email"
-                          placeholder="Email or phone"
-                          className={hrLoginStyle.input_style}
-                          value={formData.email}
-                          onChange={handleChange}
-                          required
-                          autoFocus
-                        />
-                      </Form>
-                    </div>
-                    <div className={hrLoginStyle.forgot_style1}>
-                      <Button
-                        className={hrLoginStyle.next_style}
-                        type="submit"
-                        onClick={nextStep}
-                      >
-                        Next
-                      </Button>
-                    </div>
-                    {/*
+                  <div style={{ textAlign: "center", marginTop: "20px" }}>
+                    <span
+                      style={{
+                        borderBottom: isHRLogin ? "2px solid #FF0000" : "none",
+                        cursor: "pointer",
+                      }}
+                      onClick={toggleLoginType}
+                    >
+                      Job Seeker
+                    </span>
+                    <span
+                      style={{
+                        borderBottom: isHRLogin ? "none" : "2px solid #FF0000",
+                        marginLeft: "20px",
+                        cursor: "pointer",
+                      }}
+                    >
+                      Employer
+                    </span>
+                  </div>
+                  <div className={hrLoginStyle.sub_container3_styl1}>
+                    {" "}
+                    HR LOGIN
+                  </div>
+                </div>
+                <div className={hrLoginStyle.sub_container_style}>
+                  <div className="email_form">
+                    <Form onSubmit={handleSubmit}>
+                      <Form.Control
+                        type="email"
+                        name="email"
+                        placeholder="Email or phone"
+                        className={hrLoginStyle.input_style}
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                        autoFocus
+                      />
+                    </Form>
+                  </div>
+                  <div style={{ paddingTop: "10px", fontSize: "14px", cursor:'pointer' }}
+                  onClick={handleHrSignup}
+                  >
+                    Don't have an account?
+                    <span style={{ color: "rgba(35, 88, 251, 1)" }}>
+                      {" "}
+                      Create Account
+                    </span>
+                  </div>
+                  <div className={hrLoginStyle.forgot_style1}>
+                    <Button
+                      className={hrLoginStyle.next_style}
+                      type="submit"
+                      onClick={nextStep}
+                    >
+                      Next
+                    </Button>
+                  </div>
+                  {/*
                     <div style={{ textAlign: "center", margin: "10px 0px" }}>
                       OR
                     </div>
@@ -251,111 +257,111 @@ function HrLogin({ toggleLoginType, isHRLogin }) {
                         />
                       </li>
                     </ul> */}
-                  </div>
                 </div>
-              </div>
-            </div>
-            <div className={hrLoginStyle.sub_container5}>
-              <div>
-                <select className={hrLoginStyle.select_style}>
-                  <option>English(United States)</option>
-                  <option>English(United States2)</option>
-                  <option>English(United States3)</option>
-                </select>
-              </div>
-              <div className={hrLoginStyle.sub_container6}>
-                <div className={hrLoginStyle.sub_container6_items}>Help</div>
-                <div className={hrLoginStyle.sub_container6_items}>privacy</div>
-                <div className={hrLoginStyle.sub_container6_items}>Terms</div>
               </div>
             </div>
           </div>
-        ) : (
-          <div className={hrLoginStyle.sub_container1_style}>
-            <div className={hrLoginStyle.sub_container2_pass}>
-              <div className={hrLoginStyle.pass_main_container}>
-                <div className={hrLoginStyle.pass_part_1}>
-                  <h1
-                    className={`${hrLoginStyle.kumar_one_regular} ${hrLoginStyle.step_1_banner_heading_login}`}
-                  >
-                    <span style={{ color: "#0050D1" }}>HR</span> Connect{" "}
-                    <div style={{ color: "#00296B" }}>Pro</div>
-                  </h1>
-                  <div className={hrLoginStyle.user_login_detail}>
-                    <div className={hrLoginStyle.user_name}>Hi {name}</div>
-                    <div>
-                      <select className={hrLoginStyle.manage_account}>
-                        <option>{formData.email}</option>
-                        <option>Manage Account</option>
-                      </select>
-                    </div>
+          <div className={hrLoginStyle.sub_container5}>
+            <div>
+              <select className={hrLoginStyle.select_style}>
+                <option>English(United States)</option>
+                <option>English(United States2)</option>
+                <option>English(United States3)</option>
+              </select>
+            </div>
+            <div className={hrLoginStyle.sub_container6}>
+              <div className={hrLoginStyle.sub_container6_items}>Help</div>
+              <div className={hrLoginStyle.sub_container6_items}>privacy</div>
+              <div className={hrLoginStyle.sub_container6_items}>Terms</div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className={hrLoginStyle.sub_container1_style}>
+          <div className={hrLoginStyle.sub_container2_pass}>
+            <div className={hrLoginStyle.pass_main_container}>
+              <div className={hrLoginStyle.pass_part_1}>
+                <h1
+                  className={`${hrLoginStyle.kumar_one_regular} ${hrLoginStyle.step_1_banner_heading_login}`}
+                >
+                  <span style={{ color: "#0050D1" }}>HR</span> Connect{" "}
+                  <div style={{ color: "#00296B" }}>Pro</div>
+                </h1>
+                <div className={hrLoginStyle.user_login_detail}>
+                  <div className={hrLoginStyle.user_name}>Hi {name}</div>
+                  <div>
+                    <select className={hrLoginStyle.manage_account}>
+                      <option>{formData.email}</option>
+                      <option>Manage Account</option>
+                    </select>
                   </div>
                 </div>
-                <div className={hrLoginStyle.pass_part_2}>
-                  <div className="">
-                    <div>
-                      <img
-                        className={hrLoginStyle.pass_company_logo}
-                        src="https://mackinlay.in/img/title_logo.png"
-                        alt="not_loaded"
-                      />
-                    </div>
-                    <div>
-                      <Form>
-                        <div style={{ position: "relative" }}>
-                          <input
-                            type={formData.showPassword ? "text" : "password"}
-                            name="password"
-                            placeholder="Password"
-                            className={hrLoginStyle.password_input}
-                            value={formData.password}
-                            onChange={handleChange}
-                            required
-                             ref={passwordRef}
-                          />
-                          <span
-                            style={{
-                              position: "absolute",
-                              top: "58%",
-                              right: "80px",
-                              transform: "translateY(-20%)",
-                              cursor: "pointer",
-                            }}
-                            onClick={handleShowPassword}
-                          >
-                            <FontAwesomeIcon
-                              icon={formData.showPassword ? faEyeSlash : faEye}
-                            />
-                          </span>
-                        </div>
-                      </Form>
-                    </div>
-
-                    <div className="">
-                      <div style={{ cursor: "pointer" }}>
+              </div>
+              <div className={hrLoginStyle.pass_part_2}>
+                <div className="">
+                  <div>
+                    <img
+                      className={hrLoginStyle.pass_company_logo}
+                      src="https://mackinlay.in/img/title_logo.png"
+                      alt="not_loaded"
+                    />
+                  </div>
+                  <div>
+                    <Form>
+                      <div style={{ position: "relative" }}>
+                        <input
+                          type={formData.showPassword ? "text" : "password"}
+                          name="password"
+                          placeholder="Password"
+                          className={hrLoginStyle.password_input}
+                          value={formData.password}
+                          onChange={handleChange}
+                          required
+                          ref={passwordRef}
+                        />
                         <span
-                          onClick={handlePassword}
-                          className={hrLoginStyle.forgot_pass}
+                          style={{
+                            position: "absolute",
+                            top: "58%",
+                            right: "80px",
+                            transform: "translateY(-20%)",
+                            cursor: "pointer",
+                          }}
+                          onClick={handleShowPassword}
                         >
-                          Forgot Password?
+                          <FontAwesomeIcon
+                            icon={formData.showPassword ? faEyeSlash : faEye}
+                          />
                         </span>
                       </div>
-                      <div style={{ cursor: "pointer" }}>
-                        <button
-                          className={hrLoginStyle.login_button}
-                          onClick={handleSubmit}
-                        >
-                          Log In
-                        </button>
-                      </div>
+                    </Form>
+                  </div>
+
+                  <div className="">
+                    <div style={{ cursor: "pointer" }}>
+                      <span
+                        onClick={handlePassword}
+                        className={hrLoginStyle.forgot_pass}
+                      >
+                        Forgot Password?
+                      </span>
+                    </div>
+                    <div style={{ cursor: "pointer" }}>
+                      <button
+                        className={hrLoginStyle.login_button}
+                        onClick={handleSubmit}
+                      >
+                        Log In
+                      </button>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
+    </div>
   );
 }
 

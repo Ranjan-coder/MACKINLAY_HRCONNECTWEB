@@ -24,7 +24,7 @@ const getHR =  async (req, res) => {
 
 const signUp = async (req, res) => {
   try {
-    const { name, email, password, jobTitle, department, companyName } = req.body;
+    const { name, email, password} = req.body;
 
     // Check if email is already registered
     const existingHr = await Hr.findOne({ email });
@@ -36,7 +36,7 @@ const signUp = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create new HR
-    const newHr = new Hr({ name, email, password: hashedPassword, jobTitle, department, companyName });
+    const newHr = new Hr({ name, email, password: hashedPassword });
     await newHr.save();
 
     // Generate JWT token
@@ -47,10 +47,8 @@ const signUp = async (req, res) => {
       token,
       name,
       email,
-      jobTitle,
-      department,
-      companyName,
-      bookmarkUser : []
+      bookmarkUser : [],
+      userType : 'employee'
     });
   } catch (error) {
     console.error('Error:', error);
@@ -82,9 +80,6 @@ const login = async (req, res) => {
       token,
       name: hr.name,
       email: hr.email,
-      jobTitle: hr.jobTitle,
-      department: hr.department,
-      companyName: hr.companyName,
       bookmarkUser : hr.bookmarkUser,
       userType : 'employee'
     });
@@ -116,7 +111,7 @@ const forgotPassword = async (req, res) => {
       from: process.env.EMAIL_ID,
       to: email,
       subject: 'Reset Password',
-      html: `<p>Click <a href="http://localhost:3000/hr/reset-password/${token}">here</a> to reset your password.</p>`
+      html: `<p>Click <a href="${process.env.CLIENT_URL}/hr/reset-password/${token}">here</a> to reset your password.</p>`
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
@@ -196,45 +191,6 @@ const HRupdateUserField = async (req, res) => {
     console.error("Error updating user:", error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
-  // try {
-  //   const { email } = req.params;
-  //   const updateFields = {};
-  //   const result = req.file && (await uploadonCloudinary(req.file.path));
-    
-  //   if (result && result.secure_url) {
-  //     updateFields.profileImage = result.secure_url;
-  //   }
-
-  //   if (req.body.name) {
-  //     updateFields.name = req.body.name;
-  //   }
-
-  //   if (req.body.email) {
-  //     updateFields.email = req.body.email;
-  //   }
-
-  //   const findUser = await Hr.findOneAndUpdate(
-  //     { email: email },
-  //     updateFields,
-  //     { new: true }
-  //   );
-
-  //   if (findUser) {
-  //     res.status(200).json({
-  //       success: true,
-  //       msg: "HR details updated successfully",
-  //       hrDetails: findUser
-  //     });
-  //   } else {
-  //     res.status(404).json({
-  //       success: false,
-  //       msg: "No HR found to update",
-  //     });
-  //   }
-  // } catch (error) {
-  //   console.error("Error updating user:", error);
-  //   return res.status(500).json({ message: "Internal Server Error" });
-  // }
 };
 
 module.exports = { signUp, login, forgotPassword, resetPassword, getHR,HRupdateUserField };

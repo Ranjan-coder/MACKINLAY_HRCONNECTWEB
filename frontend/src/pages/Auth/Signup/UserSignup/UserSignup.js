@@ -14,7 +14,8 @@ import signupStyle from "../Signup.module.css";
 import { useDispatch } from "react-redux";
 import { handleUserLogin } from "../../../../Redux/ReduxSlice";
 
-const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
+const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL
+const newUrl = process.env.REACT_APP_BACKEND_BASE_URL_WITHOUT_API
 
 const Signup = () => {
   const dispatchTO = useDispatch();
@@ -289,7 +290,7 @@ const Signup = () => {
 
   const handleGoogleSignup = (userType) => {
     try {
-      const googleSignupUrl = `http://localhost:8585/auth/google?userType=${userType}`;
+      const googleSignupUrl = `${newUrl}/auth/google?userType=${userType}`;
       window.location.href = googleSignupUrl;
     } catch (error) {
       console.error('Google signup error:', error);
@@ -298,7 +299,7 @@ const Signup = () => {
 
   const handleLinkedInSignup = (userType) => {
     try {
-      const linkedInSignupUrl = `http://localhost:8585/auth/linkedin?userType=${userType}`;
+      const linkedInSignupUrl = `${newUrl}/auth/linkedin?userType=${userType}`;
       window.location.href = linkedInSignupUrl;
     } catch (error) {
       console.error('LinkedIn signup error:', error);

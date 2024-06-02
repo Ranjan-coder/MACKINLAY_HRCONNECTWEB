@@ -10,7 +10,7 @@ dotenv.config();
 const cors = require("cors");
 app.use(
   cors({
-    origin: "https://mackinlay-hrconnectweb-lgy0d076p-ranjan-kumar-chandas-projects.vercel.app",
+    origin: "*",
     methods: "GET, POST, PATCH, DELETE, PUT",
     credentials: true,
   })

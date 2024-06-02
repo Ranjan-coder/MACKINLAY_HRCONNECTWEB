@@ -18,8 +18,9 @@ import NotificationBox from "../../Common-Components/NotificationBox";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
+const newUrl = process.env.REACT_APP_BACKEND_BASE_URL_WITHOUT_API;
 export default function TopBar() {
-  const socket = io("https://mackinlay-hrconnectweb.onrender.com");
+  const socket = io(`${newUrl}`);
   const { email } = useSelector((state) => state.Assessment.currentUser);
   const [searhOption, setSearchOption] = useState({ searchText: "" });
   const [notificationCount, setNotificationCount] = useState(0);

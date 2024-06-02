@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ResumeStyle from "../MyResume.module.css";
 // const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
+const newUrl = process.env.REACT_APP_BACKEND_BASE_URL_WITHOUT_API
 const PreviousResume = () => {
   const [resumes, setResumes] = useState([]);
   const [uploadTrigger, setUploadTrigger] = useState(false); // State to trigger re-fetch
@@ -11,7 +12,7 @@ const PreviousResume = () => {
     const fetchResumes = async () => {
       try {
         const response = await axios.get(
-          `https://mackinlay-hrconnectweb.onrender.com/resume/getall/${email}`
+          `${newUrl}/resume/getall/${email}`
         );
         const resumesData = response.data.resumes;
 
@@ -54,7 +55,7 @@ const PreviousResume = () => {
   const handleDeleteResume = async (filename) => {
     try {
       const response = await axios.delete(
-        "https://mackinlay-hrconnectweb.onrender.com/resume/delete",
+       ` ${newUrl}/resume/delete`,
         {
           data: {
             email: email,
