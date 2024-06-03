@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
+const newUrl = process.env.REACT_APP_BACKEND_BASE_URL_WITHOUT_API;
 // Define the async action creator
 export const fetchUserData = createAsyncThunk(
   'userDetails/fetchUserData',
@@ -18,14 +19,14 @@ export const fetchUserData = createAsyncThunk(
 
 // Async thunk to check authentication status
 export const checkAuth = createAsyncThunk('auth/checkAuth', async () => {
-  const response = await axios.get('http://localhost:8585/auth/status', { withCredentials: true });
+  const response = await axios.get(`${newUrl}/auth/status`, { withCredentials: true });
   // console.log(response.data);
   return response.data;
 });
 
 // Async thunk to handle logout
 export const logout = createAsyncThunk('auth/logout', async () => {
-  await axios.get('http://localhost:8585/logout', { withCredentials: true });
+  await axios.get(`${newUrl}/logout`, { withCredentials: true });
 });
 
 // Define the initial state
