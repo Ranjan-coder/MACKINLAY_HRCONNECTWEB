@@ -14,6 +14,8 @@ const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
 
 const Signup = () => {
   const dispatchTO = useDispatch();
+  const [isSubmitting, setIsSubmitting]= useState(false)
+  const [emailValid, setEmailValid] = useState(true);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -35,10 +37,35 @@ const Signup = () => {
     setFormData({ ...formData, [fieldName]: !formData[fieldName] });
   };
 
+  const checkEmailExists = async (email) => {
+    try {
+      const response = await axios.post(`${baseUrl}/hr/check-email`, { email });
+      return response.status === 200;
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        toast.error("Email already registered");
+      } else {
+        toast.error("An error occurred while checking the email");
+      }
+      return false;
+    }
+  };
+
+  const handleEmailBlur = async () => {
+    const isValid = await checkEmailExists(formData.email);
+    setEmailValid(isValid);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true)
     if (formData.password !== formData.conf_password) {
       toast.error("Passwords do not match");
+      return;
+    }
+    if (!emailValid) {
+      toast.error("Please enter a valid email");
+      setIsSubmitting(false);
       return;
     }
     try {
@@ -82,6 +109,8 @@ const Signup = () => {
         console.error("Error:", error.message);
         toast.error(error.message);
       }
+    }finally{
+      setIsSubmitting(false)
     }
   };
 
@@ -127,6 +156,7 @@ const Signup = () => {
                     name="email"
                     placeholder="Enter Email Id"
                     onChange={handleChange}
+                    onBlur={handleEmailBlur}
                     className={signupStyle.personal_input_field}
                     required
                   />
@@ -187,8 +217,8 @@ const Signup = () => {
                     </span>
                   </div>
                   <div className={signupStyle.step_button_container}>
-                    <Button className={signupStyle.step_button} type="submit">
-                      Create Account
+                    <Button className={signupStyle.step_button} type="submit" disabled={isSubmitting}>
+                      {isSubmitting ? "Creating Account...": "Create Account"}
                     </Button>
                   </div>
                 </Form>

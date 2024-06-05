@@ -35,6 +35,14 @@
   margin-top: 60px;
 }
 
+.upload_resume_heading{
+  text-align: center;
+}
+
+.resume_handler{
+  margin-left: 3.5vw;
+}
+
 .create_account_name_container {
   text-align: center;
   margin-top: 60px;
@@ -78,7 +86,7 @@
 
 .personal_input_field {
   border-radius: 20px !important;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   width: 22vw !important;
 }
 
@@ -107,9 +115,32 @@
   cursor: pointer;
 }
 
+/* PhoneInput.module.css */
+.customPhoneInput {
+  width: 22vw !important;
+  margin-bottom: 10px;
+}
+
+.customPhoneInputInput {
+  width: 22vw !important;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 14px !important;
+  font-size: 16px;
+}
+
+.react_date_form_control{
+  width: 22vw !important;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  padding-top: 5px; padding-bottom: 5px;
+  padding-left: 10px;
+  border-radius: 14px;
+}
+
 .step_4_part_2 {
   margin-left: 50px;
-  margin-top: 20px;
+  margin-top: 50px;
 }
 
 .education_detail_start_date {
@@ -135,6 +166,7 @@
 .education_date_container {
   display: flex;
   justify-content: space-between;
+  /* width: 22vw; */
 }
 
 .date_container {
