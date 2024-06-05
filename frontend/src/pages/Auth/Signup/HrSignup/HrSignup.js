@@ -14,6 +14,7 @@ const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
 
 const Signup = () => {
   const dispatchTO = useDispatch();
+  const [isSubmitting, setIsSubmitting]= useState(false)
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -37,6 +38,7 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true)
     if (formData.password !== formData.conf_password) {
       toast.error("Passwords do not match");
       return;
@@ -82,6 +84,8 @@ const Signup = () => {
         console.error("Error:", error.message);
         toast.error(error.message);
       }
+    }finally{
+      setIsSubmitting(false)
     }
   };
 
@@ -187,8 +191,8 @@ const Signup = () => {
                     </span>
                   </div>
                   <div className={signupStyle.step_button_container}>
-                    <Button className={signupStyle.step_button} type="submit">
-                      Create Account
+                    <Button className={signupStyle.step_button} type="submit" disabled={isSubmitting}>
+                      {isSubmitting ? "Creating Account...": "Create Account"}
                     </Button>
                   </div>
                 </Form>

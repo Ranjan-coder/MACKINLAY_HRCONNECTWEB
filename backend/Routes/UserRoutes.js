@@ -7,6 +7,8 @@ const {
   getUser,
   updateUserField,
   logout,
+  checkEmail,
+  checkPhoneNumberExists
 } = require("../controller/auth/AuthController");
 const { upload, uploadProfile } = require("../middleware/fileUploadMiddleware");
 const {
@@ -25,6 +27,8 @@ const {
 } = require("../controller/UserAnalytics/JobApplicationAnalytics");
 
 userRoutes.get("/user", getUser);
+userRoutes.post("/check-email", checkEmail)
+userRoutes.post("/checkPhoneNumber", checkPhoneNumberExists)
 userRoutes.post("/signup", upload, signUp);
 userRoutes.post("/login", login);
 userRoutes.post("/logout", logout);
