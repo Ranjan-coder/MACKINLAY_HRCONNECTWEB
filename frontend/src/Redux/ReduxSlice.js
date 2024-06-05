@@ -1,6 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  selectedOption: {},
+  result: 0,
+  percentageResult: 0,
   currentUser: {
     token: localStorage.getItem("token") || "",
     profileImage: localStorage.getItem("profileImage") || "",
