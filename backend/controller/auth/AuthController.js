@@ -23,6 +23,30 @@ const getUser = async (req, res) => {
   }
 };
 
+const checkEmail = async(req,res) =>{
+  const { email } = req.body;
+  const user = await User.findOne({ email }); 
+  if (user) {
+    return res.status(400).json({ message: 'Email already registered' });
+  }
+  res.status(200).json({ message: 'Email is available' });
+}
+
+const checkPhoneNumberExists = async (req, res) => {
+  try {
+    const { phoneNumber } = req.body;
+    const existingUserByPhone = await User.findOne({ phone_number: phoneNumber });
+    if (existingUserByPhone) {
+      return res.json({ available: false }); 
+    }
+    return res.json({ available: true }); 
+  } catch (error) {
+    console.error("Error checking phone number existence:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+
 const signUp = async (req, res) => {
   try {
     const {
@@ -314,4 +338,6 @@ module.exports = {
   getUser,
   updateUserField,
   logout,
+  checkEmail,
+  checkPhoneNumberExists
 };

@@ -14,6 +14,8 @@ const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
 
 function HrLogin({ toggleLoginType, isHRLogin }) {
   const dispatchTO = useDispatch();
+  const [isValidating, setIsValidating] = useState(false);
+  const [isSubmitting, setIsSubmitting]  = useState(false);
 
   const nav = useNavigate();
   const [formData, setFormData] = useState({
@@ -78,6 +80,7 @@ function HrLogin({ toggleLoginType, isHRLogin }) {
   };
 
   const nextStep = async () => {
+    setIsValidating(true)
     if (formData.email) {
       try {
         const response = await axios.get(
@@ -92,7 +95,9 @@ function HrLogin({ toggleLoginType, isHRLogin }) {
           error.response ? error.response.data : error.message
         );
         toast.error("Email not registered.");
-      }
+      }finally{
+        setIsValidating(false)
+      } 
     } else {
       toast.error("Please fill in the email field.");
     }
@@ -100,6 +105,7 @@ function HrLogin({ toggleLoginType, isHRLogin }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     try {
       const response = await axios.post(`${baseUrl}/hr/login`, formData, {
         headers: { "Content-Type": "application/json" },
@@ -127,6 +133,8 @@ function HrLogin({ toggleLoginType, isHRLogin }) {
     } catch (error) {
       console.error("Error:", error.response.data);
       toast.error("Invalid Credential");
+    }finally{
+      setIsSubmitting(false);
     }
   };
 
@@ -224,8 +232,9 @@ function HrLogin({ toggleLoginType, isHRLogin }) {
                       className={hrLoginStyle.next_style}
                       type="submit"
                       onClick={nextStep}
+                      disabled={isValidating}
                     >
-                      Next
+                      {isValidating ? "Validating..." : "Next"}
                     </Button>
                   </div>
                   {/*
@@ -350,8 +359,10 @@ function HrLogin({ toggleLoginType, isHRLogin }) {
                       <button
                         className={hrLoginStyle.login_button}
                         onClick={handleSubmit}
+                        disabled={isSubmitting}
+                        type="submit"
                       >
-                        Log In
+                        {isSubmitting ? "Logging In..." : "Log In"}
                       </button>
                     </div>
                   </div>

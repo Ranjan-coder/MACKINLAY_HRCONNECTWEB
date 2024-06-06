@@ -21,6 +21,15 @@ const getHR =  async (req, res) => {
   }
 };
 
+const checkEmail = async(req,res) =>{
+  const { email } = req.body;
+  const user = await Hr.findOne({ email }); 
+  if (user) {
+    return res.status(400).json({ message: 'Email already registered' });
+  }
+  res.status(200).json({ message: 'Email is available' });
+}
+
 
 const signUp = async (req, res) => {
   try {
@@ -193,4 +202,4 @@ const HRupdateUserField = async (req, res) => {
   }
 };
 
-module.exports = { signUp, login, forgotPassword, resetPassword, getHR,HRupdateUserField };
+module.exports = { signUp, login, forgotPassword, resetPassword, getHR,HRupdateUserField, checkEmail };
