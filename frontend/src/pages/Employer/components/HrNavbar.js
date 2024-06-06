@@ -17,7 +17,7 @@ export default function HR_Navbar() {
   const [tabletView, setTabletView] = useState()
   const tabScreen = useMediaQuery({ maxWidth: 950 })
   const dispatch = useDispatch();
-  const { name,profileImage } = useSelector((state) => state.Assessment.currentUser);
+  const { name, profileImage } = useSelector((state) => state.Assessment.currentUser);
 
   const handleLogoutClick = () => {
     dispatch(handleUserLogOut());
@@ -50,21 +50,20 @@ export default function HR_Navbar() {
 
       <div className={layout.__nav_footer_actions}>
         <div className={layout.__user_Info}>
-          <img className={layout.__user_Img} title='Profile' 
-          src={profileImage ?? 'https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg'}
- alt='HrProfilePicture' 
- onError={(e) => { e.target.src = `https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg`; e.onError = null; }}
- />
-          <div className={layout.__userSection}>
-            {name}
-            <button onClick={()=>navigateTo('/Setting/Editprofile')} className={layout.__btn_Edit_Profile}>EDIT MY PROFILE</button>
-          </div>
+          <img className={layout.__user_Img} title='Profile'
+            src={profileImage ?? 'https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg'}
+            alt='HrProfilePicture'
+            onError={(e) => { e.target.src = `https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg`; e.onError = null; }}
+          />
+          {name}
+          {/* <div className={layout.__userSection}>
+            <button onClick={() => navigateTo('/Setting/Editprofile')} className={layout.__btn_Edit_Profile}>EDIT MY PROFILE</button>
+          </div> */}
         </div>
         <button className={layout.__btn_Logout} onClick={handleLogoutClick}>
           <FontAwesomeIcon icon={faArrowRightFromBracket} /> <span className={layout.__logout_Text}>Log Out</span>
         </button>
       </div>
-
     </div>
   )
 }
