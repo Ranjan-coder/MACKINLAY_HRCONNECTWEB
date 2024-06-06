@@ -237,51 +237,8 @@ function HrLogin({ toggleLoginType, isHRLogin }) {
                       {isValidating ? "Validating..." : "Next"}
                     </Button>
                   </div>
-                  {/*
-                    <div style={{ textAlign: "center", margin: "10px 0px" }}>
-                      OR
-                    </div>
-                     <ul className={hrLoginStyle.login_social_list}>
-                      <li className={hrLoginStyle.social_list_item}>
-                        <img
-                          src={google}
-                          alt="network-error"
-                          className={hrLoginStyle.social_image_google}
-                        />
-                      </li>
-
-                      <li className={hrLoginStyle.social_list_item}>
-                        <img
-                          src={linkedin}
-                          alt="network-error"
-                          className={hrLoginStyle.social_image_linkedin}
-                        />
-                      </li>
-
-                      <li className={hrLoginStyle.social_list_item}>
-                        <img
-                          src={apple}
-                          alt="network-error"
-                          className={hrLoginStyle.social_image}
-                        />
-                      </li>
-                    </ul> */}
                 </div>
               </div>
-            </div>
-          </div>
-          <div className={hrLoginStyle.sub_container5}>
-            <div>
-              <select className={hrLoginStyle.select_style}>
-                <option>English(United States)</option>
-                <option>English(United States2)</option>
-                <option>English(United States3)</option>
-              </select>
-            </div>
-            <div className={hrLoginStyle.sub_container6}>
-              <div className={hrLoginStyle.sub_container6_items}>Help</div>
-              <div className={hrLoginStyle.sub_container6_items}>privacy</div>
-              <div className={hrLoginStyle.sub_container6_items}>Terms</div>
             </div>
           </div>
         </div>
