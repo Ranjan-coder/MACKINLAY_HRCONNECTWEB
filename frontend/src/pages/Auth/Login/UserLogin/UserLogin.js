@@ -291,20 +291,6 @@ function UserLogin({ toggleLoginType, isHRLogin }) {
               </div>
             </div>
           </div>
-          <div className={LoginStyle.sub_container5}>
-            <div>
-              <select className={LoginStyle.select_style}>
-                <option>English(United States)</option>
-                <option>English(United States2)</option>
-                <option>English(United States3)</option>
-              </select>
-            </div>
-            <div className={LoginStyle.sub_container6}>
-              <div className={LoginStyle.sub_container6_items}>Help</div>
-              <div className={LoginStyle.sub_container6_items}>privacy</div>
-              <div className={LoginStyle.sub_container6_items}>Terms</div>
-            </div>
-          </div>
         </div>
       ) : (
         <div className={LoginStyle.sub_container1_style}>
