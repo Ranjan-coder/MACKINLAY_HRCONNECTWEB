@@ -13,12 +13,16 @@ import axios from "axios";
 import signupStyle from "../Signup.module.css";
 import { useDispatch } from "react-redux";
 import { handleUserLogin } from "../../../../Redux/ReduxSlice";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
-const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL
-const newUrl = process.env.REACT_APP_BACKEND_BASE_URL_WITHOUT_API
+const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
+const newUrl = process.env.REACT_APP_BACKEND_BASE_URL_WITHOUT_API;
 
 const Signup = () => {
   const dispatchTO = useDispatch();
+  const [stillWorking, setStillWorking] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     resume: "",
     name: "",
@@ -67,6 +71,11 @@ const Signup = () => {
     console.log("Form details", formData);
   };
 
+  const handlePhoneChange = (phone) => {
+    setFormData({ ...formData, phone_number: phone });
+    console.log("Phone number updated", phone);
+  };
+
   const toggleShowPassword = (fieldName) => {
     setFormData({ ...formData, [fieldName]: !formData[fieldName] });
   };
@@ -76,7 +85,33 @@ const Signup = () => {
     setFormData({ ...formData, resume: e.target.files[0] });
   };
 
-  const nextStep = (e) => {
+  const checkEmailExists = async (email) => {
+    try {
+      const response = await axios.post(`${baseUrl}/check-email`, { email });
+      return response.status === 200;
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        toast.error("Email already registered");
+      } else {
+        toast.error("An error occurred while checking the email");
+      }
+      return false;
+    }
+  };
+
+  const checkPhoneNumberExists = async (phoneNumber) => {
+    try {
+      const response = await axios.post(`${baseUrl}/checkPhoneNumber`, {
+        phoneNumber,
+      });
+      return response.data.available;
+    } catch (error) {
+      console.error("Error checking phone number existence:", error);
+      return false;
+    }
+  };
+
+  const nextStep = async (e) => {
     e.preventDefault();
 
     // Check if the current step requires the resume
@@ -105,6 +140,10 @@ const Signup = () => {
       if (formData.password !== formData.conf_password) {
         toast.error("Passwords do not match");
         return;
+      }
+      const isEmailAvailable = await checkEmailExists(formData.email);
+      if (!isEmailAvailable) {
+        return;
       } else {
         toast.success("Personal Details Successfully filled");
         setFormData({ ...formData, step: formData.step + 1 });
@@ -121,10 +160,16 @@ const Signup = () => {
       ) {
         toast.error("Please fill in all required fields");
         return;
-      } else if (!/^\d{10}$/.test(formData.phone_number)) {
-        toast.error("Phone number must contain exactly 10 digits");
-        return;
       } else {
+        // Check if the phone number is available
+        const isPhoneAvailable = await checkPhoneNumberExists(
+          formData.phone_number
+        );
+        if (!isPhoneAvailable) {
+          toast.error("Phone number is already registered");
+          return;
+        }
+
         // Calculate age from date of birth
         const dobDate = new Date(formData.dob);
         const today = new Date();
@@ -186,6 +231,7 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true)
     try {
       const {
         resume,
@@ -253,15 +299,15 @@ const Signup = () => {
         console.error("Error:", error.message);
         toast.error(error.message);
       }
+    }finally{
+      setIsSubmitting(false)
     }
   };
-  
-  
+
   const handleLogin = () => {
     nav("/login");
   };
 
-  const [stillWorking, setStillWorking] = useState(false);
 
   // Function to calculate the duration between start and end date in months
   const calculateDuration = () => {
@@ -293,7 +339,7 @@ const Signup = () => {
       const googleSignupUrl = `${newUrl}/auth/google?userType=${userType}`;
       window.location.href = googleSignupUrl;
     } catch (error) {
-      console.error('Google signup error:', error);
+      console.error("Google signup error:", error);
     }
   };
 
@@ -302,10 +348,9 @@ const Signup = () => {
       const linkedInSignupUrl = `${newUrl}/auth/linkedin?userType=${userType}`;
       window.location.href = linkedInSignupUrl;
     } catch (error) {
-      console.error('LinkedIn signup error:', error);
+      console.error("LinkedIn signup error:", error);
     }
   };
-  
 
   return (
     <>
@@ -336,13 +381,14 @@ const Signup = () => {
                   Upload Resume
                 </h3>
                 <Form onSubmit={nextStep}>
-                  <Form.Group as={Row} className="mb-3">
+                  <Form.Group as={Row} className="mb-3 m-lg-3">
                     <Col sm="9">
                       <Form.Control
                         type="file"
                         name="resume"
                         accept="application/pdf"
                         onChange={handleResumeChange}
+                        className={signupStyle.resume_handler}
                       />
                     </Col>
                   </Form.Group>
@@ -414,9 +460,9 @@ const Signup = () => {
                 </div>
               </div>
               <div className={signupStyle.step_2_part_2}>
-                <h4 style={{ paddingBottom: "10px" }}>Personal Information</h4>
+                <h4 style={{ paddingBottom: "10px", paddingLeft:'2vw' }}>Personal Information</h4>
                 <div>
-                  <Form>
+                  <Form className="m-lg-3">
                     <Form.Control
                       type="text"
                       name="name"
@@ -479,20 +525,6 @@ const Signup = () => {
                     </div>
                   </Form>
                 </div>
-                <div className={signupStyle.terms_container}>
-                  <Form.Check type="checkbox" className="check_box" />
-                  <div>
-                    <div>
-                      I have read and agree to the Puck recruiter{" "}
-                      <span style={{ fontWeight: "500" }}>
-                        Terms <br />
-                        and Condition
-                      </span>{" "}
-                      and
-                      <span style={{ fontWeight: "500" }}> Privacy Policy</span>
-                    </div>
-                  </div>
-                </div>
                 <div className={signupStyle.step_button_container}>
                   <Button
                     className={signupStyle.step_button}
@@ -525,16 +557,21 @@ const Signup = () => {
                 </div>
               </div>
               <div className={signupStyle.step_2_part_2}>
-                <h4 style={{ paddingBottom: "10px" }}>Basic Details</h4>
+                <h4 style={{ paddingBottom: "10px", paddingLeft:'2vw' }}>Basic Details</h4>
                 <div>
-                  <Form>
-                    <Form.Control
-                      type="number"
-                      name="phone_number"
-                      placeholder="Enter Mobile Number"
-                      onChange={handleChange}
-                      className={signupStyle.personal_input_field}
-                      required
+                  <Form className="m-lg-3">
+                    <PhoneInput
+                      country={"in"}
+                      value={formData.phone_number}
+                      onChange={handlePhoneChange}
+                      inputProps={{
+                        name: "phone_number",
+                        required: true,
+                        autoFocus: true,
+                        placeholder: "Enter Mobile Number",
+                      }}
+                      containerClass={signupStyle.customPhoneInput}
+                      inputClass={signupStyle.customPhoneInputInput}
                     />
 
                     <DatePicker
@@ -549,7 +586,7 @@ const Signup = () => {
                       showYearDropdown
                       scrollableYearDropdown
                       yearDropdownItemNumber={44}
-                      className="form-control"
+                      className={signupStyle.react_date_form_control}
                       placeholderText="DD/MM/YYYY"
                       required
                     />
@@ -776,30 +813,30 @@ const Signup = () => {
                   </div>
                 </div>
                 <div>
-                <div>
-  <input
-    type="checkbox"
-    checked={stillWorking}
-    onChange={(e) => {
-      setStillWorking(e.target.checked);
-      setFormData(prevFormData => ({
-        ...prevFormData,
-        company_end_date: e.target.checked ? null : prevFormData.company_end_date
-      }));
-    }}
-    
-    
-  />
-  <label
-    style={{
-      fontSize: "14px",
-      paddingBottom: "10px",
-      marginLeft: "10px",
-    }}
-  >
-    Still Working
-  </label>
-</div>
+                  <div>
+                    <input
+                      type="checkbox"
+                      checked={stillWorking}
+                      onChange={(e) => {
+                        setStillWorking(e.target.checked);
+                        setFormData((prevFormData) => ({
+                          ...prevFormData,
+                          company_end_date: e.target.checked
+                            ? null
+                            : prevFormData.company_end_date,
+                        }));
+                      }}
+                    />
+                    <label
+                      style={{
+                        fontSize: "14px",
+                        paddingBottom: "10px",
+                        marginLeft: "10px",
+                      }}
+                    >
+                      Still Working
+                    </label>
+                  </div>
 
                   <div>
                     <input
@@ -821,8 +858,9 @@ const Signup = () => {
                   <Button
                     className={signupStyle.step_button}
                     onClick={handleSubmit}
+                    disabled={isSubmitting}
                   >
-                    Create Account
+                    {isSubmitting ? "Creating Account..." : "Create Account"}
                   </Button>
                 </div>
               </div>
