@@ -13,6 +13,8 @@ import {
   handleRemoveBookmark,
 } from "../../../Redux/ReduxSlice";
 import { io } from "socket.io-client"
+import { useNavigate } from "react-router-dom";
+
 const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
 const newUrl = process.env.REACT_APP_BACKEND_BASE_URL_WITHOUT_API;
 function ApplicantsDetails({ jobData, selectedUser, CbToogleDetails }) {
@@ -23,6 +25,7 @@ function ApplicantsDetails({ jobData, selectedUser, CbToogleDetails }) {
   const [userDetails, setUserDetails] = useState([]);
   const [ShowPDF, SetshowPDF] = useState(false);
   const [SelectedResume, setSelectedResume] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setUserDetails(
@@ -270,6 +273,7 @@ function ApplicantsDetails({ jobData, selectedUser, CbToogleDetails }) {
                   <button
                     className={hrdashboard.__applicantBtn}
                     style={{ background: "blue", padding: "0 4em" }}
+                    onClick={() => navigate('/schedule-interview')}
                   >
                     Schedule Interview
                   </button>

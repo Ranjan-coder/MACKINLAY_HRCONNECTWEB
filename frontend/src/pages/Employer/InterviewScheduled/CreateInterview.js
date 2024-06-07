@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import Interviewcss from "./Interview.module.css";
-import maleImage from '../../../Assets/Male-Image.png'
+import maleImage from '../../../Assets/Male-Image.png';
 import { IoStar } from "react-icons/io5";
 import { BsPersonVideo } from "react-icons/bs";
 import { GrTextAlignFull } from "react-icons/gr";
@@ -10,16 +10,35 @@ import { FaUser } from "react-icons/fa";
 import { IoLocationOutline } from "react-icons/io5";
 import { IoMdAttach } from "react-icons/io";
 import { BsFileImage } from "react-icons/bs";
-import { useState } from "react";
+import axios from 'axios';
 
 function Interview() {
   const [description, setDescription] = useState(
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore... et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. "
   );
 
+  const [interviewDetails, setInterviewDetails] = useState({
+    candidateName: "Charle Kristen",
+    candidateEmail: "charle@example.com",
+    interviewType: "",
+    interviewDate: "",
+    interviewTime: "",
+    interviewerName: "",
+    location: "",
+    description: "",
+  });
+
   const handleDescriptionChange = (event) => {
     const content = event.target.value;
     setDescription(content);
+  };
+
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    setInterviewDetails(prevState => ({
+      ...prevState,
+      [id]: value
+    }));
   };
 
   const sliceDescription = () => {
@@ -28,9 +47,25 @@ function Interview() {
     return slicedContent;
   };
 
+  const handleScheduleInterview = () => {
+    const updatedDetails = {
+      ...interviewDetails,
+      description: sliceDescription(),
+    };
+
+    axios.post('http://localhost:8585/schedule-interview', updatedDetails)
+      .then(response => {
+        console.log('Success:', response.data);
+        alert('Interview scheduled and email sent successfully');
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        alert('Error in scheduling interview or sending email');
+      });
+  };
+
   return (
     <div className={Interviewcss.main_containers}>
-      {/* upper container of Candidate profile */}
       <div className={Interviewcss.uppercontainer}>
         <div className={Interviewcss.uppercontainer_left}>
           <img
@@ -38,8 +73,6 @@ function Interview() {
             src={maleImage}
             alt="network-error"
           />
-
-
           <div className={Interviewcss.uppercontainer_left1}>
             <p>Charle Kristen</p>
             <p>
@@ -55,29 +88,26 @@ function Interview() {
       </div>
       <hr className={Interviewcss.horizontal_line}></hr>
 
-      {/* Form fill up for Candidate */}
       <div className={Interviewcss.formMain_cont}>
         <div className={Interviewcss.formMain_cont1}>
           <div className={Interviewcss.formSub_con1}>
-            <label for="interview-type" className={Interviewcss.box}>
+            <label htmlFor="interviewType" className={Interviewcss.box}>
               <BsPersonVideo />
               Interview type{" "}
             </label>
             <br></br>
-            <select id="interview-type" className={Interviewcss.boxes}>
+            <select
+              id="interviewType"
+              className={Interviewcss.boxes}
+              value={interviewDetails.interviewType}
+              onChange={handleInputChange}
+            >
               <option value=""></option>
               <option value="walk">Walk-in-drive</option>
               <option value="virtual">Virtual</option>
               <option value="face">Face to face</option>
             </select>
           </div>
-          {/* <div className={`${Interviewcss.formSub_con} ${Interviewcss.formSub_contain}`}>
-            <label for='description' className={Interviewcss.box}><GrTextAlignFull />Description</label>
-            <textarea id='description' className={`${Interviewcss.description_input} ${Interviewcss.des}`}>
-              At w3schools.com you will learn how to make a website. They offer free tutorials in all web development technologies
-            </textarea>
-          </div> */}
-
           <div
             className={`${Interviewcss.formSub_con} ${Interviewcss.formSub_contain}`}
           >
@@ -88,66 +118,70 @@ function Interview() {
             <textarea
               id="description"
               className={`${Interviewcss.description_input} ${Interviewcss.des}`}
-              value={sliceDescription()} // Set the value of textarea to sliced content
-              onChange={handleDescriptionChange} // Handle changes in the textarea
+              value={sliceDescription()} 
+              onChange={handleDescriptionChange} 
             >
-              more
             </textarea>
           </div>
         </div>
-
         <div className={Interviewcss.formMain_cont2}>
           <div className={Interviewcss.formSub_con}>
-            <label for="interview-date" className={Interviewcss.box}>
+            <label htmlFor="interviewDate" className={Interviewcss.box}>
               <FaRegCalendarAlt />
               Interview date
             </label>
             <input
               type="date"
-              id="interview-date"
+              id="interviewDate"
               className={Interviewcss.description_input}
+              value={interviewDetails.interviewDate}
+              onChange={handleInputChange}
             ></input>
           </div>
           <div className={Interviewcss.formSub_con}>
-            <label for="interview-time" className={Interviewcss.box}>
+            <label htmlFor="interviewTime" className={Interviewcss.box}>
               <MdAccessTime />
               Interview time
             </label>
             <input
               type="time"
-              id="interview-time"
+              id="interviewTime"
               className={Interviewcss.description_input}
+              value={interviewDetails.interviewTime}
+              onChange={handleInputChange}
             ></input>
           </div>
         </div>
-
         <div className={Interviewcss.formMain_cont3}>
           <div className={Interviewcss.formSub_con}>
-            <label for="interview-name" className={Interviewcss.box}>
+            <label htmlFor="interviewerName" className={Interviewcss.box}>
               <FaUser />
               Interviewer name
             </label>
             <input
               type="text"
-              id="interview-name"
+              id="interviewerName"
               className={Interviewcss.description_input}
+              value={interviewDetails.interviewerName}
+              onChange={handleInputChange}
             ></input>
           </div>
           <div className={Interviewcss.formSub_con}>
-            <label for="interview-loaction" className={Interviewcss.box}>
+            <label htmlFor="location" className={Interviewcss.box}>
               <IoLocationOutline />
               Location
             </label>
             <input
-              type="location"
-              id="interview-location"
+              type="text"
+              id="location"
               className={Interviewcss.description_input}
+              value={interviewDetails.location}
+              onChange={handleInputChange}
             ></input>
           </div>
         </div>
       </div>
 
-      {/* uplad file container */}
       <div>
         <p className={Interviewcss.fileupload}>
           <IoMdAttach />
@@ -155,17 +189,19 @@ function Interview() {
         </p>
         <div className={Interviewcss.filebox}>
           <BsFileImage className={Interviewcss.imgs} />
-          <span> Drop you image here or</span>
-          <label for="file">
+          <span> Drop your image here or</span>
+          <label htmlFor="file">
             <span className={Interviewcss.f}>browse</span>
           </label>
-
           <input type="file" id="file"></input>
         </div>
       </div>
       <div className={Interviewcss.last_container}>
         <button className={Interviewcss.cancel_btn}>Cancel</button>
-        <button className={Interviewcss.Interview_btn}>
+        <button
+          className={Interviewcss.Interview_btn}
+          onClick={handleScheduleInterview}
+        >
           Schedule Interview
         </button>
       </div>
