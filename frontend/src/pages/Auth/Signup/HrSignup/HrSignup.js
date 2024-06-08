@@ -51,7 +51,25 @@ const Signup = () => {
     }
   };
 
+  const validateCompanyEmail = (email) => {
+    const domain = email.split('@')[1];
+    const genericDomains = ['gmail.com', 'yahoo.com', 'outlook.com', 'hotmail.com'];
+
+    if (genericDomains.includes(domain)) {
+      toast.error("Please use your company email address");
+      return false;
+    }
+
+    return true;
+  };
+
   const handleEmailBlur = async () => {
+    const isValidCompanyEmail = validateCompanyEmail(formData.email);
+    if (!isValidCompanyEmail) {
+      setEmailValid(false);
+      return;
+    }
+
     const isValid = await checkEmailExists(formData.email);
     setEmailValid(isValid);
   };
