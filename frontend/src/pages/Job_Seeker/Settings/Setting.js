@@ -7,14 +7,23 @@ import { FaArrowRightToBracket } from "react-icons/fa6";
 import { FaSync } from "react-icons/fa";
 import { RiUserSettingsFill } from "react-icons/ri";
 import { TbUserExclamation } from "react-icons/tb";
-
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { handleUserLogOut } from '../../../Redux/ReduxSlice';
+import toast from 'react-hot-toast';
 
 function Setting() {
   const { name, profileImage } = useSelector((state) => state.Assessment.currentUser);
   const [settingtype, setsettingtype] = useState("");
   const navi = useNavigate();
-  // const username = localStorage.getItem("name");
+  const dispatch = useDispatch()
+
+  const handleLogoutClick = () => {
+    dispatch(handleUserLogOut())
+    toast.success(`${name} logged out !!`)
+    setTimeout(() => {
+      navi("/login")
+    }, 1000);
+  }
 
   // Function to render content based on setting type
   const renderSettingContent = () => {
@@ -37,7 +46,7 @@ function Setting() {
                 </div>
                 <div className={SettingStyle.logout_btn}>
                   <p><FaArrowRightToBracket /></p>
-                  <span>Log Out</span>
+                  <span onClick={handleLogoutClick}>Log Out</span>
                 </div>
               </div>
               <div className={SettingStyle.manage_account}>
