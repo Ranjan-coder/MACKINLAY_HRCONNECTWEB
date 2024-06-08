@@ -1,76 +1,86 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 .my_setting_container {
   display: flex;
   flex-direction: column;
+  height: 85vh;
+  overflow-y: scroll;
   scrollbar-width: none;
+  margin: 0 1rem;
+}
+
+.setting_profile_section {
+  border-bottom: 1px solid black;
+  /* height: 35%; */
+}
+
+.hello_logout {
+  display: flex;
+  justify-content: space-between;
 }
 
 .my_profile_box {
   display: flex;
-  align-items: center;
-  gap: 1em;
-  /* background: rgb(235, 252, 255); */
-  padding: 1em;
-  border-radius: 15px 15px 0 0;
-  border-bottom: 1px solid #000;
+  width: 35%;
 }
 
-.__hrImg[alt='profile_img'] {
+.my_profile_box img[alt='profile_img'] {
   width: 5em;
   height: 5em;
   margin: 0px 10px;
   border-radius: 50%;
-  border: 1px solid rgb(200, 200, 200);
 }
 
-.__pfGreet {
-  font-family: serif;
+.my_name_section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 80%;
+}
+
+.my_name_section button {
+  background-color: black;
+  color: white;
+  font-size: 10px;
+  border-radius: 5px;
+  height: 1.2rem;
+  width: 50%;
+  border: 1px solid white;
+
+}
+
+.logout_main {
+  display: flex;
 }
 
 .Setting_opt_container {
-  /* border: 1px solid; */
-  margin-top: 1em;
-  /* padding: 0 1em; */
-  height: calc(100vh - 247px);
   display: flex;
   justify-content: space-between;
 }
 
 .setting_opt_left {
-  width: 20vw;
-  height: calc(100vh - 247px);
-  overflow-y: scroll;
-  scrollbar-width: thin;
-  padding: 0 .2em;
+  width: 25%;
 }
 
 .setting_opt {
-  height: 3em;
-  /* border: 1px solid rgb(119, 172, 188); */
+  border: 1px solid rgb(119, 172, 188);
   margin: 0.5rem 0;
   border-radius: 5px;
+  height: 2rem;
   box-shadow: 0px 1px 1px 1px rgb(203, 203, 203);
-  font-size: 1rem;
-  padding: .7em 1em;
-  text-wrap: wrap;
+  font-size: 0.8rem;
+  padding: 5px 0px 0px 0px;
+
 }
 
 .setting_opt_active {
-  height: 3em;
   background-color: black;
   color: white;
-  /* border: 1px solid black; */
+  border: 1px solid black;
   margin: 0.5rem 0;
   border-radius: 5px;
+  height: 2rem;
   border: 1px solid rgb(119, 172, 188);
-  font-size: 15px;
-  padding: .7em 1em;
-  /* text-wrap: wrap; */
+  font-size: 0.8rem;
+  padding: 5px 0px 0px 0px;
 }
 
 .setting_opt_active i {
@@ -180,7 +190,6 @@
   position: relative;
   left: 10vw;
   top: 5vh;
-  cursor: pointer;
 }
 
 /*-------------------profile design container2-------------*/
@@ -243,7 +252,3 @@
 .click {
   color: blue;
 }
-
-/* @media only screen and (min-width: 768px) {
-  .setting_opt_active {}
-} */
