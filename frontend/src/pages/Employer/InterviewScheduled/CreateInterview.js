@@ -16,10 +16,10 @@ function Interview() {
   const [description, setDescription] = useState(
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore... et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. "
   );
-
+   const email=localStorage.getItem('email');
   const [interviewDetails, setInterviewDetails] = useState({
-    candidateName: "Charle Kristen",
-    candidateEmail: "charle@example.com",
+    candidateName:"",
+    candidateEmail:email,
     interviewType: "",
     interviewDate: "",
     interviewTime: "",
@@ -53,7 +53,7 @@ function Interview() {
       description: sliceDescription(),
     };
 
-    axios.post('http://localhost:8585/schedule-interview', updatedDetails)
+    axios.post('http://localhost:8585/api/v1/interview/interViewShedule', updatedDetails)
       .then(response => {
         console.log('Success:', response.data);
         alert('Interview scheduled and email sent successfully');
