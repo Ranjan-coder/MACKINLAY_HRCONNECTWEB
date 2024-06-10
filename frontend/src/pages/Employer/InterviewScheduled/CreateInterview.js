@@ -17,6 +17,7 @@ function Interview() {
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore... et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. "
   );
    const email=localStorage.getItem('email');
+   const candidateEmail=localStorage.getItem('candidateEmail')
   const [interviewDetails, setInterviewDetails] = useState({
     candidateName:"",
     candidateEmail:email,
@@ -74,7 +75,7 @@ function Interview() {
             alt="network-error"
           />
           <div className={Interviewcss.uppercontainer_left1}>
-            <p>Charle Kristen</p>
+            <p>{candidateEmail}</p>
             <p>
               <IoStar className={Interviewcss.star} />
               4.0
@@ -101,6 +102,7 @@ function Interview() {
               className={Interviewcss.boxes}
               value={interviewDetails.interviewType}
               onChange={handleInputChange}
+              required
             >
               <option value=""></option>
               <option value="walk">Walk-in-drive</option>
@@ -120,6 +122,7 @@ function Interview() {
               className={`${Interviewcss.description_input} ${Interviewcss.des}`}
               value={sliceDescription()} 
               onChange={handleDescriptionChange} 
+              required
             >
             </textarea>
           </div>
@@ -136,6 +139,7 @@ function Interview() {
               className={Interviewcss.description_input}
               value={interviewDetails.interviewDate}
               onChange={handleInputChange}
+              required
             ></input>
           </div>
           <div className={Interviewcss.formSub_con}>
@@ -149,6 +153,7 @@ function Interview() {
               className={Interviewcss.description_input}
               value={interviewDetails.interviewTime}
               onChange={handleInputChange}
+              required
             ></input>
           </div>
         </div>
@@ -164,6 +169,7 @@ function Interview() {
               className={Interviewcss.description_input}
               value={interviewDetails.interviewerName}
               onChange={handleInputChange}
+              required
             ></input>
           </div>
           <div className={Interviewcss.formSub_con}>
@@ -177,6 +183,7 @@ function Interview() {
               className={Interviewcss.description_input}
               value={interviewDetails.location}
               onChange={handleInputChange}
+              required
             ></input>
           </div>
         </div>
