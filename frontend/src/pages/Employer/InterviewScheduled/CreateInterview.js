@@ -207,6 +207,5 @@ function Interview() {
       </div>
     </div>
   );
-}
-
-export default Interview;
+}export default Interview;
+ 
