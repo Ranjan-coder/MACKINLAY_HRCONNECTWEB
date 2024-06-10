@@ -16,22 +16,24 @@ app.use(
   })
 );
 
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    secure: false, // Set to true if using HTTPS
-    httpOnly: true,
-    maxAge: 24 * 60 * 60 * 1000 // 1 day
-  }
-}));
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: false, // Set to true if using HTTPS
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+    },
+  })
+);
 
 // Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
 require("./controller/auth/Passport/UserPassport.js");
-require("./controller/auth/Passport/LinkedinUserPassport.js")
+require("./controller/auth/Passport/LinkedinUserPassport.js");
 
 //!  Assessments Related  Routes and import
 const { assessmentRoute } = require("./Routes/Assessment.Route");
@@ -64,6 +66,10 @@ app.use("/api/jobs", jobRoutes);
 const ResumeRoutes = require("./Routes/ResumeRoutes.js");
 app.use("/resume", ResumeRoutes);
 app.use("/uploads", express.static("uploads"));
+
+//HrINterview Routes
+const HrInterviewRoutes = require("./Routes/HrInterview.Route.js");
+app.use("/interview", HrInterviewRoutes);
 
 //!  MyJobs (JobSeeker) Related  Routes and import
 const myJobRoutes = require("./Routes/MyJob.Route");
