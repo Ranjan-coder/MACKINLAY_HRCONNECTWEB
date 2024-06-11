@@ -2,12 +2,6 @@ import React, { useState } from 'react'
 import interview from './Interview.module.css'
 
 export default function InterviewWithAI() {
-  // const colors = [
-  //   "rgba(203, 240, 251, 1)",
-  //   "rgba(249, 187, 187, 1)",
-  //   "rgba(225, 176, 255, 1)",
-  // ];
-  // style={{ backgroundColor: colors[index % colors.length] }}
   const [showPopUp, setShowPopup] = useState(false)
 
   const handleClick = () => {
