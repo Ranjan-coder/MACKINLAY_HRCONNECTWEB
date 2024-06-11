@@ -91,10 +91,14 @@ function ApplicantsDetails({ jobData, selectedUser, CbToogleDetails }) {
       }
     })
 
+    const latestResumeIndex = user?.resume.length - 1;
+    const latestResume = user?.resume[latestResumeIndex];
+
     SetshowPDF(true);
     setSelectedResume({
       userProfile: user?.profileImage,
-      userResume: user?.resume[0],
+      userResume: latestResume,
+      userEmail: user?.email
     });
   };
 

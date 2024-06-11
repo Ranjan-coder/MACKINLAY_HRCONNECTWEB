@@ -7,38 +7,53 @@ const { uploadonCloudinary } = require("../../utility/cloudinary");
 dotenv.config();
 const SECRET_KEY = process.env.SECRET_KEY;
 
-const getHR =  async (req, res) => {
+const getHR = async (req, res) => {
   try {
     const { email } = req.query;
     const user = await Hr.findOne({ email });
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: "User not found" });
     }
-    res.json({ name: user.name, email: user.email ,hrDetails:user});
+    res.json({ name: user.name, email: user.email, hrDetails: user });
   } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    console.error("Error:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
-const checkEmail = async(req,res) =>{
+const checkEmail = async (req, res) => {
   const { email } = req.body;
-  const user = await Hr.findOne({ email }); 
+  const user = await Hr.findOne({ email });
   if (user) {
-    return res.status(400).json({ message: 'Email already registered' });
+    return res.status(400).json({ message: "Email already registered" });
   }
-  res.status(200).json({ message: 'Email is available' });
-}
-
+  res.status(200).json({ message: "Email is available" });
+};
 
 const signUp = async (req, res) => {
   try {
-    const { name, email, password} = req.body;
+    const { name, email, password } = req.body;
 
     // Check if email is already registered
     const existingHr = await Hr.findOne({ email });
     if (existingHr) {
-      return res.status(400).json({ message: `${email} is already registered` });
+      return res
+        .status(400)
+        .json({ message: `${email} is already registered` });
+    }
+
+    // Validate email domain
+    const domain = email.split("@")[1];
+    const genericDomains = [
+      "gmail.com",
+      "yahoo.com",
+      "outlook.com",
+      "hotmail.com",
+    ];
+    if (genericDomains.includes(domain)) {
+      return res
+        .status(400)
+        .json({ message: "Please use your company email address" });
     }
 
     // Hash password
@@ -49,26 +64,90 @@ const signUp = async (req, res) => {
     await newHr.save();
 
     // Generate JWT token
-    const token = jwt.sign({ userId: newHr._id }, SECRET_KEY, { expiresIn: '2d' });
+    const token = jwt.sign({ userId: newHr._id }, SECRET_KEY, {
+      expiresIn: "2d",
+    });
 
     return res.status(201).json({
       message: `${name} your account is created successfully`,
       token,
       name,
       email,
-      bookmarkUser : [],
-      userType : 'employee'
+      bookmarkUser: [],
+      userType: "employee",
     });
   } catch (error) {
-    console.error('Error:', error);
-    return res.status(500).json({ message: 'Internal Server Error' });
+    console.error("Error:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+// const login = async (req, res) => {
+//   try {
+//     const { email, password } = req.body;
+    
+//     // Validate email domain
+//     const domain = email.split("@")[1];
+//     const genericDomains = [
+//       "gmail.com",
+//       "yahoo.com",
+//       "outlook.com",
+//       "hotmail.com",
+//     ];
+//     if (genericDomains.includes(domain)) {
+//       return res
+//         .status(400)
+//         .json({ message: "Please use your company email address" });
+//     }
+    
+//     // Check if user exists
+//     const hr = await Hr.findOne({ email });
+//     if (!hr) {
+//       return res.status(404).json({ message: "No HR Found" });
+//     }
+
+
+//     // Compare passwords
+//     const isPasswordValid = await bcrypt.compare(password, hr.password);
+//     if (!isPasswordValid) {
+//       return res.status(401).json({ message: "Authentication failed" });
+//     }
+
+//     // Generate JWT token
+//     const token = jwt.sign({ userId: hr._id }, SECRET_KEY, { expiresIn: "2d" });
+
+//     return res.status(201).json({
+//       message: `${hr.name} you have successfully logged In`,
+//       token,
+//       name: hr.name,
+//       email: hr.email,
+//       bookmarkUser: hr.bookmarkUser,
+//       userType: "employee",
+//     });
+//   } catch (error) {
+//     return res.status(500).json({ message: "Internal Server Error" });
+//   }
+// };
+
 
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-
+    
+    // Validate email domain
+    const domain = email.split("@")[1];
+    const genericDomains = [
+      "gmail.com",
+      "yahoo.com",
+      "outlook.com",
+      "hotmail.com",
+    ];
+    if (genericDomains.includes(domain)) {
+      return res
+        .status(400)
+        .json({ message: "Please use your company email address" });
+    }
+    
     // Check if user exists
     const hr = await Hr.findOne({ email });
     if (!hr) {
@@ -89,13 +168,14 @@ const login = async (req, res) => {
       token,
       name: hr.name,
       email: hr.email,
-      bookmarkUser : hr.bookmarkUser,
-      userType : 'employee'
+      bookmarkUser: hr.bookmarkUser,
+      userType: "employee",
     });
   } catch (error) {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
 
 const forgotPassword = async (req, res) => {
   const { email } = req.body;
@@ -106,26 +186,29 @@ const forgotPassword = async (req, res) => {
       return res.json({ message: "HR is not registered" });
     }
 
-    const token = jwt.sign({ userId: hr._id }, SECRET_KEY, { expiresIn: '5m' });
+    const token = jwt.sign({ userId: hr._id }, SECRET_KEY, { expiresIn: "5m" });
 
     var transporter = nodemailer.createTransport({
-      service: 'gmail',
+      service: "gmail",
       auth: {
         user: process.env.EMAIL_ID,
-        pass: process.env.EMAIL_PASSWORD
-      }
+        pass: process.env.EMAIL_PASSWORD,
+      },
     });
 
     var mailOptions = {
       from: process.env.EMAIL_ID,
       to: email,
-      subject: 'Reset Password',
-      html: `<p>Click <a href="${process.env.CLIENT_URL}/hr/reset-password/${token}">here</a> to reset your password.</p>`
+      subject: "Reset Password",
+      html: `<p>Click <a href="${process.env.CLIENT_URL}/hr/reset-password/${token}">here</a> to reset your password.</p>`,
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
-        return res.json({ status: true, message: "Error occurred while sending an email" });
+        return res.json({
+          status: true,
+          message: "Error occurred while sending an email",
+        });
       } else {
         return res.json({ status: true, message: "email sent" });
       }
@@ -179,11 +262,9 @@ const HRupdateUserField = async (req, res) => {
       }
     }
 
-    const findUser = await Hr.findOneAndUpdate(
-      { email: email },
-      updateFields,
-      { new: true }
-    );
+    const findUser = await Hr.findOneAndUpdate({ email: email }, updateFields, {
+      new: true,
+    });
 
     if (findUser) {
       res.status(200).json({
@@ -202,4 +283,12 @@ const HRupdateUserField = async (req, res) => {
   }
 };
 
-module.exports = { signUp, login, forgotPassword, resetPassword, getHR,HRupdateUserField, checkEmail };
+module.exports = {
+  signUp,
+  login,
+  forgotPassword,
+  resetPassword,
+  getHR,
+  HRupdateUserField,
+  checkEmail,
+};
