@@ -36,10 +36,12 @@ const Profile_details = () => {
 
   const getFirstResumeFilename = () => {
     if (userData.resume && userData.resume.length > 0) {
-      return userData.resume[0].filename;
+      const latestResumeIndex = userData.resume.length - 1;
+      return userData.resume[latestResumeIndex].filename;
     }
     return null; // Return null if no resume data is available
   };
+  
 
   const firstResumeFilename = getFirstResumeFilename();
   const currentDate = new Date();

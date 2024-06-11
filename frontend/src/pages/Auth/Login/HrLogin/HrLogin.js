@@ -15,7 +15,7 @@ const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
 function HrLogin({ toggleLoginType, isHRLogin }) {
   const dispatchTO = useDispatch();
   const [isValidating, setIsValidating] = useState(false);
-  const [isSubmitting, setIsSubmitting]  = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const nav = useNavigate();
   const [formData, setFormData] = useState({
@@ -79,8 +79,27 @@ function HrLogin({ toggleLoginType, isHRLogin }) {
     }
   };
 
+  const validateCompanyEmail = (email) => {
+    const domain = email.split("@")[1];
+    const genericDomains = [
+      "gmail.com",
+      "yahoo.com",
+      "outlook.com",
+      "hotmail.com",
+    ];
+
+    if (genericDomains.includes(domain)) {
+      toast.error("Please use your company email address");
+      return false;
+    }
+
+    return true;
+  };
+
   const nextStep = async () => {
-    setIsValidating(true)
+    if (!validateCompanyEmail(formData.email)) return;
+
+    setIsValidating(true);
     if (formData.email) {
       try {
         const response = await axios.get(
@@ -95,9 +114,9 @@ function HrLogin({ toggleLoginType, isHRLogin }) {
           error.response ? error.response.data : error.message
         );
         toast.error("Email not registered.");
-      }finally{
-        setIsValidating(false)
-      } 
+      } finally {
+        setIsValidating(false);
+      }
     } else {
       toast.error("Please fill in the email field.");
     }
@@ -105,6 +124,8 @@ function HrLogin({ toggleLoginType, isHRLogin }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateCompanyEmail(formData.email)) return;
+
     setIsSubmitting(true);
     try {
       const response = await axios.post(`${baseUrl}/hr/login`, formData, {
@@ -133,7 +154,7 @@ function HrLogin({ toggleLoginType, isHRLogin }) {
     } catch (error) {
       console.error("Error:", error.response.data);
       toast.error("Invalid Credential");
-    }finally{
+    } finally {
       setIsSubmitting(false);
     }
   };
@@ -142,9 +163,10 @@ function HrLogin({ toggleLoginType, isHRLogin }) {
     nav("/hr/forgot-password");
   };
 
-  const handleHrSignup = () =>{
-    nav('/hr-signup')
-  }
+  const handleHrSignup = () => {
+    nav("/hr-signup");
+  };
+
   return (
     <div onKeyDown={handleEnterKey}>
       {formData.step === 1 ? (
@@ -218,8 +240,13 @@ function HrLogin({ toggleLoginType, isHRLogin }) {
                       />
                     </Form>
                   </div>
-                  <div style={{ paddingTop: "10px", fontSize: "14px", cursor:'pointer' }}
-                  onClick={handleHrSignup}
+                  <div
+                    style={{
+                      paddingTop: "10px",
+                      fontSize: "14px",
+                      cursor: "pointer",
+                    }}
+                    onClick={handleHrSignup}
                   >
                     Don't have an account?
                     <span style={{ color: "rgba(35, 88, 251, 1)" }}>
