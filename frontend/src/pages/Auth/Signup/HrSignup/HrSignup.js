@@ -52,9 +52,24 @@ const Signup = () => {
   };
 
   const handleOtpInputChange = (index, value) => {
-    const newOtpInputs = [...otpInputs];
-    newOtpInputs[index] = value;
-    setOtpInputs(newOtpInputs);
+    if (/^\d$/.test(value) || value === "") {
+      const newOtpInputs = [...otpInputs];
+      newOtpInputs[index] = value;
+      setOtpInputs(newOtpInputs);
+      // Move focus to the next input field
+      if (value !== "" && index < otpInputs.length - 1) {
+        const nextInput = document.getElementById(`otp-input-${index + 1}`);
+        if (nextInput) {
+          nextInput.focus();
+        }
+      }
+    }
+  };
+
+  const handleOtpKeyDown = (index, e) => {
+    if (e.key === "Backspace" && otpInputs[index] === "" && index > 0) {
+      document.getElementById(`otp-input-${index - 1}`).focus();
+    }
   };
 
   const toggleShowPassword = (fieldName) => {
@@ -165,9 +180,11 @@ const Signup = () => {
       <input
         key={index}
         type="text"
+        id={`otp-input-${index}`}
         value={value}
         maxLength={1}
         onChange={(e) => handleOtpInputChange(index, e.target.value)}
+        onKeyDown={(e) => handleOtpKeyDown(index, e)}
         style={{
           width: "50px",
           height: "50px",
@@ -278,7 +295,7 @@ const Signup = () => {
                   <Form.Control
                     type="email"
                     name="email"
-                    placeholder="Enter Email Id"
+                    placeholder="Enter Your Company Email Id"
                     onChange={handleChange}
                     onBlur={handleEmailBlur}
                     className={signupStyle.personal_input_field}

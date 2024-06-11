@@ -8,7 +8,9 @@ const {
   updateUserField,
   logout,
   checkEmail,
-  checkPhoneNumberExists
+  checkPhoneNumberExists,
+  requestOtp,
+  verifyOtp,
 } = require("../controller/auth/AuthController");
 const { upload, uploadProfile } = require("../middleware/fileUploadMiddleware");
 const {
@@ -27,8 +29,10 @@ const {
 } = require("../controller/UserAnalytics/JobApplicationAnalytics");
 
 userRoutes.get("/user", getUser);
-userRoutes.post("/check-email", checkEmail)
-userRoutes.post("/checkPhoneNumber", checkPhoneNumberExists)
+userRoutes.post("/check-email", checkEmail);
+userRoutes.post("/checkPhoneNumber", checkPhoneNumberExists);
+userRoutes.post("/request-otp", requestOtp);
+userRoutes.post("/verify-otp", verifyOtp);
 userRoutes.post("/signup", upload, signUp);
 userRoutes.post("/login", login);
 userRoutes.post("/logout", logout);

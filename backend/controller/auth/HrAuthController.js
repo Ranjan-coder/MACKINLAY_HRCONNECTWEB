@@ -1,6 +1,6 @@
 const Hr = require("../../model/users/HrUserModel");
 const Otp = require("../../model/Otp")
-const sendOtpEmail = require("../../Config/OtpConfig")
+const sendOtpEmail = require("../../services/recruiterEmailService")
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");

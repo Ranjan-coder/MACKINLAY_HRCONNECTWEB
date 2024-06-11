@@ -231,7 +231,7 @@ function HrLogin({ toggleLoginType, isHRLogin }) {
                       <Form.Control
                         type="email"
                         name="email"
-                        placeholder="Email or phone"
+                        placeholder="Enter Your Company Email"
                         className={hrLoginStyle.input_style}
                         value={formData.email}
                         onChange={handleChange}
