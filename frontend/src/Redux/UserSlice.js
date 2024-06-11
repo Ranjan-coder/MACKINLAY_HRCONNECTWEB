@@ -29,6 +29,18 @@ export const logout = createAsyncThunk('auth/logout', async () => {
   await axios.get(`${newUrl}/logout`, { withCredentials: true });
 });
 
+export const DELETE_USERS = 'DELETE_USERS';
+
+export const deleteUserData = createAsyncThunk(
+  'userDetails/deleteUserData', async (email, thunkAPI) => {
+    try {
+      const response = await axios.get(`${baseUrl}/user?email=${email}`);
+      return response.data;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.response.data)
+    }
+  });
+
 // Define the initial state
 const initialState = {
   UserDetails: null,
@@ -90,6 +102,19 @@ export const authSlice = createSlice({
   },
 });
 
+const userReducer = (state, action) => {
+  switch (action.type) {
+    case DELETE_USERS:
+      return {
+        ...state,
+        users: state.users.filter((user) => user._id !== action.payload),
+      };
+    default:
+      return state;
+  }
+}
+
+export const UserReducer = userReducer.reducer;
 export default UserDetailSlice.reducer;
-export const { logoutSuccess,setUser } = authSlice.actions;
+export const { logoutSuccess, setUser } = authSlice.actions;
 export const authReducer = authSlice.reducer;
