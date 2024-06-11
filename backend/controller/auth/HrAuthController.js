@@ -1,4 +1,6 @@
 const Hr = require("../../model/users/HrUserModel");
+const Otp = require("../../model/Otp")
+const sendOtpEmail = require("../../services/recruiterEmailService")
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
@@ -29,6 +31,42 @@ const checkEmail = async (req, res) => {
   }
   res.status(200).json({ message: "Email is available" });
 };
+
+const requestOtp = async (req, res) => {
+  const { email } = req.body;
+  // console.log('Request received to send OTP to:', email);
+
+  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+  // console.log('Generated OTP:', otp);
+
+  // Remove any existing OTP for this email
+  await Otp.findOneAndDelete({ email });
+  const newOtp = new Otp({ email, otp });
+  await newOtp.save();
+
+  try {
+    // console.log('Calling sendOtpEmail...');
+    await sendOtpEmail(email, otp);
+    // console.log('OTP email sent successfully.');
+    res.status(200).json({ msg: 'OTP sent' });
+  } catch (error) {
+    console.error('Failed to send OTP:', error);
+    res.status(500).json({ msg: 'Failed to send OTP', error: error.message });
+  }
+};
+
+
+const verifyOtp = async (req,res) =>{
+  const { email, otp } = req.body;
+  const otpRecord = await Otp.findOne({ email, otp });
+
+  if (!otpRecord) {
+    return res.status(400).json({ msg: 'Invalid OTP' });
+  }
+
+  await Otp.findOneAndDelete({ email, otp });
+  res.status(200).json({ msg: 'OTP verified' });
+}
 
 const signUp = async (req, res) => {
   try {
@@ -81,53 +119,6 @@ const signUp = async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
-
-// const login = async (req, res) => {
-//   try {
-//     const { email, password } = req.body;
-    
-//     // Validate email domain
-//     const domain = email.split("@")[1];
-//     const genericDomains = [
-//       "gmail.com",
-//       "yahoo.com",
-//       "outlook.com",
-//       "hotmail.com",
-//     ];
-//     if (genericDomains.includes(domain)) {
-//       return res
-//         .status(400)
-//         .json({ message: "Please use your company email address" });
-//     }
-    
-//     // Check if user exists
-//     const hr = await Hr.findOne({ email });
-//     if (!hr) {
-//       return res.status(404).json({ message: "No HR Found" });
-//     }
-
-
-//     // Compare passwords
-//     const isPasswordValid = await bcrypt.compare(password, hr.password);
-//     if (!isPasswordValid) {
-//       return res.status(401).json({ message: "Authentication failed" });
-//     }
-
-//     // Generate JWT token
-//     const token = jwt.sign({ userId: hr._id }, SECRET_KEY, { expiresIn: "2d" });
-
-//     return res.status(201).json({
-//       message: `${hr.name} you have successfully logged In`,
-//       token,
-//       name: hr.name,
-//       email: hr.email,
-//       bookmarkUser: hr.bookmarkUser,
-//       userType: "employee",
-//     });
-//   } catch (error) {
-//     return res.status(500).json({ message: "Internal Server Error" });
-//   }
-// };
 
 
 const login = async (req, res) => {
@@ -284,11 +275,13 @@ const HRupdateUserField = async (req, res) => {
 };
 
 module.exports = {
+  checkEmail,
+  getHR,
+  requestOtp,
+  verifyOtp,
   signUp,
   login,
   forgotPassword,
   resetPassword,
-  getHR,
   HRupdateUserField,
-  checkEmail,
 };
