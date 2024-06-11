@@ -1,40 +1,38 @@
 import React, { useRef, useState, useEffect } from "react";
 import "./webcam.css";
+import axios from "axios";
 const WebcamRecorder = () => {
   const videoRef = useRef(null);
   const [recording, setRecording] = useState(false);
   const [mediaStream, setMediaStream] = useState(null);
   const [mediaRecorder, setMediaRecorder] = useState(null);
   const [videoChunks, setVideoChunks] = useState([]);
-  const [hrQuestion, setHrQuestion] = useState([]);
+  const [hrQuestions, setHrQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+
   useEffect(() => {
-    async function fetchData() {
+    const fetchData = async () => {
       try {
-        const response = await fetch(
-          " http://localhost:8585/interview/HrInterviewRound"
+        const response = await axios.get(
+          "http://localhost:8585/interview/HrInterviewRound"
         );
-        if (!response.ok) {
-          throw new Error(`Http error! status: ${response.status}`);
-        }
-        const result = await response.json();
-        console.log("this is result", result);
-        setHrQuestion(result);
-        console.log("hrQuestion", hrQuestion);
+        setHrQuestions(response.data || []);
+        console.log(response.data);
       } catch (error) {
-        console.log(error.message);
+        console.error("Error fetching HR questions:", error);
       }
-    }
+    };
     fetchData();
-    console.log("hrQuestion_outer", hrQuestion);
+  }, []);
+  useEffect(() => {
+    if (hrQuestions.length > 0) {
+      const intervalId = setInterval(() => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % hrQuestions.length);
+      }, 3000);
 
-    const interValId = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % hrQuestion.length);
-      console.log(hrQuestion[currentIndex].hrquestion, currentIndex);
-    }, 3000);
-
-    return () => clearInterval(interValId);
-  }, [hrQuestion.length]);
+      return () => clearInterval(intervalId);
+    }
+  }, [hrQuestions]);
 
   const startRecording = () => {
     if (mediaStream) {
@@ -58,12 +56,12 @@ const WebcamRecorder = () => {
   };
 
   const handleStartClick = async () => {
-    startRecording();
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
       setMediaStream(stream);
       videoRef.current.srcObject = stream;
       videoRef.current.play();
+      startRecording();
     } catch (error) {
       console.error("Error accessing webcam:", error);
     }
@@ -74,7 +72,6 @@ const WebcamRecorder = () => {
     if (mediaStream) {
       mediaStream.getTracks().forEach((track) => track.stop());
       setMediaStream(null);
-      setVideoChunks([]);
     }
     uploadVideo();
   };
@@ -87,7 +84,6 @@ const WebcamRecorder = () => {
     try {
       const response = await fetch(
         "http://localhost:8585/interview/uploadInterview",
-        // "http://localhost:9000/upload/uploadVideo",
         {
           method: "POST",
           body: formData,
@@ -114,8 +110,12 @@ const WebcamRecorder = () => {
         </div>
       </div>
       <div className="hrquestion_block">
-        <h1>InterView Question Round</h1>
-        <p>{hrQuestion[currentIndex].hrquestion}</p>
+        <h1>Interview Question Round</h1>
+        <p>
+          {hrQuestions.length > 0
+            ? hrQuestions[currentIndex].hrquestion
+            : "Loading questions..."}
+        </p>
       </div>
     </div>
   );
