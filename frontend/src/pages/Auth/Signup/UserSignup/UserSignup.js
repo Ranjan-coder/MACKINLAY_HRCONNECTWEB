@@ -125,19 +125,6 @@ const Signup = () => {
     setFormData({ ...formData, resume: e.target.files[0] });
   };
 
-  const checkEmailExists = async (email) => {
-    try {
-      const response = await axios.post(`${baseUrl}/check-email`, { email });
-      return response.status === 200;
-    } catch (error) {
-      if (error.response && error.response.status === 400) {
-        toast.error("Email already registered");
-      } else {
-        toast.error("An error occurred while checking the email");
-      }
-      return false;
-    }
-  };
 
   const checkPhoneNumberExists = async (phoneNumber) => {
     try {
@@ -151,9 +138,25 @@ const Signup = () => {
     }
   };
 
+  const checkEmailExists = async (email) => {
+    try {
+      const response = await axios.post(`${baseUrl}/check-email`, { email });
+      return response.status === 200 && !response.data.exists;
+    } catch (error) {
+      console.error("Error checking email existence:", error);
+      return false;
+    }
+  };
+  
   const requestOtp = async () => {
     setIsSendingOtp(true);
     try {
+      const emailExists = await checkEmailExists(formData.email);
+      if (!emailExists) {
+        toast.error("Email already registered");
+        return;
+      }
+  
       const response = await axios.post(`${baseUrl}/request-otp`, {
         email: formData.email,
       });
@@ -168,11 +171,23 @@ const Signup = () => {
       setIsSendingOtp(false);
     }
   };
+  
 
-  const handleRequestOtp = () => {
-    requestOtp();
-    openModal();
+  const handleRequestOtp = async () => {
+    try {
+      const emailExists = await checkEmailExists(formData.email);
+      if (!emailExists) {
+        toast.error("Email already registered");
+        return;
+      }
+      
+      requestOtp();
+      openModal();
+    } catch (error) {
+      toast.error("Failed to request OTP. Please try again.");
+    }
   };
+  
 
   const handleResendOtp = async () => {
     setIsOtpResend(true);
