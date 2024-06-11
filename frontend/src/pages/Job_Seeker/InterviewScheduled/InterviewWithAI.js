@@ -10,6 +10,7 @@ export default function InterviewWithAI() {
   // style={{ backgroundColor: colors[index % colors.length] }}
   const [showPopUp, setShowPopup] = useState(false);
   const webcamPage = useNavigate();
+
   const handleClick = () => {
     setShowPopup(true);
   };
