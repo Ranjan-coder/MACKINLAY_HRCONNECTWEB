@@ -53,7 +53,7 @@ function Setting() {
             </div>
 
             <div className={SettingStyle.Profile_cont1}>
-              <button className={SettingStyle.__pfEditBtn} onClick={() => { navi('/settings/editprofile') }}>Edit My Profile</button>
+              <button className={SettingStyle.__pfEditBtn} onClick={() => { navi('/Setting/Editprofile') }}>Edit My Profile</button>
               <button className={SettingStyle.__pfLogoutBtn} onClick={handleLogOut}> <FaArrowRightToBracket />Logout</button>
               <button className={SettingStyle.__pfDeleteBtn} onClick={handleDeleteAccount}> <GoTrash /> Delete Account</button>
             </div>
@@ -173,19 +173,6 @@ function Setting() {
           <div className={settingtype === "Setting/appearance" ? `${SettingStyle.setting_opt_active}` : `${SettingStyle.setting_opt}`} onClick={() => setsettingtype("Setting/appearance")}>
             <i className="fa-solid fa-wand-magic-sparkles" /> Appearance
           </div>
-
-          {/* <div className={settingtype === "Setting/notification" ? `${SettingStyle.setting_opt_active}` : `${SettingStyle.setting_opt}`} onClick={() => setsettingtype("Setting/notification")} >
-            <i class="fa-solid fa-table-list" /> Notification
-          </div>
-          <div className={settingtype === "Setting/reset" ? `${SettingStyle.setting_opt_active}` : `${SettingStyle.setting_opt}`} onClick={() => setsettingtype("Setting/reset")} >
-            <i className="fa-solid fa-rotate-left" /> Switch to Candidate
-          </div>
-          <div className={settingtype === "Setting/call" ? `${SettingStyle.setting_opt_active}` : `${SettingStyle.setting_opt}`} onClick={() => setsettingtype("Setting/call")} >
-            <i className="fa-solid fa-phone" /> Call & message
-          </div>
-          <div className={settingtype === "Setting/help" ? `${SettingStyle.setting_opt_active}` : `${SettingStyle.setting_opt}`} onClick={() => setsettingtype("Setting/help")}>
-            <i className="fa-solid fa-info" /> Help
-          </div> */}
 
           <div className={settingtype === "Setting/support" ? `${SettingStyle.setting_opt_active}` : `${SettingStyle.setting_opt}`} onClick={() => setsettingtype("Setting/support")} >
             <i className="fa-solid fa-headset" /> Support
