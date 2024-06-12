@@ -278,3 +278,20 @@
   width: 100% !important;
   border-radius: 5px !important;
 }
+
+.request_otp_button {
+  margin-top: -10px;
+  width: 40%;
+  height: 5vh;
+  border-radius: 8px;
+  font-size: 11px;
+  padding-top: 6px;
+  margin-bottom: 5px;
+  color: white;
+  background: linear-gradient(90deg, #0050d1 0%, #00296b 100%);
+}
+
+/* Hover effect */
+.request_otp_button:hover {
+  opacity: 0.9;
+}

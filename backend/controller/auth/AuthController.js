@@ -1,4 +1,6 @@
 const User = require("../../model/users/UserModel");
+const Otp = require("../../model/UserOtp")
+const sendUserOtpEmail = require("../../services/jobSeekerEmailService")
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
@@ -46,6 +48,41 @@ const checkPhoneNumberExists = async (req, res) => {
   }
 };
 
+const requestOtp = async (req, res) => {
+  const { email } = req.body;
+  // console.log('Request received to send OTP to:', email);
+
+  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+  // console.log('Generated OTP:', otp);
+
+  // Remove any existing OTP for this email
+  await Otp.findOneAndDelete({ email });
+  const newOtp = new Otp({ email, otp });
+  await newOtp.save();
+
+  try {
+    // console.log('Calling sendUserOtpEmail...');
+    await sendUserOtpEmail(email, otp);
+    // console.log('OTP email sent successfully.');
+    res.status(200).json({ msg: 'OTP sent' });
+  } catch (error) {
+    console.error('Failed to send OTP:', error);
+    res.status(500).json({ msg: 'Failed to send OTP', error: error.message });
+  }
+};
+
+
+const verifyOtp = async (req,res) =>{
+  const { email, otp } = req.body;
+  const otpRecord = await Otp.findOne({ email, otp });
+
+  if (!otpRecord) {
+    return res.status(400).json({ msg: 'Invalid OTP' });
+  }
+
+  await Otp.findOneAndDelete({ email, otp });
+  res.status(200).json({ msg: 'OTP verified' });
+}
 
 const signUp = async (req, res) => {
   try {
@@ -331,13 +368,15 @@ const updateUserField = async (req, res) => {
 };
 
 module.exports = {
+  getUser,
+  checkEmail,
+  checkPhoneNumberExists,
+  requestOtp,
+  verifyOtp,
   signUp,
   login,
   forgotPassword,
   resetPassword,
-  getUser,
   updateUserField,
-  logout,
-  checkEmail,
-  checkPhoneNumberExists
+  logout
 };

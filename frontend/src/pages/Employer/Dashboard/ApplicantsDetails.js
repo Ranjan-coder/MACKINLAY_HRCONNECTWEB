@@ -55,7 +55,7 @@ function ApplicantsDetails({ jobData, selectedUser, CbToogleDetails }) {
         socket.emit("HrSendNotification", JSON.stringify({
           userEmail: email,
           NotificatioNText: `Your application for ${jobTitle} has been viewed by hr`,
-          notificationStatus : 'Unread',
+          notificationStatus: 'Unread',
           updatedAt: Date.now()
         }));
       }
@@ -64,7 +64,7 @@ function ApplicantsDetails({ jobData, selectedUser, CbToogleDetails }) {
     const clickedCard = e.currentTarget;
 
     clickedCard.classList.add(`${hrdashboard.__active_appliedUsers}`);
-    if ( clickedCard.classList.contains(`${hrdashboard.__active_appliedUsers}`)) {
+    if (clickedCard.classList.contains(`${hrdashboard.__active_appliedUsers}`)) {
       document.querySelectorAll(".appliedUserCard").forEach((card) => {
         if (card !== clickedCard) {
           card.classList.remove(`${hrdashboard.__active_appliedUsers}`);
@@ -90,16 +90,20 @@ function ApplicantsDetails({ jobData, selectedUser, CbToogleDetails }) {
         socket.emit("HrSendNotification", JSON.stringify({
           userEmail: user?.email,
           NotificatioNText: `Your Resume for ${user?.jobTitle} has been viewed by hr`,
-          notificationStatus : 'Unread',
+          notificationStatus: 'Unread',
           updatedAt: Date.now()
         }));
       }
     })
 
+    const latestResumeIndex = user?.resume.length - 1;
+    const latestResume = user?.resume[latestResumeIndex];
+
     SetshowPDF(true);
     setSelectedResume({
       userProfile: user?.profileImage,
-      userResume: user?.resume[0],
+      userResume: latestResume,
+      userEmail: user?.email
     });
   };
 
