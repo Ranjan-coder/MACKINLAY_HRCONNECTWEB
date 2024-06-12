@@ -20,6 +20,7 @@
 
 .step_flex_container {
   display: flex;
+  justify-content: space-between;
 }
 
 .step_1_part_1 {
@@ -37,10 +38,12 @@
 
 .upload_resume_heading{
   text-align: center;
+  font-family: roboto;
 }
 
 .resume_handler{
-  margin-left: 3.5vw;
+  margin-left: 0.5vw;
+  width: 21vw;
 }
 
 .create_account_name_container {
@@ -59,8 +62,11 @@
 }
 
 .step_1_part_2 {
-  margin-top: 50px;
-  margin-left: 50px;
+  width: 50%;
+  margin-top: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .step_button_container {
@@ -69,25 +75,28 @@
 }
 
 .step_button {
-  margin-top: 39px;
+  font-family: roboto;
+  margin-top: 8vh;
   border: none;
   padding: 8px;
-  width: 200px;
+  width: 15vw;
   border-radius: 12px !important;
   background-color: white;
   color: white;
   background: linear-gradient(90deg, #0050d1 0%, #00296b 100%);
+  margin-left: -2rem;
 }
 
 .step_2_part_2 {
   margin-top: 50px;
-  margin-left: 50px;
+  width: 45%;
 }
 
 .personal_input_field {
-  border-radius: 20px !important;
+  border-radius: 12px !important;
   margin-bottom: 15px;
   width: 22vw !important;
+  font-family: roboto;
 }
 
 .password_container {
@@ -139,8 +148,8 @@
 }
 
 .step_4_part_2 {
-  margin-left: 50px;
-  margin-top: 50px;
+    margin-top: 50px;
+    width: 45%;
 }
 
 .education_detail_start_date {
@@ -166,7 +175,7 @@
 .education_date_container {
   display: flex;
   justify-content: space-between;
-  /* width: 22vw; */
+  width: 22vw;
 }
 
 .date_container {
@@ -176,14 +185,13 @@
 }
 
 .login_social_list {
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  width: 20vw;
   list-style-type: none;
-}
-
-
-.social_list_item {
-  padding-right: 40px;
+  padding: 0;
+  text-align: center;
+  margin-top: 10px;
 }
 
 .social_image {

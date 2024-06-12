@@ -3,7 +3,7 @@ import { Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faEyeSlash} from "@fortawesome/free-solid-svg-icons";
 import loginImage from "../../../../Assets/Login form Image.PNG";
 import google from "../../../../Assets/Google Logo.jpg";
 import linkedin from "../../../../Assets/linkedin logo.jpg";
@@ -98,7 +98,8 @@ function UserLogin({ toggleLoginType, isHRLogin }) {
         setIsValidating(false);
       }
     } else {
-      toast.error("Please fill in the email field.");
+      toast.error("Please fill the email field.");
+      setIsValidating(false)
     }
   };
 
@@ -251,11 +252,11 @@ function UserLogin({ toggleLoginType, isHRLogin }) {
                   <div className={LoginStyle.forgot_style1}>
                     <span
                       onClick={handleSignup}
-                      style={{ cursor: "pointer", fontSize: "14px" }}
+                      style={{ cursor: "pointer", fontSize: "16px", fontFamily:"roboto" }}
                     >
                       Don't have an account?
                       <span style={{ color: "rgba(35, 88, 251, 1)" }}>
-                        Create Account
+                      Create Account
                       </span>
                     </span>
                   </div>
@@ -355,7 +356,7 @@ function UserLogin({ toggleLoginType, isHRLogin }) {
 
                   <div className="">
                     <div style={{ cursor: "pointer" }}>
-                      <span onClick={handlePassword} className="forgot_pass">
+                      <span onClick={handlePassword} className={LoginStyle.forgot_pass}>
                         Forgot Password?
                       </span>
                     </div>

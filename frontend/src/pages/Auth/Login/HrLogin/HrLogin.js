@@ -118,7 +118,8 @@ function HrLogin({ toggleLoginType, isHRLogin }) {
         setIsValidating(false);
       }
     } else {
-      toast.error("Please fill in the email field.");
+      toast.error("Please fill the email field.");
+      setIsValidating(false)
     }
   };
 
@@ -220,10 +221,10 @@ function HrLogin({ toggleLoginType, isHRLogin }) {
                       Employer
                     </span>
                   </div>
-                  <div className={hrLoginStyle.sub_container3_styl1}>
+                  {/* <div className={hrLoginStyle.sub_container3_styl1}>
                     {" "}
-                    HR LOGIN
-                  </div>
+                   Employer
+                  </div> */}
                 </div>
                 <div className={hrLoginStyle.sub_container_style}>
                   <div className="email_form">
@@ -243,8 +244,9 @@ function HrLogin({ toggleLoginType, isHRLogin }) {
                   <div
                     style={{
                       paddingTop: "10px",
-                      fontSize: "14px",
+                      fontSize: "16px",
                       cursor: "pointer",
+                      fontFamily:"roboto"
                     }}
                     onClick={handleHrSignup}
                   >
