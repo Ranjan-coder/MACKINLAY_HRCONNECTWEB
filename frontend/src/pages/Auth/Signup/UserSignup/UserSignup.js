@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 import { handleUserLogin } from "../../../../Redux/ReduxSlice";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import 'animate.css';
 
 const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
 const newUrl = process.env.REACT_APP_BACKEND_BASE_URL_WITHOUT_API;
@@ -31,6 +32,7 @@ const Signup = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [otpInputs, setOtpInputs] = useState(["", "", "", "", "", ""]);
   const [resendTimer, setResendTimer] = useState(0);
+  const [isSaving, setIsSaving] = useState(false);
   const [formData, setFormData] = useState({
     resume: "",
     name: "",
@@ -125,7 +127,6 @@ const Signup = () => {
     setFormData({ ...formData, resume: e.target.files[0] });
   };
 
-
   const checkPhoneNumberExists = async (phoneNumber) => {
     try {
       const response = await axios.post(`${baseUrl}/checkPhoneNumber`, {
@@ -147,7 +148,7 @@ const Signup = () => {
       return false;
     }
   };
-  
+
   const requestOtp = async () => {
     setIsSendingOtp(true);
     try {
@@ -156,7 +157,7 @@ const Signup = () => {
         toast.error("Email already registered");
         return;
       }
-  
+
       const response = await axios.post(`${baseUrl}/request-otp`, {
         email: formData.email,
       });
@@ -171,7 +172,6 @@ const Signup = () => {
       setIsSendingOtp(false);
     }
   };
-  
 
   const handleRequestOtp = async () => {
     try {
@@ -180,14 +180,13 @@ const Signup = () => {
         toast.error("Email already registered");
         return;
       }
-      
+
       requestOtp();
       openModal();
     } catch (error) {
       toast.error("Failed to request OTP. Please try again.");
     }
   };
-  
 
   const handleResendOtp = async () => {
     setIsOtpResend(true);
@@ -239,6 +238,7 @@ const Signup = () => {
           margin: "5px",
           textAlign: "center",
           fontSize: "20px",
+          fontFamily: "roboto",
         }}
       />
     ));
@@ -246,125 +246,132 @@ const Signup = () => {
 
   const nextStep = async (e) => {
     e.preventDefault();
+    setIsSaving(true);
 
-    // Check if the current step requires the resume
-    if (formData.step === 1) {
-      if (!formData.resume) {
-        toast.error("Please upload your resume");
-        return;
-      } else {
-        toast.success("Resume Uploaded Sucessfully");
-        setFormData({ ...formData, step: formData.step + 1 });
-      }
-    }
-
-    if (formData.step === 2) {
-      // Check if all required fields are filled
-      if (
-        !formData.name ||
-        !formData.email ||
-        !formData.password ||
-        !formData.conf_password
-      ) {
-        toast.error("Please fill in all required fields");
-        return;
-      }
-      // Check if passwords match
-      if (formData.password !== formData.conf_password) {
-        toast.error("Passwords do not match");
-        return;
-      }
-      const isEmailAvailable = await checkEmailExists(formData.email);
-      if (!isEmailAvailable) {
-        return;
-      } else {
-        toast.success("Personal Details Successfully filled");
-        setFormData({ ...formData, step: formData.step + 1 });
-      }
-    }
-
-    if (formData.step === 3) {
-      // Check if all required fields are filled
-      if (
-        !formData.phone_number ||
-        !formData.dob ||
-        !formData.country ||
-        !formData.state
-      ) {
-        toast.error("Please fill in all required fields");
-        return;
-      } else {
-        // Check if the phone number is available
-        const isPhoneAvailable = await checkPhoneNumberExists(
-          formData.phone_number
-        );
-        if (!isPhoneAvailable) {
-          toast.error("Phone number is already registered");
+    try {
+      // Check if the current step requires the resume
+      if (formData.step === 1) {
+        if (!formData.resume) {
+          toast.error("Please upload your resume");
           return;
+        } else {
+          toast.success("Resume Uploaded Sucessfully");
+          setFormData({ ...formData, step: formData.step + 1 });
         }
+      }
 
-        // Calculate age from date of birth
-        const dobDate = new Date(formData.dob);
-        const today = new Date();
-        let age = today.getFullYear() - dobDate.getFullYear();
-        const monthDiff = today.getMonth() - dobDate.getMonth();
+      if (formData.step === 2) {
+        // Check if all required fields are filled
         if (
-          monthDiff < 0 ||
-          (monthDiff === 0 && today.getDate() < dobDate.getDate())
+          !formData.name ||
+          !formData.email ||
+          !formData.password ||
+          !formData.conf_password
         ) {
-          age--;
+          toast.error("Please fill in all required fields");
+          return;
         }
+        // Check if passwords match
+        if (formData.password !== formData.conf_password) {
+          toast.error("Passwords do not match");
+          return;
+        }
+        const isEmailAvailable = await checkEmailExists(formData.email);
+        if (!isEmailAvailable) {
+          return;
+        } else {
+          toast.success("Personal Details Successfully filled");
+          setFormData({ ...formData, step: formData.step + 1 });
+        }
+      }
 
-        // Check if age is at least 18
-        if (age < 18) {
-          toast.error("You must be at least 18 years old to sign up");
+      if (formData.step === 3) {
+        // Check if all required fields are filled
+        if (
+          !formData.phone_number ||
+          !formData.dob ||
+          !formData.country ||
+          !formData.state
+        ) {
+          toast.error("Please fill in all required fields");
+          return;
+        } else {
+          // Check if the phone number is available
+          const isPhoneAvailable = await checkPhoneNumberExists(
+            formData.phone_number
+          );
+          if (!isPhoneAvailable) {
+            toast.error("Phone number is already registered");
+            return;
+          }
+
+          // Calculate age from date of birth
+          const dobDate = new Date(formData.dob);
+          const today = new Date();
+          let age = today.getFullYear() - dobDate.getFullYear();
+          const monthDiff = today.getMonth() - dobDate.getMonth();
+          if (
+            monthDiff < 0 ||
+            (monthDiff === 0 && today.getDate() < dobDate.getDate())
+          ) {
+            age--;
+          }
+
+          // Check if age is at least 18
+          if (age < 18) {
+            toast.error("You must be at least 18 years old to sign up");
+            return;
+          }
+
+          toast.success("Basic Details Successfully filled");
+          setFormData({ ...formData, step: formData.step + 1 });
+        }
+      }
+
+      if (formData.step === 4) {
+        // Check if all required fields are filled
+        if (
+          !formData.college ||
+          !formData.course ||
+          !formData.course_start_date ||
+          !formData.course_end_date
+        ) {
+          toast.error("Please fill in all required fields");
           return;
         }
 
-        toast.success("Basic Details Successfully filled");
+        // Parse start and end dates
+        const startDate = new Date(formData.course_start_date);
+        const endDate = new Date(formData.course_end_date);
+
+        // Check if start date is greater than end date
+        if (startDate >= endDate) {
+          toast.error("Start date must be greater than end date");
+          return;
+        }
+
+        // Check if difference between start and end date is at least one year
+        const oneYear = 1000 * 60 * 60 * 24 * 365; // milliseconds in one year
+        if (endDate - startDate < oneYear) {
+          toast.error(
+            "Difference between start and end date must be at least one year"
+          );
+          return;
+        }
+
+        toast.success("Education Details Successfully filled");
         setFormData({ ...formData, step: formData.step + 1 });
       }
-    }
-
-    if (formData.step === 4) {
-      // Check if all required fields are filled
-      if (
-        !formData.college ||
-        !formData.course ||
-        !formData.course_start_date ||
-        !formData.course_end_date
-      ) {
-        toast.error("Please fill in all required fields");
-        return;
-      }
-
-      // Parse start and end dates
-      const startDate = new Date(formData.course_start_date);
-      const endDate = new Date(formData.course_end_date);
-
-      // Check if start date is greater than end date
-      if (startDate >= endDate) {
-        toast.error("Start date must be greater than end date");
-        return;
-      }
-
-      // Check if difference between start and end date is at least one year
-      const oneYear = 1000 * 60 * 60 * 24 * 365; // milliseconds in one year
-      if (endDate - startDate < oneYear) {
-        toast.error(
-          "Difference between start and end date must be at least one year"
-        );
-        return;
-      }
-
-      toast.success("Education Details Successfully filled");
-      setFormData({ ...formData, step: formData.step + 1 });
+    } catch (error) {
+      toast.error("Step Error, Debug Needed");
+    } finally {
+      setIsSaving(false);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSubmitting(true)
+    setIsSubmitting(true);
     if (formData.password !== formData.conf_password) {
       toast.error("Passwords do not match");
       setIsSubmitting(false);
@@ -442,15 +449,14 @@ const Signup = () => {
         console.error("Error:", error.message);
         toast.error(error.message);
       }
-    }finally{
-      setIsSubmitting(false)
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   const handleLogin = () => {
     nav("/login");
   };
-
 
   // Function to calculate the duration between start and end date in months
   const calculateDuration = () => {
@@ -536,15 +542,23 @@ const Signup = () => {
                     </Col>
                   </Form.Group>
                   <div className={signupStyle.step_button_container}>
-                    <Button className={signupStyle.step_button} type="submit">
-                      Save and Continue
+                    <Button
+                      className={signupStyle.step_button}
+                      type="submit"
+                      disabled={isSaving}
+                    >
+                      {isSaving ? "Saving..." : "Save and Continue"}
                     </Button>
                   </div>
                 </Form>
                 <div className={signupStyle.forgot_style1}>
                   <span
                     onClick={handleLogin}
-                    style={{ cursor: "pointer", fontSize: "14px" }}
+                    style={{
+                      cursor: "pointer",
+                      fontSize: "16px",
+                      fontFamily: "roboto",
+                    }}
                   >
                     Already have an account?
                     <span style={{ color: "rgba(35, 88, 251, 1)" }}>
@@ -603,7 +617,16 @@ const Signup = () => {
                 </div>
               </div>
               <div className={signupStyle.step_2_part_2}>
-                <h4 style={{ paddingBottom: "10px", paddingLeft:'2vw' }}>Personal Information</h4>
+                <h4
+                  style={{
+                    paddingBottom: "10px",
+                    textAlign: "center",
+                    fontFamily: "Oswald",
+                    marginLeft: "-2.5rem",
+                  }}
+                >
+                  Personal Information
+                </h4>
                 <div>
                   <Form className="m-lg-3">
                     <Form.Control
@@ -623,64 +646,66 @@ const Signup = () => {
                       className={signupStyle.personal_input_field}
                       required
                     />
-                    {!otpSent && formData.email &&(
-                    <Button
-                      onClick={handleRequestOtp}
-                      disabled={!formData.email}
-                      className={`btn btn-primary btn-lg ${signupStyle.request_otp_button}`}
-                    >
-                      {isSendingOtp ? "Sending OTP..." : "Verify Email"}
-                    </Button>
-                  )}
-
-                  <Modal show={isModalOpen} onHide={closeModal} centered>
-                    <Modal.Header closeButton>
-                      <Modal.Title>Please Verify OTP</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                      <div
-                        style={{ display: "flex", justifyContent: "center" }}
-                      >
-                        {renderOtpInputs()}
-                      </div>
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          marginTop: "10px",
-                        }}
-                      >
-                        <Button
-                          variant="link"
-                          onClick={handleResendOtp}
-                          disabled={isOtpResend || resendTimer}
-                        >
-                          {resendTimer > 0
-                            ? `Resend OTP in ${resendTimer}s`
-                            : isOtpResend
-                            ? "Resending OTP..."
-                            : "Resend OTP"}
-                        </Button>
-                      </div>
-                    </Modal.Body>
-                    <Modal.Footer>
-                      <Button variant="secondary" onClick={closeModal}>
-                        Close
-                      </Button>
+                    {!otpSent && formData.email && (
                       <Button
-                        variant="primary"
-                        onClick={handleOtpModalSubmit}
-                        disabled={isVerifyingOtp}
-                        style={{
-                          color: "white",
-                          background:
-                            "linear-gradient(90deg, #0050d1 0%, #00296b 100%)",
-                        }}
+                        onClick={handleRequestOtp}
+                        disabled={!formData.email}
+                        className={`btn btn-primary btn-lg ${signupStyle.request_otp_button}`}
                       >
-                        {isVerifyingOtp ? "Verifying OTP..." : "Verify OTP"}
+                        {isSendingOtp ? "Sending OTP..." : "Verify Email"}
                       </Button>
-                    </Modal.Footer>
-                  </Modal>
+                    )}
+
+                    <Modal show={isModalOpen} onHide={closeModal} centered>
+                      <Modal.Header closeButton>
+                        <Modal.Title style={{ fontFamily: "roboto" }}>
+                          Please Verify OTP
+                        </Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>
+                        <div
+                          style={{ display: "flex", justifyContent: "center" }}
+                        >
+                          {renderOtpInputs()}
+                        </div>
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            marginTop: "10px",
+                          }}
+                        >
+                          <Button
+                            variant="link"
+                            onClick={handleResendOtp}
+                            disabled={isOtpResend || resendTimer}
+                          >
+                            {resendTimer > 0
+                              ? `Resend OTP in ${resendTimer}s`
+                              : isOtpResend
+                              ? "Resending OTP..."
+                              : "Resend OTP"}
+                          </Button>
+                        </div>
+                      </Modal.Body>
+                      <Modal.Footer>
+                        <Button variant="secondary" onClick={closeModal}>
+                          Close
+                        </Button>
+                        <Button
+                          variant="primary"
+                          onClick={handleOtpModalSubmit}
+                          disabled={isVerifyingOtp}
+                          style={{
+                            color: "white",
+                            background:
+                              "linear-gradient(90deg, #0050d1 0%, #00296b 100%)",
+                          }}
+                        >
+                          {isVerifyingOtp ? "Verifying OTP..." : "Verify OTP"}
+                        </Button>
+                      </Modal.Footer>
+                    </Modal>
 
                     <div className={signupStyle.password_container}>
                       <div>
@@ -730,8 +755,9 @@ const Signup = () => {
                   <Button
                     className={signupStyle.step_button}
                     onClick={nextStep}
+                    disabled={isSaving}
                   >
-                    Save and Continue
+                    {isSaving ? "Saving..." : "Save and Continue"}
                   </Button>
                 </div>
               </div>
@@ -758,7 +784,16 @@ const Signup = () => {
                 </div>
               </div>
               <div className={signupStyle.step_2_part_2}>
-                <h4 style={{ paddingBottom: "10px", paddingLeft:'2vw' }}>Basic Details</h4>
+                <h4
+                  style={{
+                    paddingBottom: "10px",
+                    textAlign: "center",
+                    fontFamily: "Oswald",
+                    marginLeft: "-2.5rem",
+                  }}
+                >
+                  Basic Details
+                </h4>
                 <div>
                   <Form className="m-lg-3">
                     <PhoneInput
@@ -815,8 +850,9 @@ const Signup = () => {
                   <Button
                     className={signupStyle.step_button}
                     onClick={nextStep}
+                    disabled={isSaving}
                   >
-                    Save and Continue
+                    {isSaving ? "Saving..." : "Save and Continue"}
                   </Button>
                 </div>
               </div>
@@ -843,7 +879,16 @@ const Signup = () => {
                 </div>
               </div>
               <div className={signupStyle.step_4_part_2}>
-                <h4>Education Details</h4>
+                <h4
+                  style={{
+                    paddingBottom: "10px",
+                    textAlign: "center",
+                    fontFamily: "Oswald",
+                    marginLeft: "-3.5rem",
+                  }}
+                >
+                  Education Details
+                </h4>
                 <div>
                   <Form.Control
                     type="text"
@@ -920,8 +965,9 @@ const Signup = () => {
                   <Button
                     className={signupStyle.step_button}
                     onClick={nextStep}
+                    disabled={isSaving}
                   >
-                    Save and Continue
+                    {isSaving ? "Saving..." : "Save and Continue"}
                   </Button>
                 </div>
               </div>
@@ -948,7 +994,16 @@ const Signup = () => {
                 </div>
               </div>
               <div className={signupStyle.step_4_part_2}>
-                <h4>Experience (Optional)</h4>
+                <h4
+                  style={{
+                    paddingBottom: "10px",
+                    textAlign: "center",
+                    fontFamily: "Oswald",
+                    marginLeft: "-3.5rem",
+                  }}
+                >
+                  Experience (Optional)
+                </h4>
                 <div>
                   <Form.Control
                     type="text"

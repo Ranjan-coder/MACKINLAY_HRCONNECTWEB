@@ -81,6 +81,7 @@ app.use("/api/user/bookmarkd", bookmarkRoutes);
 
 // ! Notifications Route
 const { notificationRoutes } = require("./Routes/Notification.Route.js");
+const { InterviewSheduleRoute } = require("./Routes/InterviewScheduleRoutes/InterviewSheduleRoute.js");
 app.use("/api/user/notifications", notificationRoutes);
 
 const Port = process.env.PORT;
@@ -91,6 +92,8 @@ const connectedUser = [];
 const io = require("socket.io")(httpServer, {
   cors: {
     origin: "*",
+    methods: "GET, POST, PATCH, DELETE, PUT",
+    credentials: true,
   },
 });
 io.on("connection", (socket) => {
@@ -123,6 +126,10 @@ io.on("connection", (socket) => {
   //   console.log("user disconnected");
   // });
 });
+
+
+app.use('/api/interview',InterviewSheduleRoute)
+
 
 httpServer.listen(Port, async () => {
   try {
