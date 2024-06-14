@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import SettingStyle from '../Settings/Setting.module.css';
 import { useNavigate } from 'react-router-dom';
-// import { FiUsers } from "react-icons/fi";
 import { GoTrash } from "react-icons/go";
 import { FaArrowRightToBracket } from "react-icons/fa6";
 import { FaSync } from "react-icons/fa";
@@ -11,10 +10,12 @@ import { TbUserExclamation } from "react-icons/tb";
 import { useDispatch, useSelector } from 'react-redux'
 import { handleUserLogOut } from '../../../Redux/ReduxSlice';
 import toast from 'react-hot-toast';
+import axios from "axios";
 
 function Setting() {
   const { name, profileImage } = useSelector((state) => state.Assessment.currentUser);
   const [settingtype, setsettingtype] = useState("");
+  const userEmail = localStorage.getItem("email")
   const navi = useNavigate();
   const dispatch = useDispatch()
 
@@ -28,7 +29,27 @@ function Setting() {
 
   const [del, setDel] = useState(false)
   const handleDeleteAccount = () => {
-    setDel(!del)
+    setDel(true)
+  }
+  const handlePopupClose = () => { setDel(false) }
+
+  const handleAgree = () => {
+    // axios.delete(`http://localhost:8585/api/delete-user/${userEmail}`)
+    //   .then((response) => {
+    //     if (response.data.success) {
+    //       toast.success(`${response.data.msg}`);
+    //       dispatch(handleUserLogOut());
+    //       navi('/login');
+    //     }
+    //     else {
+    //       toast.error("Try Again !!!");
+    //       handlePopupClose();
+    //     }
+    //   })
+    //   .catch(err => {
+    //     toast.error(`${err.msg}`);
+    //     handlePopupClose();
+    //   })
   }
 
   // Function to render content based on setting type
@@ -59,9 +80,11 @@ function Setting() {
             </div>
             {
               del && <div className={SettingStyle.__popupDelete}>
-                <p>Are u sure you want to delete ??</p>
-                <button>Agree</button>
-                <button onClick={() => navi()}>Cancel</button>
+                <p style={{ fontWeight: "500", fontSize: "20px" }}>Are you sure you want to delete ??</p>
+                <p>
+                  <button className={SettingStyle.__btnAgree} onClick={handleAgree}>Agree</button>
+                  <button className={SettingStyle.__btnCancel} onClick={handlePopupClose}>Cancel</button>
+                </p>
               </div>
             }
 
@@ -74,8 +97,8 @@ function Setting() {
             <p>This is where you can manage your privacy preferences.</p>
           </div>
         );
-      
-        case "Setting/appearance":
+
+      case "Setting/appearance":
         return (
           <div>
             <div className={`${SettingStyle.Appearance} ${SettingStyle.Profile_cont2}`}>
@@ -130,7 +153,7 @@ function Setting() {
       default:
         return (
           <div>
-           <h5 className={SettingStyle.__defaultText}>Select any option from the list</h5>
+            <h5 className={SettingStyle.__defaultText}>Select any option from the list</h5>
           </div>
         );
     }
