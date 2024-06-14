@@ -27,7 +27,6 @@ const getHR = async (req, res) => {
 const deleteHR = async (req, res) => {
   const { email } = req.params;
   const deleteHr = await Hr.deleteOne({ email });
-  console.log(deleteHr);
   try {
     if (deleteHr.deletedCount) {
       res.send({
