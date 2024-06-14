@@ -25,19 +25,13 @@ const getHR = async (req, res) => {
 
 //Delete HR
 const deleteHR = async (req, res) => {
-  const { email } = req.params;
-  const deleteHR = await Hr.deleteOne({ email });
-  // let id = req.params.id;
-  // const deleteAppliedJobs = await appliedJobCollection.deleteMany({ jobID: id });
-  // const deletesavedJobs = await savedJobCollection.deleteMany({ jobID: id });
+  const { email } = req.query;
+  const deleteHr = await Hr.deleteOne({ email });
   try {
-    if (deleteHR.acknowledged
-      // && deletesavedJobs.acknowledged 
-      // && deleteAppliedJobs.acknowledged
-    ) {
+    if (deleteHr.acknowledged) {
       res.send({
         success: true,
-        msg: "Account deleted succesfully"
+        msg: "Account deleted successfully"
       })
     }
     else {
@@ -46,8 +40,8 @@ const deleteHR = async (req, res) => {
         msg: "Account not found !!"
       })
     }
-  } catch (error) {
-    res.status(401).json({ success: false, error })
+  } catch (err) {
+    res.status(401).json({ success: false }, err);
   }
 }
 

@@ -15,7 +15,7 @@ import axios from "axios";
 function Setting() {
   const { name, profileImage } = useSelector((state) => state.Assessment.currentUser);
   const [settingtype, setsettingtype] = useState("");
-  const userEmail = localStorage.getItem("email")
+  const hrEmail = localStorage.getItem("email")
   const navi = useNavigate();
   const dispatch = useDispatch()
 
@@ -34,22 +34,22 @@ function Setting() {
   const handlePopupClose = () => { setDel(false) }
 
   const handleAgree = () => {
-    // axios.delete(`http://localhost:8585/api/delete-user/${userEmail}`)
-    //   .then((response) => {
-    //     if (response.data.success) {
-    //       toast.success(`${response.data.msg}`);
-    //       dispatch(handleUserLogOut());
-    //       navi('/login');
-    //     }
-    //     else {
-    //       toast.error("Try Again !!!");
-    //       handlePopupClose();
-    //     }
-    //   })
-    //   .catch(err => {
-    //     toast.error(`${err.msg}`);
-    //     handlePopupClose();
-    //   })
+    axios.delete(`http://localhost:8585/api/hr/delete-hr/${hrEmail}`)
+      .then((response) => {
+        if (response.data.success) {
+          toast.success(`${response.data.msg}`);
+          dispatch(handleUserLogOut());
+          navi('/login');
+        }
+        else {
+          toast.error("Try Again !!!");
+          handlePopupClose();
+        }
+      })
+      .catch(err => {
+        toast.error(`${err.msg}`);
+        handlePopupClose();
+      })
   }
 
   // Function to render content based on setting type
