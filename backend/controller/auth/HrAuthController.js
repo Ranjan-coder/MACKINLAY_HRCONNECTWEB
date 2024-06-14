@@ -25,10 +25,11 @@ const getHR = async (req, res) => {
 
 //Delete HR
 const deleteHR = async (req, res) => {
-  const { email } = req.query;
+  const { email } = req.params;
   const deleteHr = await Hr.deleteOne({ email });
+  console.log(deleteHr);
   try {
-    if (deleteHr.acknowledged) {
+    if (deleteHr.deletedCount) {
       res.send({
         success: true,
         msg: "Account deleted successfully"
