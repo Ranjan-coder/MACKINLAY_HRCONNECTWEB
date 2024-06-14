@@ -97,7 +97,7 @@
 
 
 /*--------------------------different box design----------------*/
-.__defaultText{
+.__defaultText {
   display: grid;
   place-items: center;
   margin: 25vh auto;
@@ -154,31 +154,37 @@
 }
 
 .__popupDelete {
-  border: 1px solid rgb(125, 125, 125);
+  /* border: 1px solid rgb(125, 125, 125); */
   border-radius: 10px;
   height: 15em;
-  width: 35em;
+  width: 32em;
   background: rgba(255, 255, 255, 0.939);
   position: absolute;
   z-index: 1;
   top: 40%;
-  left: 25%;
+  left: 28%;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  gap: 1em;
+  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
 }
-.__btnAgree,.__btnCancel{
+
+.__btnAgree,
+.__btnCancel {
   margin: 1em 2em;
   padding: .5em 3em;
   border-radius: 5px;
   border: none;
   box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 }
-.__btnAgree{
+
+.__btnAgree {
   background-color: hsl(122, 100%, 46%);
 }
-.__btnCancel{
+
+.__btnCancel {
   background: hsl(345deg 100% 47%);
   color: white;
 }

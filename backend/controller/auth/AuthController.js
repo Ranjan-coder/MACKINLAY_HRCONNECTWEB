@@ -1,4 +1,8 @@
 const User = require("../../model/users/UserModel");
+const {
+  savedJobCollection,
+  appliedJobCollection,
+} = require("../../model/MyJob.model");
 const Otp = require("../../model/UserOtp")
 const sendUserOtpEmail = require("../../services/jobSeekerEmailService")
 const bcrypt = require("bcrypt");
@@ -25,9 +29,36 @@ const getUser = async (req, res) => {
   }
 };
 
-const checkEmail = async(req,res) =>{
+//Delete User
+const deleteUser = async (req, res) => {
+  const { email } = req.params;
+  let id = req.params.id;
+  const deleteUser = await User.deleteOne({ email });
+  const deleteAppliedJobs = await appliedJobCollection.deleteMany({ jobID: id });
+  const deletesavedJobs = await savedJobCollection.deleteMany({ jobID: id });
+  try {
+    if (deleteUser.acknowledged &&
+      deletesavedJobs.acknowledged &&
+      deleteAppliedJobs.acknowledged) {
+      res.send({
+        success: true,
+        msg: "Account deleted succesfully"
+      })
+    }
+    else {
+      res.send({
+        success: false,
+        msg: "Account not found !!"
+      })
+    }
+  } catch (error) {
+    res.status(401).json({ success: false, error })
+  }
+}
+
+const checkEmail = async (req, res) => {
   const { email } = req.body;
-  const user = await User.findOne({ email }); 
+  const user = await User.findOne({ email });
   if (user) {
     return res.status(400).json({ message: 'Email already registered' });
   }
@@ -39,9 +70,9 @@ const checkPhoneNumberExists = async (req, res) => {
     const { phoneNumber } = req.body;
     const existingUserByPhone = await User.findOne({ phone_number: phoneNumber });
     if (existingUserByPhone) {
-      return res.json({ available: false }); 
+      return res.json({ available: false });
     }
-    return res.json({ available: true }); 
+    return res.json({ available: true });
   } catch (error) {
     console.error("Error checking phone number existence:", error);
     return res.status(500).json({ message: "Internal Server Error" });
@@ -71,8 +102,7 @@ const requestOtp = async (req, res) => {
   }
 };
 
-
-const verifyOtp = async (req,res) =>{
+const verifyOtp = async (req, res) => {
   const { email, otp } = req.body;
   const otpRecord = await Otp.findOne({ email, otp });
 
@@ -329,8 +359,8 @@ const updateUserField = async (req, res) => {
     req.body.skills =
       req.body.skills?.length > 0
         ? req.body.skills
-            ?.split(",")
-            .map((skill, index) => ({ name: skill.trim(), index }))
+          ?.split(",")
+          .map((skill, index) => ({ name: skill.trim(), index }))
         : "";
 
     for (const key in req.body) {
@@ -369,6 +399,7 @@ const updateUserField = async (req, res) => {
 
 module.exports = {
   getUser,
+  deleteUser,
   checkEmail,
   checkPhoneNumberExists,
   requestOtp,
