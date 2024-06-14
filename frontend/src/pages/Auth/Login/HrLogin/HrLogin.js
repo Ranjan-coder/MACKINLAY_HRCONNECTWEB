@@ -9,6 +9,7 @@ import axios from "axios";
 import hrLoginStyle from "../Login.module.css";
 import { useDispatch } from "react-redux";
 import { handleUserLogin } from "../../../../Redux/ReduxSlice";
+import 'animate.css'
 
 const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
 
@@ -179,14 +180,14 @@ function HrLogin({ toggleLoginType, isHRLogin }) {
                   <h1
                     className={`${hrLoginStyle.kumar_one_regular} ${hrLoginStyle.step_1_banner_heading_login}`}
                   >
-                    <span style={{ color: "#0050D1" }}>HR</span> Connect{" "}
-                    <div style={{ color: "#00296B" }}>Pro</div>
+                    <span style={{ color: "#0050D1" }} className={hrLoginStyle.step_1_banner_heading_login}>HR</span>Connect{" "}
+                    <div style={{ color: "#00296B", fontFamily:"roboto" }}>Pro</div>
                   </h1>
                   <div>
                     <img
                       src={loginImage}
                       alt="network error"
-                      className={hrLoginStyle.login_image}
+                      className={`${hrLoginStyle.login_image} animate__animated animate__zoomIn`}
                     />
                   </div>
                 </div>
@@ -276,12 +277,12 @@ function HrLogin({ toggleLoginType, isHRLogin }) {
           <div className={hrLoginStyle.sub_container2_pass}>
             <div className={hrLoginStyle.pass_main_container}>
               <div className={hrLoginStyle.pass_part_1}>
-                <h1
-                  className={`${hrLoginStyle.kumar_one_regular} ${hrLoginStyle.step_1_banner_heading_login}`}
-                >
-                  <span style={{ color: "#0050D1" }}>HR</span> Connect{" "}
-                  <div style={{ color: "#00296B" }}>Pro</div>
-                </h1>
+              <h1
+                    className={`${hrLoginStyle.kumar_one_regular} ${hrLoginStyle.step_1_banner_heading_login}`}
+                  >
+                    <span style={{ color: "#0050D1" }} className={hrLoginStyle.step_1_banner_heading_login}>HR</span>Connect{" "}
+                    <div style={{ color: "#00296B", fontFamily:"roboto" }}>Pro</div>
+                  </h1>
                 <div className={hrLoginStyle.user_login_detail}>
                   <div className={hrLoginStyle.user_name}>Hi {name}</div>
                   <div>
@@ -296,7 +297,7 @@ function HrLogin({ toggleLoginType, isHRLogin }) {
                 <div className="">
                   <div>
                     <img
-                      className={hrLoginStyle.pass_company_logo}
+                      className={`${hrLoginStyle.pass_company_logo} animate__animated animate__zoomIn`}
                       src="https://mackinlay.in/img/title_logo.png"
                       alt="not_loaded"
                     />

@@ -3,7 +3,7 @@ import { Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash} from "@fortawesome/free-solid-svg-icons";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import loginImage from "../../../../Assets/Login form Image.PNG";
 import google from "../../../../Assets/Google Logo.jpg";
 import linkedin from "../../../../Assets/linkedin logo.jpg";
@@ -12,6 +12,7 @@ import axios from "axios";
 import LoginStyle from "../Login.module.css";
 import { useDispatch } from "react-redux";
 import { handleUserLogin } from "../../../../Redux/ReduxSlice";
+import "animate.css";
 
 const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
 const newUrl = process.env.REACT_APP_BACKEND_BASE_URL_WITHOUT_API;
@@ -99,7 +100,7 @@ function UserLogin({ toggleLoginType, isHRLogin }) {
       }
     } else {
       toast.error("Please fill the email field.");
-      setIsValidating(false)
+      setIsValidating(false);
     }
   };
 
@@ -178,14 +179,19 @@ function UserLogin({ toggleLoginType, isHRLogin }) {
                   <h1
                     className={`${LoginStyle.kumar_one_regular} ${LoginStyle.step_1_banner_heading_login}`}
                   >
-                    <span style={{ color: "#0050D1" }}>HR</span> Connect
-                    <div style={{ color: "#00296B" }}>Pro</div>
+                    <span className={LoginStyle.step_1_banner_heading_login}>
+                      HR
+                    </span>
+                    Connect
+                    <div style={{ color: "#00296B", fontFamily: "roboto" }}>
+                      Pro
+                    </div>
                   </h1>
                   <div>
                     <img
                       src={loginImage}
                       alt="network error"
-                      className={LoginStyle.login_image}
+                      className={`${LoginStyle.login_image} animate__animated animate__zoomIn`}
                     />
                   </div>
                 </div>
@@ -252,11 +258,15 @@ function UserLogin({ toggleLoginType, isHRLogin }) {
                   <div className={LoginStyle.forgot_style1}>
                     <span
                       onClick={handleSignup}
-                      style={{ cursor: "pointer", fontSize: "16px", fontFamily:"roboto" }}
+                      style={{
+                        cursor: "pointer",
+                        fontSize: "16px",
+                        fontFamily: "roboto",
+                      }}
                     >
                       Don't have an account?
                       <span style={{ color: "rgba(35, 88, 251, 1)" }}>
-                      Create Account
+                        Create Account
                       </span>
                     </span>
                   </div>
@@ -301,8 +311,13 @@ function UserLogin({ toggleLoginType, isHRLogin }) {
                 <h1
                   className={`${LoginStyle.kumar_one_regular} ${LoginStyle.step_1_banner_heading_login}`}
                 >
-                  <span style={{ color: "#0050D1" }}>HR</span> Connect
-                  <div style={{ color: "#00296B" }}>Pro</div>
+                  <span className={LoginStyle.step_1_banner_heading_login}>
+                    HR
+                  </span>
+                  Connect
+                  <div style={{ color: "#00296B", fontFamily: "roboto" }}>
+                    Pro
+                  </div>
                 </h1>
                 <div className={LoginStyle.user_login_detail}>
                   <div className={LoginStyle.user_name}>Hi {name}</div>
@@ -318,7 +333,7 @@ function UserLogin({ toggleLoginType, isHRLogin }) {
                 <div className="">
                   <div>
                     <img
-                      className={LoginStyle.pass_company_logo}
+                      className={`${LoginStyle.pass_company_logo} animate__animated animate__zoomIn`}
                       src="https://mackinlay.in/img/title_logo.png"
                       alt="not_loaded"
                     />
@@ -356,7 +371,10 @@ function UserLogin({ toggleLoginType, isHRLogin }) {
 
                   <div className="">
                     <div style={{ cursor: "pointer" }}>
-                      <span onClick={handlePassword} className={LoginStyle.forgot_pass}>
+                      <span
+                        onClick={handlePassword}
+                        className={LoginStyle.forgot_pass}
+                      >
                         Forgot Password?
                       </span>
                     </div>

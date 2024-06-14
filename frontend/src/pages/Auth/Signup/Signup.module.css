@@ -34,11 +34,18 @@
 .step_1_banner_heading_signup {
   text-align: center;
   margin-top: 60px;
+  background-image: url(https://media.giphy.com/media/26BROrSHlmyzzHf3i/giphy.gif);
+  background-size: contain;
+  color: transparent;
+  background-clip: text;
+  text-transform: uppercase;
+  margin: 10px 0;
+  font-weight: 600;
 }
 
 .upload_resume_heading{
   text-align: center;
-  font-family: roboto;
+  font-family: "Oswald";
 }
 
 .resume_handler{
@@ -85,6 +92,10 @@
   color: white;
   background: linear-gradient(90deg, #0050d1 0%, #00296b 100%);
   margin-left: -2rem;
+}
+
+.step_button:hover{
+  background: linear-gradient(90deg, #3377e0 0%, #33558a 100%);
 }
 
 .step_2_part_2 {

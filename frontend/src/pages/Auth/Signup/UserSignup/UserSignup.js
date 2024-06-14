@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 import { handleUserLogin } from "../../../../Redux/ReduxSlice";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import 'animate.css';
 
 const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
 const newUrl = process.env.REACT_APP_BACKEND_BASE_URL_WITHOUT_API;
@@ -620,7 +621,7 @@ const Signup = () => {
                   style={{
                     paddingBottom: "10px",
                     textAlign: "center",
-                    fontFamily: "roboto",
+                    fontFamily: "Oswald",
                     marginLeft: "-2.5rem",
                   }}
                 >
@@ -787,7 +788,7 @@ const Signup = () => {
                   style={{
                     paddingBottom: "10px",
                     textAlign: "center",
-                    fontFamily: "roboto",
+                    fontFamily: "Oswald",
                     marginLeft: "-2.5rem",
                   }}
                 >
@@ -882,7 +883,7 @@ const Signup = () => {
                   style={{
                     paddingBottom: "10px",
                     textAlign: "center",
-                    fontFamily: "roboto",
+                    fontFamily: "Oswald",
                     marginLeft: "-3.5rem",
                   }}
                 >
@@ -997,7 +998,7 @@ const Signup = () => {
                   style={{
                     paddingBottom: "10px",
                     textAlign: "center",
-                    fontFamily: "roboto",
+                    fontFamily: "Oswald",
                     marginLeft: "-3.5rem",
                   }}
                 >
