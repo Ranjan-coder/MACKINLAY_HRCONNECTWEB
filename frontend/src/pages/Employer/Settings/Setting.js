@@ -74,7 +74,8 @@ function Setting() {
             <p>This is where you can manage your privacy preferences.</p>
           </div>
         );
-      case "Setting/appearance":
+      
+        case "Setting/appearance":
         return (
           <div>
             <div className={`${SettingStyle.Appearance} ${SettingStyle.Profile_cont2}`}>
@@ -119,22 +120,6 @@ function Setting() {
             </div>
           </div>
         );
-        
-      // case "Setting/reset":
-      //   return (
-      //     <div>
-      //     </div>
-      //   );
-      // case "Setting/call":
-      //   return (
-      //     <div>
-      //     </div>
-      //   );
-      // case "Setting/help":
-      //   return (
-      //     <div>
-      //     </div>
-      //   );
 
       case "Setting/support":
         return (

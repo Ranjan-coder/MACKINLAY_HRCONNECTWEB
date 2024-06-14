@@ -10,6 +10,7 @@ const {
     forgotPassword,
     resetPassword,
     HRupdateUserField,
+    deleteHR
 } = require("../controller/auth/HrAuthController");
 const { upload, uploadProfile } = require("../middleware/fileUploadMiddleware");
 
@@ -22,5 +23,6 @@ HrRoutes.post("/login", login);
 HrRoutes.post("/forgot-password", forgotPassword);
 HrRoutes.post("/reset-password/:token", resetPassword);
 HrRoutes.patch("/update-hr/:email", uploadProfile, HRupdateUserField);
+HrRoutes.delete("/delete-hr/:email", deleteHR)
 
 module.exports = HrRoutes;

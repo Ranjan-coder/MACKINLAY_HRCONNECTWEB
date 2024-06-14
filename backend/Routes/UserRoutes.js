@@ -49,6 +49,6 @@ userRoutes.get("/analytics/job-application", getJobApplicationAnalytics);
 userRoutes.post("/forgot-password", forgotPassword);
 userRoutes.post("/reset-password/:token", resetPassword);
 userRoutes.patch("/update-user/:email", uploadProfile, updateUserField);
-userRoutes.delete("/delete-user/:id", deleteUser);
+userRoutes.delete("/delete-user/:email", deleteUser);
 
 module.exports = userRoutes;

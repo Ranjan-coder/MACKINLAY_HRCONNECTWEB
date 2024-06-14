@@ -1,4 +1,8 @@
 const User = require("../../model/users/UserModel");
+const {
+  savedJobCollection,
+  appliedJobCollection,
+} = require("../../model/MyJob.model");
 const Otp = require("../../model/UserOtp")
 const sendUserOtpEmail = require("../../services/jobSeekerEmailService")
 const bcrypt = require("bcrypt");
@@ -27,10 +31,15 @@ const getUser = async (req, res) => {
 
 //Delete User
 const deleteUser = async (req, res) => {
-  const { email } = req.query;
+  const { email } = req.params;
+  let id = req.params.id;
   const deleteUser = await User.deleteOne({ email });
+  const deleteAppliedJobs = await appliedJobCollection.deleteMany({ jobID: id });
+  const deletesavedJobs = await savedJobCollection.deleteMany({ jobID: id });
   try {
-    if (deleteUser.acknowledged) {
+    if (deleteUser.acknowledged &&
+      deletesavedJobs.acknowledged &&
+      deleteAppliedJobs.acknowledged) {
       res.send({
         success: true,
         msg: "Account deleted succesfully"

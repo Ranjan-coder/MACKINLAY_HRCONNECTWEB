@@ -23,6 +23,34 @@ const getHR = async (req, res) => {
   }
 };
 
+//Delete HR
+const deleteHR = async (req, res) => {
+  const { email } = req.params;
+  const deleteHR = await Hr.deleteOne({ email });
+  // let id = req.params.id;
+  // const deleteAppliedJobs = await appliedJobCollection.deleteMany({ jobID: id });
+  // const deletesavedJobs = await savedJobCollection.deleteMany({ jobID: id });
+  try {
+    if (deleteHR.acknowledged
+      // && deletesavedJobs.acknowledged 
+      // && deleteAppliedJobs.acknowledged
+    ) {
+      res.send({
+        success: true,
+        msg: "Account deleted succesfully"
+      })
+    }
+    else {
+      res.send({
+        success: false,
+        msg: "Account not found !!"
+      })
+    }
+  } catch (error) {
+    res.status(401).json({ success: false, error })
+  }
+}
+
 const checkEmail = async (req, res) => {
   const { email } = req.body;
   const user = await Hr.findOne({ email });
@@ -55,8 +83,7 @@ const requestOtp = async (req, res) => {
   }
 };
 
-
-const verifyOtp = async (req,res) =>{
+const verifyOtp = async (req, res) => {
   const { email, otp } = req.body;
   const otpRecord = await Otp.findOne({ email, otp });
 
@@ -120,11 +147,10 @@ const signUp = async (req, res) => {
   }
 };
 
-
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    
+
     // Validate email domain
     const domain = email.split("@")[1];
     const genericDomains = [
@@ -138,7 +164,7 @@ const login = async (req, res) => {
         .status(400)
         .json({ message: "Please use your company email address" });
     }
-    
+
     // Check if user exists
     const hr = await Hr.findOne({ email });
     if (!hr) {
@@ -166,7 +192,6 @@ const login = async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
-
 
 const forgotPassword = async (req, res) => {
   const { email } = req.body;
@@ -238,8 +263,8 @@ const HRupdateUserField = async (req, res) => {
     req.body.skills =
       req.body.skills?.length > 0
         ? req.body.skills
-            ?.split(",")
-            .map((skill, index) => ({ name: skill.trim(), index }))
+          ?.split(",")
+          .map((skill, index) => ({ name: skill.trim(), index }))
         : "";
 
     for (const key in req.body) {
@@ -284,4 +309,5 @@ module.exports = {
   forgotPassword,
   resetPassword,
   HRupdateUserField,
+  deleteHR
 };
