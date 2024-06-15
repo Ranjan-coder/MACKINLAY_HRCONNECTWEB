@@ -88,9 +88,12 @@
 }
 
 .sub_container3_imgstyl {
-  height: 99%;
-  width: 99%;
+  height: 49%;
+  width: 49%;
   border-radius: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
 }
 
 .sub_container3_styl1 {
