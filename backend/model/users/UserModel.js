@@ -18,10 +18,8 @@ const userSchema = new mongoose.Schema({
     type: String,
   },
   phone_number: {
-    type: Number,
+    type: String,
     unique: true,
-    minlength: 10,
-    maxlength: 10,
     sparse: true
   },
   dob: {
