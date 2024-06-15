@@ -243,7 +243,7 @@ function Candidate() {
         // console.log(myDiv)
         myDiv.forEach((i) => {
             i.addEventListener('click', function () {
-                console.log('You clicked the div!');
+                // console.log('You clicked the div!');
                 // console.log(i.getAttribute('data-id'))
                 const CID = i.getAttribute('data-id')
                 setSelectedid(CID)
@@ -319,144 +319,158 @@ function Candidate() {
     // }, []);
 
     const AppliedUsers = AllJobs
-    .map((data) => data.appliedBy)
-    .flat(2)
-    .map((data2) => data2);
-    
-console.log(AppliedUsers);
+        .map((data) => data.appliedBy)
+        .flat(2)
+        .map((data2) => data2);
+
+    console.log(AppliedUsers);
 
     return (
 
         <div>
 
             <div className='candidate-main'>
-                <div className='candidate-sub-main-1'>
+                <div className={showBokkmarks  ? 'candidate-sub-main-1' : 'candidate-sub-main-2'} id='bookmark-floating-2' onClick={toogleBookmarkDiv}>
                     <div>
                         <p>Total Appliation</p>
-                        <h2>5421</h2>
                     </div>
-                    <svg className="progress-ring" width="120" height="120">
-                        <circle
-                            className="progress-ring-circle"
-                            stroke="#dddddd"
-                            strokeWidth="5"
-                            fill="transparent"
-                            r={radius}
-                            cx="60"
-                            cy="60"
-                        />
-                        <circle
-                            className="progress-ring-circle"
-                            stroke="#ff9d56"
-                            strokeWidth="5"
-                            strokeDasharray={`${circumference} ${circumference}`}
-                            style={{ strokeDashoffset: applied }}
-                            fill="transparent"
-                            r={radius}
-                            cx="60"
-                            cy="60"
-                        />
-                        <text x="50%" y="55%" textAnchor="middle" fill="black" fontSize="20">
-                            {appliedPerc}%
-                        </text>
-                    </svg>
+                    <div className='candidate-progress-data'>
+                        <h2>5421</h2>
+                        <svg className="progress-ring" width="120" height="120">
+
+                            <circle
+                                className="progress-ring-circle"
+                                stroke="#dddddd"
+                                strokeWidth="5"
+                                fill="transparent"
+                                r={radius}
+                                cx="60"
+                                cy="60"
+                            />
+                            <circle
+                                className="progress-ring-circle"
+                                stroke="#ff9d56"
+                                strokeWidth="5"
+                                strokeDasharray={`${circumference} ${circumference}`}
+                                style={{ strokeDashoffset: applied }}
+                                fill="transparent"
+                                r={radius}
+                                cx="60"
+                                cy="60"
+                            />
+                            <text x="50%" y="55%" textAnchor="middle" fill="black" fontSize="20">
+                                {appliedPerc}%
+                            </text>
+                        </svg>
+
+                    </div>
                 </div>
-                <div className='candidate-sub-main-1'>
+                <div className={showBokkmarks  ? 'candidate-sub-main-1' : 'candidate-sub-main-2'} id='bookmark-floating-2' onClick={toogleBookmarkDiv}>
                     <div>
                         <p>Rejected Appliation</p>
-                        <h2>5421</h2>
                     </div>
-                    <svg className="progress-ring" width="120" height="120">
-                        <circle
-                            className="progress-ring-circle"
-                            stroke="#dddddd"
-                            strokeWidth="5"
-                            fill="transparent"
-                            r={radius}
-                            cx="60"
-                            cy="60"
-                        />
-                        <circle
-                            className="progress-ring-circle"
-                            stroke="#b82d0f"
-                            strokeWidth="5"
-                            strokeDasharray={`${circumference} ${circumference}`}
-                            style={{ strokeDashoffset: rejected }}
-                            fill="transparent"
-                            r={radius}
-                            cx="60"
-                            cy="60"
-                        />
-                        <text x="50%" y="55%" textAnchor="middle" fill="black" fontSize="20">
-                            {rejectedPerc}%
-                        </text>
-                    </svg>
+                    <div className='candidate-progress-data'>
+                        <h2>5421</h2>
+
+                        <svg className="progress-ring" width="120" height="120">
+                            <circle
+                                className="progress-ring-circle"
+                                stroke="#dddddd"
+                                strokeWidth="5"
+                                fill="transparent"
+                                r={radius}
+                                cx="60"
+                                cy="60"
+                            />
+                            <circle
+                                className="progress-ring-circle"
+                                stroke="#b82d0f"
+                                strokeWidth="5"
+                                strokeDasharray={`${circumference} ${circumference}`}
+                                style={{ strokeDashoffset: rejected }}
+                                fill="transparent"
+                                r={radius}
+                                cx="60"
+                                cy="60"
+                            />
+                            <text x="50%" y="55%" textAnchor="middle" fill="black" fontSize="20">
+                                {rejectedPerc}%
+                            </text>
+                        </svg>
+
+                    </div>
                 </div>
-                <div className='candidate-sub-main-1'>
+                <div className={showBokkmarks ? 'candidate-sub-main-1' : 'candidate-sub-main-2'} id='bookmark-floating-2' onClick={toogleBookmarkDiv}>
                     <div>
                         <p>Shortlisted Appliation</p>
-                        <h2>5421</h2>
                     </div>
-                    <svg className="progress-ring" width="120" height="120">
-                        <circle
-                            className="progress-ring-circle"
-                            stroke="#dddddd"
-                            strokeWidth="5"
-                            fill="transparent"
-                            r={radius}
-                            cx="60"
-                            cy="60"
-                        />
-                        <circle
-                            className="progress-ring-circle"
-                            stroke="#52c02c"
-                            strokeWidth="5"
-                            strokeDasharray={`${circumference} ${circumference}`}
-                            style={{ strokeDashoffset: shortlisted }}
-                            fill="transparent"
-                            r={radius}
-                            cx="60"
-                            cy="60"
-                        />
-                        <text x="50%" y="55%" textAnchor="middle" fill="black" fontSize="20">
-                            {shortlistedPerc}%
-                        </text>
-                    </svg>
+                    <div className='candidate-progress-data'>
+                        <h2>5421</h2>
+                        <svg className="progress-ring" width="120" height="120">
+                            <circle
+                                className="progress-ring-circle"
+                                stroke="#dddddd"
+                                strokeWidth="5"
+                                fill="transparent"
+                                r={radius}
+                                cx="60"
+                                cy="60"
+                            />
+                            <circle
+                                className="progress-ring-circle"
+                                stroke="#52c02c"
+                                strokeWidth="5"
+                                strokeDasharray={`${circumference} ${circumference}`}
+                                style={{ strokeDashoffset: shortlisted }}
+                                fill="transparent"
+                                r={radius}
+                                cx="60"
+                                cy="60"
+                            />
+                            <text x="50%" y="55%" textAnchor="middle" fill="black" fontSize="20">
+                                {shortlistedPerc}%
+                            </text>
+                        </svg>
+
+                    </div>
                 </div>
                 {
                     showBokkmarks ?
-                        <div className='candidate-sub-main-1' id='bookmark-floating-2' onClick={toogleBookmarkDiv}>
-                            <div>
-                                <p>Profile Bookmarked</p>
-                                <h2>5421</h2>
-                            </div>
-                            <svg className="progress-ring" width="120" height="120">
-                                <circle
-                                    className="progress-ring-circle"
-                                    stroke="#dddddd"
-                                    strokeWidth="5"
-                                    fill="transparent"
-                                    r={radius}
-                                    cx="60"
-                                    cy="60"
-                                />
-                                <circle
-                                    className="progress-ring-circle"
-                                    stroke="#1554f6"
-                                    strokeWidth="5"
-                                    strokeDasharray={`${circumference} ${circumference}`}
-                                    style={{ strokeDashoffset: pBkmed }}
-                                    fill="transparent"
-                                    r={radius}
-                                    cx="60"
-                                    cy="60"
-                                />
-                                <text x="50%" y="55%" textAnchor="middle" fill="black" fontSize="20">
-                                    {pBkmedPerc}%
-                                </text>
-                            </svg>
+                        <div className={showBokkmarks ? 'candidate-sub-main-1' : 'candidate-sub-main-2'} id='bookmark-floating-2' onClick={toogleBookmarkDiv}>
+                    <div>
+                        <p>Shortlisted Appliation</p>
+                    </div>
+                    <div className='candidate-progress-data'>
+                        <h2>5421</h2>
+                        <svg className="progress-ring" width="120" height="120">
+                            <circle
+                                className="progress-ring-circle"
+                                stroke="#dddddd"
+                                strokeWidth="5"
+                                fill="transparent"
+                                r={radius}
+                                cx="60"
+                                cy="60"
+                            />
+                            <circle
+                                className="progress-ring-circle"
+                                stroke="#52c02c"
+                                strokeWidth="5"
+                                strokeDasharray={`${circumference} ${circumference}`}
+                                style={{ strokeDashoffset: shortlisted }}
+                                fill="transparent"
+                                r={radius}
+                                cx="60"
+                                cy="60"
+                            />
+                            <text x="50%" y="55%" textAnchor="middle" fill="black" fontSize="20">
+                                {shortlistedPerc}%
+                            </text>
+                        </svg>
+
+                    </div>
                         </div> :
-                        <div className='candidate-sub-main-2' id='bookmark-floating-2' onClick={toogleBookmarkDiv2}>
+                        <div className={showBokkmarks ? 'candidate-sub-main-1' : 'candidate-sub-main-2'} id='bookmark-floating-2' onClick={toogleBookmarkDiv2}>
                             <div>
                                 <p>Profile Bookmarked</p>
                                 <h2>5421</h2>
@@ -483,7 +497,7 @@ console.log(AppliedUsers);
                                     cy="60"
                                 />
                                 <text x="50%" y="55%" textAnchor="middle" fill="black" fontSize="20">
-                                    {pBkmedPerc}%
+                                    {pBkmedPerc}%   
                                 </text>
                             </svg>
                         </div>
@@ -521,22 +535,22 @@ console.log(AppliedUsers);
                                 </thead>
                                 <tbody>
                                     {
-                                AppliedUsers.map((item, index) => (
-                                    <tr key={index}>
-                                        <td style={{ display: "flex", alignItems: "center", gap: "10px" }}><img src={item.profileImage ?? 'https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg'} height="50px" alt='pro' /> <p>{item.name}</p></td>
-                                        <td>&#9734; {item.testResult} </td>
-                                        <td>Pending</td>
-                                        <td>{item.jobTitle}</td>
-                                        <td>{item['Application Date']}</td>
-                                        <td key={index}style={{ textAlign: "center" }}> files</td>
+                                        AppliedUsers.map((item, index) => (
+                                            <tr key={index}>
+                                                <td style={{ display: "flex", alignItems: "center", gap: "10px" }}><img src={item.profileImage ?? 'https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg'} height="50px" alt='pro' /> <p>{item.name}</p></td>
+                                                <td>&#9734; {item.testResult} </td>
+                                                <td>Pending</td>
+                                                <td>{item.jobTitle}</td>
+                                                <td>{item['Application Date']}</td>
+                                                <td key={index} style={{ textAlign: "center" }}> files</td>
 
-                                       
-                                       
 
-                                    </tr>
-                                ))
-                            }
-                                  
+
+
+                                            </tr>
+                                        ))
+                                    }
+
                                 </tbody>
                             </table>
                             <div className='table-button-div'>
@@ -555,29 +569,29 @@ console.log(AppliedUsers);
                             {
                                 showBkProfile ?
                                     <div className='profile-bookmark-div'>
-                                        <h3>Profile Bookmarked</h3>
-                                        <div style={{ display: "flex", flexWrap: "wrap" }}>
+                                        <h4 style={{paddingLeft:15}}>Profile Bookmarked</h4>
+                                        <div className='profile-bookmark-cont'>
                                             {AppliedUsers && AppliedUsers.map((user, index) => {
                                                 return (
                                                     <div className='profile-map-div' data-id={user._id} key={index}>
-                                                        <div style={{ display: "flex", marginTop: "2%", marginLeft: "2%" }}>
+                                                        <div className='profile-name_box'>
                                                             <img src={user.profileImage ?? 'https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg'} alt='pro' width={"50px"} height={"50px"} />
                                                             <div className="profile-map-text">
-                                                                <h4>{user.name}</h4>
-                                                                <p></p>
+                                                                <h5>{user.name}</h5>
+                                                                {user.biography ? <p>{user.biography}..see more</p> : ""}
                                                             </div>
                                                             <p><FaBookmark /></p>
                                                         </div>
-                                                        <div style={{ display: "flex" }} className='profile-map-div-loc'>
-                                                            <p>Location - {user.state}</p>
-                                                            <p>Type - Remote</p>
+                                                        <div className='profile-map-div-loc'>
+                                                            <p>Location -<span className='location'>{user.state}</span></p>
+                                                            <p>Type - <span className='location'>Remote</span></p>
                                                         </div>
                                                         <hr></hr>
                                                         <div className='profile-map-skills'>
-                                                            <h4>Skills</h4>
-                                                            <div style={{ display: "flex" }}>
+                                                            <h6>Skills</h6>
+                                                            <div className='profile-map-skill-box' >
                                                                 {user.skills?.map((skill, skillindex) => (
-                                                                    <p key={skillindex}>{skill.name ? skill.name : "Not defined"}</p>
+                                                                    <>{skillindex!=null? <p key={skillindex}>{skill.name}</p> : <p>Not Defined by Candidate</p>}</>
                                                                 ))}
 
 
@@ -659,6 +673,7 @@ console.log(AppliedUsers);
                                                             <button onClick={() => setSeeResume(!SeeResume)}>See Resume</button>}
                                                         <button>Schedule Interview</button>
                                                     </div>
+                                                   
 
                                                 </div>
                                             )

@@ -13,6 +13,16 @@ const dotenv = require("dotenv");
 dotenv.config();
 const SECRET_KEY = process.env.SECRET_KEY;
 const UserSession = require("../../model/users/UserSession");
+const cloudinary = require('cloudinary').v2;
+const streamifier = require('streamifier');
+
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
 
 const getUser = async (req, res) => {
   try {
@@ -187,6 +197,35 @@ const signUp = async (req, res) => {
     const token = jwt.sign({ userId: newUser._id }, SECRET_KEY, {
       expiresIn: "2d",
     });
+
+    const uploadStream = cloudinary.uploader.upload_stream(
+      {
+        resource_type: 'raw', // Use 'raw' for non-image files like PDFs
+        folder: 'resumes',
+        public_id: `${resumeFileName.originalname}_${Date.now()}`,
+      },
+      async (error, result) => {
+        if (error) {
+          console.error('Error uploading to Cloudinary:', error);
+          return res.status(500).json({ message: 'Cloudinary upload error', error });
+        }
+
+        // Append the new resume to the user's resumes array
+        newUser.resume.push({
+          filename: result.original_filename,
+          url: result.secure_url,
+          public_id: result.public_id,
+        });
+
+        // Save the updated user document
+        await newUser.save();
+
+        res.status(201).json({ message: 'Resume uploaded successfully', user: newUser });
+      }
+    );
+
+    streamifier.createReadStream(file.buffer).pipe(uploadStream);
+
 
     return res.status(201).json({
       message: `${name} your account is created successfully`,
