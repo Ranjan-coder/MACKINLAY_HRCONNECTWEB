@@ -17,6 +17,7 @@ import { handleUserLogOut } from "../../../../Redux/ReduxSlice";
 import { useNavigate } from "react-router-dom";
 import toast from 'react-hot-toast';
 import axios from 'axios'
+import Setting from "../../Settings/Setting";
 
 const newUrl = process.env.REACT_APP_BACKEND_BASE_URL_WITHOUT_API
 
