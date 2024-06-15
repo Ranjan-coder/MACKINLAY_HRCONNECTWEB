@@ -15,6 +15,7 @@ function ViewPdf({ CbTogglePDF, SelectedResume }) {
   useEffect(() => {
     const fetchResume = async () => {
       if (SelectedResume && SelectedResume.userResume) {
+
         setLoading(true);
         try {
           const path = SelectedResume.userResume.path;
@@ -40,6 +41,7 @@ function ViewPdf({ CbTogglePDF, SelectedResume }) {
   };
 
   if (loading) {
+
     return <Loader />;
   }
 
@@ -73,3 +75,4 @@ function ViewPdf({ CbTogglePDF, SelectedResume }) {
 }
 
 export default ViewPdf;
+
