@@ -45,13 +45,6 @@ const Profile_details = () => {
       );
 
       return sortedResumes[0].filename;
-
-<<<<<<< HEAD
-=======
-      const latestResumeIndex = userData.resume.length - 1;
-      return userData.resume[latestResumeIndex].filename;
-
->>>>>>> d2addf12d50d3e51b45b8486e1513870d32ac95c
     }
     return null; // Return null if no resume data is available
   };

@@ -92,13 +92,7 @@ console.log(user);
           notificationStatus: 'Unread',
           updatedAt: Date.now(),
 
-<<<<<<< HEAD
-=======
-          NotificatioNText: `Your Resume for ${user?.jobTitle} has been viewed by hr`,
-          notificationStatus: 'Unread',
-          updatedAt: Date.now()
 
->>>>>>> d2addf12d50d3e51b45b8486e1513870d32ac95c
         }));
       }
     });
@@ -114,14 +108,6 @@ console.log(jobData);
       userResume: latestResume,
       userEmail: user?.email,
 
-    const latestResumeIndex = user?.resume.length - 1;
-    const latestResume = user?.resume[latestResumeIndex];
-
-    SetshowPDF(true);
-    setSelectedResume({
-      userProfile: user?.profileImage,
-      userResume: latestResume,
-      userEmail: user?.email
 
     });
   };
