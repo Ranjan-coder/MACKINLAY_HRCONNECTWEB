@@ -1,27 +1,28 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import hrdashboard from "./HrDashboard.module.css";
+import hrdashboard from "../../Dashboard/HrDashboard.module.css";
 import { FaRegBookmark } from "react-icons/fa";
 import { FaBookmark } from "react-icons/fa6";
 
-import ViewPdf from "./ViewPdf";
+
 import { GiTireIronCross } from "react-icons/gi";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  handleBookmark,
-  handleRemoveBookmark,
-} from "../../../Redux/ReduxSlice";
+
 import { io } from "socket.io-client"
+import { handleBookmark, handleRemoveBookmark } from "../../../../Redux/ReduxSlice";
+import ViewPdf from "../../Dashboard/ViewPdf";
 const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
 const newUrl = process.env.REACT_APP_BACKEND_BASE_URL_WITHOUT_API;
-function ApplicantsDetails({ jobData, selectedUser, CbToogleDetails }) {
+
+function GenericApplicantView({ jobData, selectedUser, CbToogleDetails }) {
   const socket = io(`${newUrl}`)
   const { bookmarkUser } = useSelector((state) => state.Assessment.currentUser);
   const dispatch = useDispatch();
   const [selectedUserEmail, setSelectedUserEmail] = useState(selectedUser);
   const [userDetails, setUserDetails] = useState([]);
-  const [showPDF, setShowPDF] = useState(false);
+  console.log(userDetails);
+  const [ShowPDF, SetshowPDF] = useState(false);
   const [SelectedResume, setSelectedResume] = useState(null);
 
   useEffect(() => {
@@ -29,7 +30,7 @@ function ApplicantsDetails({ jobData, selectedUser, CbToogleDetails }) {
       jobData?.appliedBy?.filter((data) => data.email === selectedUserEmail)
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedUserEmail,jobData]);
+  }, [selectedUserEmail]);
 
   const handleToggleCardActive = (e, email, jobTitle, userJobID) => {
     // Set the selected user email
@@ -70,7 +71,8 @@ function ApplicantsDetails({ jobData, selectedUser, CbToogleDetails }) {
 
   const handleSeeResumeClick = (e, user) => {
     e.preventDefault();
-console.log(user);
+
+    // update the application status of the user in the applied collection
     axios.patch(`${baseUrl}/user/My-jobs/applicationStatus/${user?.email}`, {
       applicationStatus: {
         JobStatus: "In-Progress",
@@ -80,26 +82,23 @@ console.log(user);
       userJobID: user?.jobID,
     }).then((response) => {
       if (response.data.status) {
+        // Sending the notification to the user
         socket.emit("HrSendNotification", JSON.stringify({
           userEmail: user?.email,
-          NotificatioNText: `Your Resume for ${user?.jobTitle} has been viewed by HR`,
-          notificationStatus: 'Unread',
-          updatedAt: Date.now(),
+          NotificatioNText: `Your Resume for ${user?.jobTitle} has been viewed by hr`,
+          notificationStatus : 'Unread',
+          updatedAt: Date.now()
         }));
       }
-    });
-console.log(jobData);
-    // const latestResumeIndex = user?.resume.length - 1;
-    // console.log(latestResumeIndex);
-    const latestResume = user?.resume[0];
+    })
 
-    setShowPDF(true);
+    SetshowPDF(true);
     setSelectedResume({
       userProfile: user?.profileImage,
-      userResume: latestResume,
-      userEmail: user?.email,
+      userResume: user?.resume[0],
     });
   };
+
   const handleUserBookmark = (e, user) => {
     e.preventDefault();
     dispatch(
@@ -281,15 +280,12 @@ console.log(jobData);
           })}
         </div>
 
-        {showPDF && (
-        <ViewPdf
-          CbTogglePDF={setShowPDF}
-          SelectedResume={SelectedResume}
-        />
-      )}
+        {ShowPDF && (
+          <ViewPdf CbTogglePDF={SetshowPDF} SelectedResume={SelectedResume} />
+        )}
       </div>
     </>
   );
 }
 
-export default ApplicantsDetails;
+export default GenericApplicantView;

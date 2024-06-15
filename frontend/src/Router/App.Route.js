@@ -84,7 +84,7 @@ const HRAnalytics = lazy(() =>
   import("../pages/Employer/Analytic/HrAnalytics.js")
 );
 const Candidates = lazy(() =>
-  import("../pages/Employer/Candidates/Temp_Candidate/Candidate.js")
+  import("../pages/Employer/Candidates/Temp_Candidate/NewCandidates.js")
 );
 const InterviewScheduled = lazy(() =>
   import("../pages/Employer/InterviewScheduled/InterviewScheduled.js")
