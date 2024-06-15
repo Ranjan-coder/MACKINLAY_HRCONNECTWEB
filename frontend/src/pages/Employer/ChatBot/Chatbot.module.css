@@ -8,7 +8,6 @@
 }
 .chatbot_full_content {
   text-align: center;
-  flex: 1;
 }
 .chatbot_content {
   font-family: inter;
@@ -20,12 +19,12 @@
 }
 .chatbot_image {
   width: 35%;
-  height: 100vh;
+  height: 35vh;
   object-fit: contain;
 }
 .chatbot_content_image {
   text-align: center;
-  /* margin-top: 40px; */
+  margin-top: 40px;
 }
 .chatbot_bg {
   width: 20%;
@@ -34,7 +33,6 @@
 }
 .chatbot_full_image {
   background: linear-gradient(90deg, #0050d1 0%, #00296b 100%);
-  /* flex: 1; */
   height: 100vh;
   text-align: center;
   display: flex;

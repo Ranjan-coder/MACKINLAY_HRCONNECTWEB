@@ -29,8 +29,7 @@ const EmployerChatBot = () => {
             }
   
             .JobSeeker_LayoutContainer__RightSideContainer{
-              flex: 1;
-              height:100vh;
+              height: auto;
             }
           `}</style>
         </Helmet>
