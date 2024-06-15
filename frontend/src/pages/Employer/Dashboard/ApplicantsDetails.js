@@ -3,7 +3,7 @@ import axios from "axios";
 import hrdashboard from "./HrDashboard.module.css";
 import { FaRegBookmark } from "react-icons/fa";
 import { FaBookmark } from "react-icons/fa6";
-
+import { useNavigate } from "react-router-dom"; 
 import ViewPdf from "./ViewPdf";
 import { GiTireIronCross } from "react-icons/gi";
 import toast from "react-hot-toast";
@@ -23,7 +23,12 @@ function ApplicantsDetails({ jobData, selectedUser, CbToogleDetails }) {
   const [userDetails, setUserDetails] = useState([]);
   const [showPDF, setShowPDF] = useState(false);
   const [SelectedResume, setSelectedResume] = useState(null);
-
+  const navigate = useNavigate(); 
+  const handleScheduleInterview = (e, user) => {
+    e.preventDefault();
+   
+    navigate('/schedule-interview', { state: { userEmail: user.email, userName: user.name } });
+  };
   useEffect(() => {
     setUserDetails(
       jobData?.appliedBy?.filter((data) => data.email === selectedUserEmail)
@@ -50,7 +55,7 @@ function ApplicantsDetails({ jobData, selectedUser, CbToogleDetails }) {
         socket.emit("HrSendNotification", JSON.stringify({
           userEmail: email,
           NotificatioNText: `Your application for ${jobTitle} has been viewed by hr`,
-          notificationStatus : 'Unread',
+          notificationStatus: 'Unread',
           updatedAt: Date.now()
         }));
       }
@@ -59,7 +64,7 @@ function ApplicantsDetails({ jobData, selectedUser, CbToogleDetails }) {
     const clickedCard = e.currentTarget;
 
     clickedCard.classList.add(`${hrdashboard.__active_appliedUsers}`);
-    if ( clickedCard.classList.contains(`${hrdashboard.__active_appliedUsers}`)) {
+    if (clickedCard.classList.contains(`${hrdashboard.__active_appliedUsers}`)) {
       document.querySelectorAll(".appliedUserCard").forEach((card) => {
         if (card !== clickedCard) {
           card.classList.remove(`${hrdashboard.__active_appliedUsers}`);
@@ -85,6 +90,7 @@ console.log(user);
           NotificatioNText: `Your Resume for ${user?.jobTitle} has been viewed by HR`,
           notificationStatus: 'Unread',
           updatedAt: Date.now(),
+
         }));
       }
     });
@@ -92,6 +98,7 @@ console.log(jobData);
     // const latestResumeIndex = user?.resume.length - 1;
     // console.log(latestResumeIndex);
     const latestResume = user?.resume[0];
+
 
     setShowPDF(true);
     setSelectedResume({
@@ -272,6 +279,7 @@ console.log(jobData);
                   <button
                     className={hrdashboard.__applicantBtn}
                     style={{ background: "blue", padding: "0 4em" }}
+                    onClick={(e) => handleScheduleInterview(e, user)}
                   >
                     Schedule Interview
                   </button>

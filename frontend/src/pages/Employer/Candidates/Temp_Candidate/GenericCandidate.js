@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import hrdashboard from "../../Dashboard/HrDashboard.module.css";
-import ApplicantsDetails from '../../Dashboard/ApplicantsDetails'
-import { FaRegBookmark } from 'react-icons/fa';
+// import ApplicantsDetails from '../../Dashboard/ApplicantsDetails'
+// import { FaRegBookmark } from 'react-icons/fa';
 import axios from 'axios';
 import GenericApplicantView from './GenericApplicantView';
 
