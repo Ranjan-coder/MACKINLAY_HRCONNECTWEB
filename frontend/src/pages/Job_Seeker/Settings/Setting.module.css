@@ -155,19 +155,21 @@ body {
 }
 
 .__popupDelete {
-  border: 1px solid rgb(125, 125, 125);
+  /* border: 1px solid rgb(125, 125, 125); */
   border-radius: 10px;
   height: 15em;
-  width: 35em;
+  width: 32em;
   background: rgba(255, 255, 255, 0.939);
   position: absolute;
   z-index: 1;
   top: 40%;
-  left: 25%;
+  left: 28%;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  gap: 1em;
+  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
 }
 
 .__btnAgree,

@@ -280,7 +280,16 @@ const Signup = () => {
               </div>
             </div>
             <div className={signupStyle.step_2_part_2}>
-              <h4 style={{ paddingBottom: "10px" }}>Personal Information</h4>
+              <h4
+                style={{
+                  paddingBottom: "10px",
+                  fontFamily: "roboto",
+                  textAlign: "center",
+                  marginLeft:"-3rem"
+                }}
+              >
+                Personal Information
+              </h4>
               <div>
                 <Form onSubmit={handleSubmit}>
                   <Form.Control
@@ -407,8 +416,9 @@ const Signup = () => {
                     onClick={handleLogin}
                     style={{
                       paddingTop: "10px",
-                      fontSize: "14px",
+                      fontSize: "16px",
                       cursor: "pointer",
+                      fontFamily: "roboto",
                     }}
                   >
                     Already have employer account?&nbsp;

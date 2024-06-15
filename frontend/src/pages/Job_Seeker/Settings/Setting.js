@@ -9,10 +9,13 @@ import { TbUserExclamation } from "react-icons/tb";
 import { useDispatch, useSelector } from 'react-redux';
 import { handleUserLogOut } from '../../../Redux/ReduxSlice';
 import toast from 'react-hot-toast';
+import axios from 'axios';
 
 function Setting() {
   const { name, profileImage } = useSelector((state) => state.Assessment.currentUser);
   const [settingtype, setsettingtype] = useState("");
+  // const { userEmail } = useSelector((state) => state.User)
+  const userEmail = localStorage.getItem("email")
   const [darkModePopup, setDarkModePopup] = useState(false);
   const [darkMode, setDarkMode] = useState(() => localStorage.getItem('darkMode') || 'Device settings');
   const navi = useNavigate();
@@ -54,6 +57,28 @@ function Setting() {
 
   const [del, setDel] = useState(false);
   const handleDeleteAccount = () => {
+    setDel(true)
+  }
+  const handlePopupClose = () => { setDel(false) }
+
+  const handleAgree = () => {
+    axios.delete(`http://localhost:8585/api/delete-user/${userEmail}`)
+      .then((response) => {
+        if (response.data.success) {
+          toast.success(`${response.data.msg}`);
+          dispatch(handleUserLogOut());
+          navi('/login');
+        }
+        else {
+          toast.error("Try Again !!!");
+          handlePopupClose();
+        }
+      })
+      .catch(err => {
+        toast.error(`${err.msg}`);
+        handlePopupClose();
+      })
+  }
     setDel(!del);
   };
 
