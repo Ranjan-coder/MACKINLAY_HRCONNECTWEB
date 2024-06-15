@@ -115,18 +115,18 @@ body {
   gap: 1.5em;
 }
 
-.__pfEditBtn,
-.__pfLogoutBtn,
-.__pfDeleteBtn {
-  width: 11em;
-  height: 2.6em;
-  border: none;
-  color: white;
-  font-weight: 500;
-  border-radius: 10px;
-  transition: 300ms linear;
-  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
-}
+  .__pfEditBtn,
+  .__pfLogoutBtn,
+  .__pfDeleteBtn {
+    width: 11em;
+    height: 2.6em;
+    border: none;
+    color: white;
+    font-weight: 500;
+    border-radius: 10px;
+    transition: 300ms linear;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+  }
 
 .__pfEditBtn {
   background: linear-gradient(90deg, #01378f 0%, #0050D1 100%);
@@ -208,6 +208,7 @@ body {
   font-weight: 600;
   border-bottom: 1px solid gray;
   padding: 6px 10px;
+  cursor: pointer;
 }
 
 .Profile_cont2_One p {
@@ -279,7 +280,7 @@ body {
 .popupContent p {
   margin-bottom: 20px;
   font-size: 16px;
-  color: #555;
+  color: #1e1717;
 }
 
 .popupContent div {
@@ -294,19 +295,30 @@ body {
   align-items: center;
 }
 
-.popupContent input[type="checkbox"] {
+.popupContent label input[type="checkbox"] {
   margin-right: 10px;
   transform: scale(1.2);
   cursor: pointer;
+  
+
 }
 
 /* privacy setting */
 .privacySettings {
   padding: 20px;
+  border: 1px solid black;
+  border-radius: 20px;
+  height: 56vw;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0px 3px 3px gray;
+ 
 }
 
 .privacySettings h3 {
   margin-bottom: 20px;
+  border-bottom:1px solid grey ;
+   
 }
 
 .privacySettings section {
@@ -315,6 +327,7 @@ body {
 
 .privacySettings h4 {
   margin-bottom: 10px;
+  border-bottom:1px solid grey 
 }
 
 /* support content */
@@ -359,4 +372,25 @@ body {
 
 .feedbackForm button:hover {
   background-color: #0056b3;
+}
+.supportContent{
+  border: 1px solid black;
+  border-radius: 20px;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0px 3px 3px gray;
+  
+}
+.supportContent h3 {
+  border-bottom: 1px solid grey;
+}
+.contactDetails h4{
+  border-bottom: 1px solid grey;
+}
+.supportOptions h4{
+  border-bottom: 1px solid grey;
+}
+.feedbackForm h4{
+  border-bottom: 1px solid grey;
 }

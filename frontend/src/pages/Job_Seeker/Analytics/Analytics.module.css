@@ -40,7 +40,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: white;
+  background: white;
   z-index: 5;
 }
 
@@ -50,7 +50,7 @@
   justify-content: center;
   height: 50px;
   text-decoration: none;
-  color: #696974;
+  color: rgb(29, 29, 29);
   width: 180px;
   font-weight: 400;
   font-size: 20px;
@@ -58,7 +58,7 @@
 }
 
 .active {
-  background-color: #0062ff;
+  background: linear-gradient(90deg, #00296B 0%, #0050D1 100%);
   color: white;
   border-radius: 15px;
   display: flex;

@@ -14,8 +14,7 @@ import axios from 'axios';
 function Setting() {
   const { name, profileImage } = useSelector((state) => state.Assessment.currentUser);
   const [settingtype, setsettingtype] = useState("");
-  // const { userEmail } = useSelector((state) => state.User)
-  const userEmail = localStorage.getItem("email")
+  const userEmail = localStorage.getItem("email");
   const [darkModePopup, setDarkModePopup] = useState(false);
   const [darkMode, setDarkMode] = useState(() => localStorage.getItem('darkMode') || 'Device settings');
   const navi = useNavigate();
@@ -28,18 +27,17 @@ function Setting() {
   const applyDarkMode = () => {
     const body = document.body;
     if (darkMode === 'Always on') {
-      body.style.backgroundColor = '#2b2a2a'; // Set background color for dark mode
-      body.style.color = '#FFFFFF'; // Set text color to white for dark mode
+      body.classList.add('dark-mode');
+      body.classList.remove('light-mode');
     } else if (darkMode === 'Always off') {
-      body.style.backgroundColor = '#FFFFFF'; // Set background color for light mode
-      body.style.color = '#000000'; // Set text color to black for light mode
+      body.classList.add('light-mode');
+      body.classList.remove('dark-mode');
     } else {
-      // Set to device default or remove background color
-      body.style.backgroundColor = '';
-      body.style.color = ''; // Set text color to default
+      body.classList.remove('dark-mode');
+      body.classList.remove('light-mode');
     }
   };
-  
+
   const handleDarkModeSelection = (mode) => {
     setDarkMode(mode);
     localStorage.setItem('darkMode', mode);
@@ -57,9 +55,9 @@ function Setting() {
 
   const [del, setDel] = useState(false);
   const handleDeleteAccount = () => {
-    setDel(true)
-  }
-  const handlePopupClose = () => { setDel(false) }
+    setDel(true);
+  };
+  const handlePopupClose = () => { setDel(false); };
 
   const handleAgree = () => {
     axios.delete(`http://localhost:8585/api/delete-user/${userEmail}`)
@@ -68,8 +66,7 @@ function Setting() {
           toast.success(`${response.data.msg}`);
           dispatch(handleUserLogOut());
           navi('/login');
-        }
-        else {
+        } else {
           toast.error("Try Again !!!");
           handlePopupClose();
         }
@@ -77,9 +74,7 @@ function Setting() {
       .catch(err => {
         toast.error(`${err.msg}`);
         handlePopupClose();
-      })
-  }
-    setDel(!del);
+      });
   };
 
   const renderSettingContent = () => {
@@ -110,11 +105,10 @@ function Setting() {
             {
               del && <div className={SettingStyle.__popupDelete}>
                 <p>Are you sure you want to delete ??</p>
-                <button>Agree</button>
-                <button onClick={() => navi()}>Cancel</button>
+                <button onClick={handleAgree}>Agree</button>
+                <button onClick={handlePopupClose}>Cancel</button>
               </div>
             }
-
           </div>
         );
       case "Setting/privacy":
@@ -164,7 +158,7 @@ function Setting() {
             <h3>Service Settings</h3>
             <section>
               <h4>Terms of Service</h4>
-              <p>By using our services, you agree to comply with our Terms of Service. Please read them carefully before accessing or using our platform.</p>
+              <p>By using our platform, you agree to our Terms of Service. Please review them carefully to understand your rights and responsibilities.</p>
               <a href="/terms-of-service">Read Terms of Service</a>
             </section>
             <section>

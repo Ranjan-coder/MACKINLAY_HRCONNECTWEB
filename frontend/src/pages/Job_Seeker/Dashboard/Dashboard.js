@@ -55,7 +55,7 @@ function Dashboard() {
       .catch((error) => {
         toast.error(`Server failed to load! Reload your page`);
         setLoading(false);
-      });
+      }); 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [email,dispatch]);
 
