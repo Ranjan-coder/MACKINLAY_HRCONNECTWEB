@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import companyLogo from '../../../../Assets/enlarge_title_logo.png'
 import loginImage from "../../../../Assets/Login form Image.PNG";
 import google from "../../../../Assets/Google Logo.jpg";
 import linkedin from "../../../../Assets/linkedin logo.jpg";
@@ -202,7 +203,7 @@ function UserLogin({ toggleLoginType, isHRLogin }) {
                   <div>
                     <img
                       className={LoginStyle.sub_container3_imgstyl}
-                      src="https://mackinlay.in/img/title_logo.png"
+                      src={companyLogo}
                       alt="not_loaded"
                     />
                   </div>
@@ -334,7 +335,7 @@ function UserLogin({ toggleLoginType, isHRLogin }) {
                   <div>
                     <img
                       className={`${LoginStyle.pass_company_logo} animate__animated animate__zoomIn`}
-                      src="https://mackinlay.in/img/title_logo.png"
+                      src={companyLogo}
                       alt="not_loaded"
                     />
                   </div>

@@ -2,9 +2,12 @@ import React, { useEffect, useState } from "react";
 import ResumeStyle from "../MyResume.module.css";
 import axios from "axios";
 import PdfComp from "../PdfComp";
+import Loader from "../../../Common-Components/Loaders/Loader";
 const newURl = process.env.REACT_APP_BACKEND_BASE_URL_WITHOUT_API;
 const CurrentResume = ({ email }) => {
   const [latestResume, setLatestResume] = useState(null); // Initialize latestResume as null
+  const [IsLoaded,setIsLoaded]=useState(false)
+
   // console.log(email);
   // const email = localStorage.getItem("email");
 
@@ -23,16 +26,18 @@ const CurrentResume = ({ email }) => {
         } else {
           setLatestResume(null);
         }
+        setIsLoaded(true)
       } catch (error) {
         console.error("Error fetching resumes:", error);
       }
     };
 
     fetchResumes();
-  }, [email]);
+  }, [email,latestResume]);
 
   return (
-    <div className={ResumeStyle.Current_Resume_Container}>
+  <>
+  {IsLoaded?    <div className={ResumeStyle.Current_Resume_Container}>
       <div className={ResumeStyle.resume_name_box}>
         <p style={{ fontWeight: "bold" }}>Name</p>
         <p className={ResumeStyle.pdf_name}>
@@ -45,7 +50,10 @@ const CurrentResume = ({ email }) => {
           <PdfComp key={latestResume._id} pdf={`${newURl}/${latestResume.path}`} />
         )}
     </div>
+:<Loader/>}
+  </>
   );
+
 };
 
 export default CurrentResume;

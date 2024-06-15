@@ -13,6 +13,18 @@ const hrSchema = new mongoose.Schema({
   password: {
     type: String,
   },
+  companyName: {
+    type: String
+  },
+  aboutCompany : {
+    type: String
+  },
+  companyAddress : {
+    type: String
+  },
+  companyWebsite : {
+    type: String
+  },
   userType: {
     type: String,
   },

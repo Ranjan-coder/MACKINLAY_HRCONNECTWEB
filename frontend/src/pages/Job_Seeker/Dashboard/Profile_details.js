@@ -38,8 +38,13 @@ const Profile_details = () => {
 
   const getFirstResumeFilename = () => {
     if (userData.resume && userData.resume.length > 0) {
-      const latestResumeIndex = userData.resume.length - 1;
-      return userData.resume[latestResumeIndex].filename;
+
+      const resumesData=userData.resume;
+      const sortedResumes = resumesData.sort(
+        (a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt)
+      );
+
+      return sortedResumes[0].filename;
     }
     return null; // Return null if no resume data is available
   };
@@ -133,6 +138,7 @@ const Profile_details = () => {
 
         const applicationPayload = {
           ...item,
+          firstResumeFilename,
           userData,
           email,
           AppliedDate,
