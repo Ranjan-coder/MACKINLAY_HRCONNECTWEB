@@ -23,6 +23,28 @@ const getHR = async (req, res) => {
   }
 };
 
+//Delete HR
+const deleteHR = async (req, res) => {
+  const { email } = req.params;
+  const deleteHr = await Hr.deleteOne({ email });
+  try {
+    if (deleteHr.deletedCount) {
+      res.send({
+        success: true,
+        msg: "Account deleted successfully"
+      })
+    }
+    else {
+      res.send({
+        success: false,
+        msg: "Account not found !!"
+      })
+    }
+  } catch (err) {
+    res.status(401).json({ success: false }, err);
+  }
+}
+
 const checkEmail = async (req, res) => {
   const { email } = req.body;
   const user = await Hr.findOne({ email });
@@ -252,8 +274,8 @@ const HRupdateUserField = async (req, res) => {
     req.body.skills =
       req.body.skills?.length > 0
         ? req.body.skills
-            ?.split(",")
-            .map((skill, index) => ({ name: skill.trim(), index }))
+          ?.split(",")
+          .map((skill, index) => ({ name: skill.trim(), index }))
         : "";
 
     for (const key in req.body) {
@@ -298,4 +320,5 @@ module.exports = {
   forgotPassword,
   resetPassword,
   HRupdateUserField,
+  deleteHR
 };

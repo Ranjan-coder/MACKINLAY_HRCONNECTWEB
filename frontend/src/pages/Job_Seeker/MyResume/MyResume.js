@@ -29,6 +29,7 @@ function MyResume() {
     const formData = new FormData();
     formData.append("email", email);
     formData.append("resumefile", selectedFile);
+    setbtnPopup(false);
 
     try {
       const response = await axios.post(`${newUrl}/resume/upload`, formData, {
@@ -39,7 +40,6 @@ function MyResume() {
       );
       toast.success(response.data.message);
       // After successful upload, toggle the upload popup
-      setbtnPopup(false);
     } catch (error) {
       console.error("Error uploading resume:", error);
     }

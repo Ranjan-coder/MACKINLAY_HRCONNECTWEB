@@ -78,6 +78,12 @@ app.use("/api/user/My-jobs", myJobRoutes);
 // !Bookmarked Routes
 const { bookmarkRoutes } = require("./Routes/Bookmark.Route.js");
 app.use("/api/user/bookmarkd", bookmarkRoutes);
+// !Shortlisted Routes
+const { ShortlistedRoute } = require("./Routes/Shortlisted.Route.js");
+app.use("/api/user/shortlisted", ShortlistedRoute);
+// !Rejected Routes
+const { RejectedRoute } = require("./Routes/Rejected.Route.js");
+app.use("/api/user/rejected", RejectedRoute);
 
 // ! Notifications Route
 const { notificationRoutes } = require("./Routes/Notification.Route.js");
@@ -128,7 +134,9 @@ io.on("connection", (socket) => {
 });
 
 
+
 app.use('/api/interview',InterviewSheduleRoute)
+
 
 
 httpServer.listen(Port, async () => {
