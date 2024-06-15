@@ -6,10 +6,9 @@
 }
 .cardcontainer{
   display: flex;
-  /* align-items: center; */
   justify-content: space-evenly;
   height: 20vh;
-  /* background-color: #95ecba; */
+
 }
 .cardcontainer1{
   display: flex;
@@ -56,7 +55,7 @@
 .table_container {
   border-radius: 10px;
   overflow: hidden;
-  border: 1px solid black; /* Border around the entire table */
+  border: 1px solid black; 
 }
 
 .table_wrapper {
@@ -72,6 +71,7 @@
 .custom_table th,
 .custom_table td {
   border: 1px solid black;
+
 }
 
 .custom_table thead th {
@@ -96,12 +96,17 @@
   height: 40px;
   margin-right: 10px;
   border-radius: 50%;
+  display: flex;
+  align-items: center;
 }
 
 .name {
   font-weight: bold;
+  
 }
 
 .gold_star {
   color: gold;
+  display: flex;
+  align-items: center;
 }

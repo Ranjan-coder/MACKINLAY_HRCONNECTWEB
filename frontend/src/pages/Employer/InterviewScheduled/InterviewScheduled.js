@@ -68,7 +68,7 @@ const InterviewScheduled = () => {
   const rows = interviewedUsers.map((user, index) => {
     console.log(user); 
     return (
-      <tr key={index}>
+      <tr key={index} className={InterviewStyle.Maincontainer}>
         <td className={InterviewStyle.name_column}>
           <div className={InterviewStyle.name_content}>
             <Image
