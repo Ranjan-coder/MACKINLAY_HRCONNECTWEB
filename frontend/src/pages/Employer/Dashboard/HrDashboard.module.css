@@ -15,13 +15,19 @@ p {
     min-height: 100%;
 }
 
-.__dashboard_Header,
+.__dashboard_Header {
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* .__dashboard_Header,
 .__postImpression_Header,
 .__latest_Post_Header {
+    border: 1px solid red;
     display: flex;
     justify-content: space-between;
     position: relative;
-}
+} */
 
 /* Select ----------------- */
 .selectOption {
@@ -82,10 +88,6 @@ p {
 }
 
 /* Posts Impression ------------ */
-.__post_Impression {
-    margin: 1em 0;
-}
-
 .__post_Section {
     height: 200px;
     padding: 1em;
@@ -113,6 +115,7 @@ p {
     border-radius: 50%;
     object-fit: contain;
     border: .1px solid rgba(0, 0, 0, 0.3);
+    background: white;
 }
 
 .__postTitle {
