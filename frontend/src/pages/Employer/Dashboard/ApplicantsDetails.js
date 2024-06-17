@@ -27,7 +27,7 @@ function ApplicantsDetails({ jobData, selectedUser, CbToogleDetails }) {
   const handleScheduleInterview = (e, user) => {
     e.preventDefault();
    
-    navigate('/schedule-interview', { state: { userEmail: user.email, userName: user.name } });
+    navigate('/schedule-interview', { state: { userEmail: user.email, userName: user.name,UserProfile:user.profileImage } });
   };
   useEffect(() => {
     setUserDetails(
