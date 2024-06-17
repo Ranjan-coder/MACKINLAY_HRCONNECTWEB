@@ -76,13 +76,10 @@ function SideNavbar() {
   const handleLogoutClick = async () => {
     try {
       dispatch(handleUserLogOut());
-
       const response = await axios.get(`${newUrl}/logout`);
-
       if (response.status !== 200) {
         throw new Error('Logout failed');
       }
-
       toast.success(`${name} Logged out !!`);
       setTimeout(() => {
         navigateTO("/login");
@@ -93,7 +90,6 @@ function SideNavbar() {
     }
   };
 
-
   return (
     <>
       <div className={navStyle.SidenavBar__Container}>
@@ -103,7 +99,6 @@ function SideNavbar() {
             <span className={navStyle.sidenavBar_LOGO}>HCP</span>
           </h1>
         </div>
-
         <nav className={navStyle.JobSeeker_nav}>
           {menuItems.map((data, index) => {
             return (
@@ -124,8 +119,7 @@ function SideNavbar() {
             );
           })}
         </nav>
-
-        <div className={navStyle.__navFooter}>
+        <div>
           <div className={navStyle.sidenavBar__profileBox}>
             <Tooltip title="Profile" arrow placement="right-end">
               <img
@@ -135,15 +129,11 @@ function SideNavbar() {
                 onError={(e) => { e.target.src = `https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg`; e.onError = null; }}
               />
             </Tooltip>
-
             <p className={navStyle.sidenavBar__userName}>
               {name && name?.split(" ")[0]}
-              {/* <button onClick={() => navigateTO('/settings/editprofile')} className={navStyle.editProfileButton}>Edit Profile</button> */}
             </p>
-
             <DropDownMENU userName={name} userLogOut={handleLogoutClick} />
           </div>
-
           <button className={navStyle.logOutButton} onClick={handleLogoutClick} >
             <RiLogoutCircleRLine className={navStyle.logOutButtonICON} />
             Log Out
@@ -164,8 +154,7 @@ function DropDownMENU({ userName, userLogOut }) {
       <p className={`${navStyle.dropDownITEM} ${navStyle.dropDownITEM_Name}`}> {userName && userName}</p>
       <button className={`${navStyle.dropDownITEM} ${navStyle.dropDownITEM_Button}`} onClick={(e) => navigateTO("/settings/editprofile")}>Edit Profile</button>
       <button className={`${navStyle.dropDownITEM} ${navStyle.dropDownITEM_Button}`} onClick={userLogOut}>  <RiLogoutCircleRLine className={navStyle.logOutButtonICON} />
-        Log Out
-      </button>
+        Log Out </button>
     </div>
   );
 }

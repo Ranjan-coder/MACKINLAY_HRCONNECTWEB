@@ -21,7 +21,7 @@ function ApplicantsDetails({ jobData, selectedUser, CbToogleDetails }) {
   const dispatch = useDispatch();
   const [selectedUserEmail, setSelectedUserEmail] = useState(selectedUser);
   const [userDetails, setUserDetails] = useState([]);
-  const [ShowPDF, SetshowPDF] = useState(false);
+  const [showPDF, setShowPDF] = useState(false);
   const [SelectedResume, setSelectedResume] = useState(null);
   const navigate = useNavigate(); 
   const handleScheduleInterview = (e, user) => {
@@ -34,7 +34,7 @@ function ApplicantsDetails({ jobData, selectedUser, CbToogleDetails }) {
       jobData?.appliedBy?.filter((data) => data.email === selectedUserEmail)
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedUserEmail]);
+  }, [selectedUserEmail,jobData]);
 
   const handleToggleCardActive = (e, email, jobTitle, userJobID) => {
     // Set the selected user email
@@ -75,8 +75,7 @@ function ApplicantsDetails({ jobData, selectedUser, CbToogleDetails }) {
 
   const handleSeeResumeClick = (e, user) => {
     e.preventDefault();
-
-    // update the application status of the user in the applied collection
+console.log(user);
     axios.patch(`${baseUrl}/user/My-jobs/applicationStatus/${user?.email}`, {
       applicationStatus: {
         JobStatus: "In-Progress",
@@ -86,27 +85,32 @@ function ApplicantsDetails({ jobData, selectedUser, CbToogleDetails }) {
       userJobID: user?.jobID,
     }).then((response) => {
       if (response.data.status) {
-        // Sending the notification to the user
         socket.emit("HrSendNotification", JSON.stringify({
           userEmail: user?.email,
-          NotificatioNText: `Your Resume for ${user?.jobTitle} has been viewed by hr`,
+
+          NotificatioNText: `Your Resume for ${user?.jobTitle} has been viewed by HR`,
           notificationStatus: 'Unread',
-          updatedAt: Date.now()
+          updatedAt: Date.now(),
+
+
         }));
       }
-    })
+    });
+console.log(jobData);
+    // const latestResumeIndex = user?.resume.length - 1;
+    // console.log(latestResumeIndex);
+    const latestResume = user?.resume[0];
 
-    const latestResumeIndex = user?.resume.length - 1;
-    const latestResume = user?.resume[latestResumeIndex];
 
-    SetshowPDF(true);
+    setShowPDF(true);
     setSelectedResume({
       userProfile: user?.profileImage,
       userResume: latestResume,
-      userEmail: user?.email
+      userEmail: user?.email,
+
+
     });
   };
-
   const handleUserBookmark = (e, user) => {
     e.preventDefault();
     dispatch(
@@ -289,9 +293,12 @@ function ApplicantsDetails({ jobData, selectedUser, CbToogleDetails }) {
           })}
         </div>
 
-        {ShowPDF && (
-          <ViewPdf CbTogglePDF={SetshowPDF} SelectedResume={SelectedResume} />
-        )}
+        {showPDF && (
+        <ViewPdf
+          CbTogglePDF={setShowPDF}
+          SelectedResume={SelectedResume}
+        />
+      )}
       </div>
     </>
   );

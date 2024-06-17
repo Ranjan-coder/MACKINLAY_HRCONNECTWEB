@@ -114,6 +114,7 @@ li {
     display: block;
     padding: 0em 0.5em;
     text-transform: capitalize;
+    margin-top: 20px;
 }
 
 .Form__inputBox_Label_Info {

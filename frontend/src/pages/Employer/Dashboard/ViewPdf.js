@@ -1,60 +1,73 @@
 import React, { useEffect, useState } from "react";
-import pageStyle from "./HrDashboard.module.css";
+import toast from 'react-hot-toast';
 import { GiTireIronCross } from "react-icons/gi";
-import axios from "axios";
 import Loader from "../../Common-Components/Loaders/Loader";
+import pageStyle from "./HrDashboard.module.css";
+import PdfComp from "../../Job_Seeker/MyResume/PdfComp";
 
-const newUrl = process.env.REACT_APP_BACKEND_BASE_URL_WITHOUT_API
+const newUrl = process.env.REACT_APP_BACKEND_BASE_URL_WITHOUT_API;
+
 function ViewPdf({ CbTogglePDF, SelectedResume }) {
-  const [resumeError, setError] = useState(false);
-  const [Loading, setLoading] = useState(false);
-  useEffect(() => {
-    setLoading(true);
-    axios
-      .get(`${newUrl}/${SelectedResume?.userResume?.path}`)
-      .then((response) => {
-        if(response.status === 200){
-            setLoading(false);
-        }else{
-            setLoading(false);
-        }
-      })
-      .catch((error) => {
-        setError(true);
-        setLoading(false);
-      });
-  }, [SelectedResume.userResume?.path]);
+  const [resumeError, setResumeError] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [resumeUrl, setResumeUrl] = useState(null);
 
-  const handleClosePopup = (e)=>{
+  useEffect(() => {
+    const fetchResume = async () => {
+      if (SelectedResume && SelectedResume.userResume) {
+
+        setLoading(true);
+        try {
+          const path = SelectedResume.userResume.path;
+          const url = `${newUrl}/${path}`; // Ensure this points to Cloudinary URL
+          setResumeUrl(url);
+        } catch (error) {
+          console.error('Error viewing resume:', error);
+          setResumeError(true);
+          toast.error("Error loading Resume");
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchResume();
+  }, [SelectedResume]);
+
+  const handleClosePopup = (e) => {
     e.preventDefault();
     setLoading(false);
-    CbTogglePDF(false)
+    CbTogglePDF(false);
+  };
+
+  if (loading) {
+
+    return <Loader />;
   }
+
+  if (resumeError) {
+    toast.error("Error loading Resume");
+    return null;
+  }
+
   return (
     <section className={pageStyle.__viewPDF_mainContainer}>
-        <GiTireIronCross
-          onClick={handleClosePopup}
-          className={pageStyle.__viewPDF_CloseButton}
-        />
+      <GiTireIronCross
+        onClick={handleClosePopup}
+        className={pageStyle.__viewPDF_CloseButton}
+      />
+      {resumeUrl && (
+        <a href={resumeUrl} download="Resume.pdf" className={pageStyle.__viewPDF_downloadButton}>
+         <i className="fa-solid fa-download"></i> Download
+        </a>
+      )}
       <div className={pageStyle.__viewPDFBox}>
-        {Loading ? (
-          <Loader />
+        {resumeUrl ? (
+          <PdfComp pdf={resumeUrl} pagesize="full" />
         ) : (
-          <>
-            {resumeError ? (
-              <p className={pageStyle.__viewPDF_errorMSG}>
-                No Resume Available
-              </p>
-            ) : (
-              <iframe
-                id={pageStyle.__viewPDF}
-                src={`${newUrl}/${SelectedResume?.userResume?.path}`}
-                width="100%"
-                height="100%"
-                title="user-resume"
-              />
-            )}
-          </>
+          <p className={pageStyle.__viewPDF_errorMSG}>
+            No Resume Available
+          </p>
         )}
       </div>
     </section>
@@ -62,3 +75,4 @@ function ViewPdf({ CbTogglePDF, SelectedResume }) {
 }
 
 export default ViewPdf;
+

@@ -13,19 +13,20 @@
 .step_container {
   border-radius: 20px;
   width: 60%;
-  height: 78vh;
+  height: 80vh;
   margin: auto;
   background-color: white;
 }
 
 .step_flex_container {
   display: flex;
+  justify-content: space-between;
 }
 
 .step_1_part_1 {
   background-color: rgba(199, 225, 255, 1);
   width: 50%;
-  height: 78vh;
+  height: 80vh;
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
 }
@@ -33,14 +34,23 @@
 .step_1_banner_heading_signup {
   text-align: center;
   margin-top: 60px;
+  background-image: url(https://media.giphy.com/media/26BROrSHlmyzzHf3i/giphy.gif);
+  background-size: contain;
+  color: transparent;
+  background-clip: text;
+  text-transform: uppercase;
+  margin: 10px 0;
+  font-weight: 600;
 }
 
 .upload_resume_heading{
   text-align: center;
+  font-family: "Oswald";
 }
 
 .resume_handler{
-  margin-left: 3.5vw;
+  margin-left: 0.5vw;
+  width: 21vw;
 }
 
 .create_account_name_container {
@@ -59,8 +69,11 @@
 }
 
 .step_1_part_2 {
-  margin-top: 50px;
-  margin-left: 50px;
+  width: 50%;
+  margin-top: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .step_button_container {
@@ -69,25 +82,32 @@
 }
 
 .step_button {
-  margin-top: 39px;
+  font-family: roboto;
+  margin-top: 8vh;
   border: none;
   padding: 8px;
-  width: 200px;
+  width: 15vw;
   border-radius: 12px !important;
   background-color: white;
   color: white;
   background: linear-gradient(90deg, #0050d1 0%, #00296b 100%);
+  margin-left: -2rem;
+}
+
+.step_button:hover{
+  background: linear-gradient(90deg, #3377e0 0%, #33558a 100%);
 }
 
 .step_2_part_2 {
   margin-top: 50px;
-  margin-left: 50px;
+  width: 45%;
 }
 
 .personal_input_field {
-  border-radius: 20px !important;
+  border-radius: 12px !important;
   margin-bottom: 15px;
   width: 22vw !important;
+  font-family: roboto;
 }
 
 .password_container {
@@ -139,8 +159,8 @@
 }
 
 .step_4_part_2 {
-  margin-left: 50px;
-  margin-top: 50px;
+    margin-top: 50px;
+    width: 45%;
 }
 
 .education_detail_start_date {
@@ -166,7 +186,7 @@
 .education_date_container {
   display: flex;
   justify-content: space-between;
-  /* width: 22vw; */
+  width: 22vw;
 }
 
 .date_container {
@@ -176,14 +196,13 @@
 }
 
 .login_social_list {
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  width: 20vw;
   list-style-type: none;
-}
-
-
-.social_list_item {
-  padding-right: 40px;
+  padding: 0;
+  text-align: center;
+  margin-top: 10px;
 }
 
 .social_image {
@@ -277,4 +296,21 @@
 .hr_input_field {
   width: 100% !important;
   border-radius: 5px !important;
+}
+
+.request_otp_button {
+  margin-top: -10px;
+  width: 40%;
+  height: 5vh;
+  border-radius: 8px;
+  font-size: 11px;
+  padding-top: 6px;
+  margin-bottom: 5px;
+  color: white;
+  background: linear-gradient(90deg, #0050d1 0%, #00296b 100%);
+}
+
+/* Hover effect */
+.request_otp_button:hover {
+  opacity: 0.9;
 }
