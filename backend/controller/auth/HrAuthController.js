@@ -16,7 +16,7 @@ const getHR = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    res.json({ name: user.name, email: user.email, hrDetails: user });
+    res.json({hrDetails: user, success: true });
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json({ message: "Internal server error" });

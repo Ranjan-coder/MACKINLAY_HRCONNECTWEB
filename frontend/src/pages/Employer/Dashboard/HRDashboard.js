@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import hrdashboard from "./HrDashboard.module.css";
 import user from "../../../Assets/user.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowUpRightFromSquare, faTrash,} from "@fortawesome/free-solid-svg-icons";
+import { faArrowUpRightFromSquare, faTrash, } from "@fortawesome/free-solid-svg-icons";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import axios from "axios";
@@ -226,7 +226,7 @@ export default function HRDashboard() {
           {!selectedJobId && (
             <div className={hrdashboard.__latest_Post}>
               <div className={hrdashboard.__latest_Post_Header}>
-                <h3 style={{margin:".5em 0"}}>Latest Posts</h3>
+                <h3 style={{ margin: ".5em 0" }}>Latest Posts</h3>
               </div>
               <section className={hrdashboard.__latestPosts}>
                 {

@@ -50,7 +50,7 @@ export default function HR_Navbar() {
       <div className={layout.__nav_footer_actions}>
         <div className={layout.__user_Info}>
           <img className={layout.__user_Img} title='Profile'
-            src={profileImage ?? 'https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg'}
+            src={profileImage ? 'https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg' : profileImage}
             alt='HrProfilePicture'
             onError={(e) => { e.target.src = `https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg`; e.onError = null; }}
           />

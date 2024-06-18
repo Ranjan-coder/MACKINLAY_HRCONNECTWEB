@@ -6,7 +6,7 @@ import ApplicantsDetails from "./ApplicantsDetails.js"
 import { io } from "socket.io-client"
 const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
 const newUrl = process.env.REACT_APP_BACKEND_BASE_URL_WITHOUT_API;
-const  HrJobDetail = ({ jobId, ShowApplicantDetails, CbToggleDetails }) => {
+const HrJobDetail = ({ jobId, ShowApplicantDetails, CbToggleDetails }) => {
   const socket = io(`${newUrl}`)
   const [job, setJob] = useState(null);
   const [selectedUser, setUsers] = useState([]);
@@ -43,7 +43,7 @@ const  HrJobDetail = ({ jobId, ShowApplicantDetails, CbToggleDetails }) => {
         socket.emit("HrSendNotification", JSON.stringify({
           userEmail: userEmail,
           NotificatioNText: `Your application for ${jobTitle} has been viewed by hr`,
-          notificationStatus : 'Unread',
+          notificationStatus: 'Unread',
           updatedAt: Date.now()
         }));
       }
@@ -53,17 +53,16 @@ const  HrJobDetail = ({ jobId, ShowApplicantDetails, CbToggleDetails }) => {
     <>
       <div className={hrdashboard._jobDetails} key={job && job._id}>
         <h2>{job && job.jobTitle} needed.</h2>
-        <p style={{ width: "66vw" }}>{job && job.jobDescription}</p>
+        <p>{job && job.jobDescription}</p>
         <p style={{ paddingTop: "20px", fontSize: "18px" }}>
           <strong>Requirements</strong>
+          <p style={{textAlign: 'justify' }}>{job && job.responsibility}</p>
         </p>
-        <p style={{ width: "66vw", textAlign: 'justify' }}>{job && job.responsibility}</p>
+
         <div className={hrdashboard.hr_job_detail_skill_container_main}>
-          <div>
-            <div style={{ color: "rgba(255, 184, 0, 1)", paddingTop: "20px", fontWeight: '500' }}> Skills </div>
-          </div>
-          <div>
-            <ul className={hrdashboard.hr_job_detail_skill_container}>
+          <p style={{ color: "rgba(255, 184, 0, 1)", fontWeight: '800' }}> Skills :</p>
+          <div className={hrdashboard.hr_job_detail_skill_container}>
+            <ul>
               {job && job.skilRequired.map((skill) => (
                 <li key={skill.index} className={hrdashboard.hr_job_detail_skill}>
                   {skill.name}
@@ -72,29 +71,29 @@ const  HrJobDetail = ({ jobId, ShowApplicantDetails, CbToggleDetails }) => {
             </ul>
           </div>
         </div>
+
         <div className={hrdashboard.hr_job_detail_location}>
-          <div style={{ display: 'flex' }}>
+          <div className={hrdashboard.__jobLeftSection} style={{display: 'flex' }}>
             <p className={hrdashboard.hr_job_detail_location_childrens}>
               Location -
-              <span>
+              <span style={{paddingLeft:".5em"}}>
                 <strong>{job && job.location}</strong>
               </span>
             </p>
             <p className={hrdashboard.hr_job_detail_location_childrens}>
               Type -
-              <span>
+              <span style={{paddingLeft:".5em"}}>
                 <strong>{job && job.employmentType}</strong>
               </span>
             </p>
           </div>
           <p className={hrdashboard.hr_job_detail_location_childrens}>
-            Salary -
-            <span>
-              <strong>{job && job.salaryRange}</strong>
+            Salary :
+            <span style={{paddingLeft:".5em"}}>
+              <strong>{job && job.salaryRange} LPA</strong>
             </span>
           </p>
         </div>
-
       </div>
 
       {
@@ -134,7 +133,6 @@ const  HrJobDetail = ({ jobId, ShowApplicantDetails, CbToggleDetails }) => {
           }
         </div>
       }
-
     </>
   );
 };

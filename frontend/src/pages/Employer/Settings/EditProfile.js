@@ -18,6 +18,7 @@ function EditProfile() {
     email: "",
     profileImage: "",
   });
+  console.log(userDetails);
 
   // ! Onchange event for form input
   const handleOnChange = (e) => {
@@ -43,7 +44,6 @@ function EditProfile() {
     }
   };
 
-
   // ! handleSavechanges click
   const handleSaveChangesClick = (e) => {
     e.preventDefault();
@@ -65,7 +65,6 @@ function EditProfile() {
         setSelectedImg(null);
         loadUserData()
       }
-
     }).catch((error) => {
       console.log(error)
       toast.error(`Something went wrong : ${error.msg}`);
@@ -77,15 +76,12 @@ function EditProfile() {
   //! Load user data by using his email address
   const loadUserData = () => {
     setIsLoading(true);
-    axios
-      .get(`${baseURL}/hr/get-hr?email=${email}`)
+    axios.get(`${baseURL}/hr/get-hr?email=${email}`)
       .then((response) => {
         if (response.data) {
           console.log(response.data.hrDetails)
           const { name, email, profileImage } = response.data.hrDetails
-
           setUserDetails({ name, email,profileImage});
-
           localStorage.setItem("profileImage", response.data.hrDetails?.profileImage);
           localStorage.setItem("name", response.data.hrDetails?.name);
           localStorage.setItem("email", response.data.hrDetails?.email);
@@ -107,7 +103,6 @@ function EditProfile() {
         <Loader />
       ) : (
         <form className={styleSheet.editProfile__form} onSubmit={(e) => e.preventDefault()} encType="multipart/form-data">
-
           <div className={styleSheet.Form__profileContainer}>
             <label htmlFor="profileImage" className={styleSheet.form__userLabel}>Profile Picture</label>
             <div className={styleSheet.Form__profileBox}>
@@ -139,134 +134,9 @@ function EditProfile() {
             <input type="email" value={userDetails.email} name="email" id="email" placeholder="Enter your email address" className={styleSheet.Form__input} onChange={handleOnChange} autoComplete="off" />
           </div>
 
-          {/* Phone number */}
-          {/* <div className={`${styleSheet.Form__inputRows_Secondry}`}>
-            <label htmlFor="phone" className={styleSheet.Form__inputBox_Label}>Phone</label>
-            <input type='tel' pattern="[0-9]{10}" value={userDetails.phone_number} name="phone_number" id="phone" placeholder="Enter your phone number" className={styleSheet.Form__input} onChange={handleOnChange} maxLength="10" autoComplete="off" />
-          </div>
- */}
-          {/* WEbsites*/}
-          {/* <div className={`${styleSheet.Form__inputRows_Secondry}`}>
-            <label htmlFor="website" className={styleSheet.Form__inputBox_Label}>Website</label>
-            <input type="text" value={userDetails.website} name="website" id="website" placeholder="Enter your website link" className={styleSheet.Form__input} onChange={handleOnChange} autoComplete="off" />
-          </div> */}
-
-          {/* marital status and Date of birth */}
-          {/* <div className={`${styleSheet.Form__inputRows_Primary}`}>
-
-            <div className={styleSheet.Form__inputBox}>
-              <label htmlFor="maritalStatus" className={styleSheet.Form__inputBox_Label}> Marital Status</label>
-              <select id="maritalStatus" value={userDetails.marital_status} className={`${styleSheet.Form__input} ${styleSheet.Form__Select_input}`} name="marital_status" onChange={handleOnChange} autoComplete="off">
-                <option value="">Select your marital status</option>
-                <option value="single" className={styleSheet.Form_SelectInput_options}>single</option>
-                <option value="married" className={styleSheet.Form_SelectInput_options}>married</option>
-                <option value="widowed" className={styleSheet.Form_SelectInput_options}>widowed</option>
-                <option value="divorced" className={styleSheet.Form_SelectInput_options}>divorced</option>
-                <option value="separated" className={styleSheet.Form_SelectInput_options}>separated</option>
-              </select>
-            </div>
-
-            <div className={styleSheet.Form__inputBox}>
-              <label htmlFor="dob" className={styleSheet.Form__inputBox_Label}>Date of birth</label>
-              <input type="date" name="dob" id="dob" value={userDetails.dob?.split("T")[0]} className={styleSheet.Form__input} onChange={handleOnChange} autoComplete="off" />
-            </div>
-          </div>
- */}
-          {/* Gender and nationality */}
-          {/* <div className={`${styleSheet.Form__inputRows_Primary}`}>
-            <div className={styleSheet.Form__inputBox}>
-              <label htmlFor="gender" className={styleSheet.Form__inputBox_Label}> Gender</label>
-              <select value={userDetails.gender} className={`${styleSheet.Form__input} ${styleSheet.Form__Select_input}`} id="gender" onChange={handleOnChange} name="gender" autoComplete="off">
-                <option value="">Select your gender</option>
-                <option value="Male" className={styleSheet.Form_SelectInput_options}>male</option>
-                <option value="Female" className={styleSheet.Form_SelectInput_options}>female</option>
-                <option value="Other" className={styleSheet.Form_SelectInput_options}>other</option>
-              </select>
-            </div>
-
-            <div className={styleSheet.Form__inputBox}>
-              <label htmlFor="nationality" className={styleSheet.Form__inputBox_Label}> nationality</label>
-              <select value={userDetails.country} name="country" className={`${styleSheet.Form__input} ${styleSheet.Form__Select_input}`} id="nationality" onChange={handleOnChange} autoComplete="off">
-                <option value="">Select your nationality</option>
-                <option value="Indian" className={styleSheet.Form_SelectInput_options}>indian</option>
-                <option value="Non-Indian" className={styleSheet.Form_SelectInput_options}>non-indian</option>
-              </select>
-            </div>
-          </div>
- */}
-          {/* College and Course */}
-          {/* <div className={`${styleSheet.Form__inputRows_Primary}`}>
-            <div className={styleSheet.Form__inputBox}>
-              <label htmlFor="college" className={styleSheet.Form__inputBox_Label}> university/College</label>
-              <input type="text" name="college" value={userDetails.college} id="college" placeholder="Enter College or university name" className={styleSheet.Form__input} onChange={handleOnChange} autoComplete="off" />
-            </div>
-
-            <div className={styleSheet.Form__inputBox}>
-              <label htmlFor="course" className={styleSheet.Form__inputBox_Label}>course</label>
-              <input type="text" name="course" value={userDetails.course} id="course" placeholder="Enter course name" className={styleSheet.Form__input} onChange={handleOnChange} autoComplete="off" />
-            </div>
-          </div>
- */}
-          {/* Percentage */}
-          {/* <div className={`${styleSheet.Form__inputRows_Secondry}`}>
-            <label htmlFor="percentage" className={styleSheet.Form__inputBox_Label}> percentage</label>
-            <input type="number" value={userDetails.percentage} name="percentage" id="percentage" placeholder="Enter your percentage" className={styleSheet.Form__input} onChange={handleOnChange} autoComplete="off" />
-          </div> */}
-
-          {/* Skils */}
-          {/* <div className={`${styleSheet.Form__inputRows_Secondry}`}>
-            <label htmlFor="skills" className={styleSheet.Form__inputBox_Label}> Skills <span className={styleSheet.Form__inputBox_Label_Info}>Press <strong>ENTER</strong> for register the skil set</span></label>
-            {
-              SkilsTags?.length > 0 && <ul className={styleSheet.Form_skilsList}>
-                {
-                  SkilsTags?.map((skils, index) => {
-                    return <li key={index} className={styleSheet.Form_skilsList_Item}>{skils} <RxCross2 onClick={(e) => handleRemoveSkils(e, skils)} className={styleSheet.Form_skilsList_Item_DeleteButton} /> </li>
-                  })
-                }
-              </ul>
-            }
-            <input type="text" name="skills" id="skills" placeholder="Enter your skils" className={styleSheet.Form__input} autoComplete="off" onKeyDown={handleSkilsKeyDown} value={Skils} onChange={(e) => setSkils(e.target.value)} />
-          </div> */}
-
-          {/*Work Exp optional part  */}
-          {/* <h2 className={styleSheet.Form_WorkEXP_heading}>Work experience (Optional)</h2> */}
-
-          {/* {job title and company name} */}
-          {/* <div className={`${styleSheet.Form__inputRows_Primary}`}>
-            <div className={styleSheet.Form__inputBox}>
-              <label htmlFor="jobTitle" className={styleSheet.Form__inputBox_Label}> Job Title</label>
-              <input type="text" name="job_title" value={userDetails.job_title ?? ""} id="jobTitle" placeholder="Enter job title" className={styleSheet.Form__input} onChange={handleOnChange} autoComplete="off" />
-            </div>
-
-            <div className={styleSheet.Form__inputBox}>
-              <label htmlFor="companyName" className={styleSheet.Form__inputBox_Label}>Company Name</label>
-              <input type="text" name="company" value={userDetails.company ?? ""} id="companyName" placeholder="Enter company name" className={styleSheet.Form__input} onChange={handleOnChange} autoComplete="off" />
-            </div>
-          </div> */}
-
-          {/* {Compnay start and end date} */}
-          {/* <div className={`${styleSheet.Form__inputRows_Primary}`}>
-            <div className={styleSheet.Form__inputBox}>
-              <label htmlFor="company_start_date" className={styleSheet.Form__inputBox_Label}>Start Date</label>
-              <input type="date" name="company_start_date" id="company_start_date" value={userDetails.company_start_date?.split("T")[0] ?? ""} className={styleSheet.Form__input} onChange={handleOnChange} />
-            </div>
-
-            <div className={styleSheet.Form__inputBox}>
-              <label htmlFor="company_end_date" className={styleSheet.Form__inputBox_Label}>End Date</label>
-              <input type="date" name="company_end_date" id="company_end_date" value={userDetails.company_end_date?.split("T")[0] ?? ""} className={styleSheet.Form__input} onChange={handleOnChange} />
-            </div>
-          </div>
- */}
-          {/* About the user */}
-          {/* <div className={`${styleSheet.Form__inputRows_Secondry}`} style={{ "width": "100%" }}>
-            <label htmlFor="about" className={styleSheet.Form__inputBox_Label}> About</label>
-            <textarea className={styleSheet.Form_About_textArea} placeholder="Write about yourself" id="about" name="biography" value={userDetails?.biography} onChange={handleOnChange} autoComplete="off"></textarea>
-          </div>
- */}
           <div className={styleSheet.Form__buttonContainer}>
             <button onClick={handleSaveChangesClick} type="button" className={styleSheet.Form__saveChangesButton}>Save Changes</button>
           </div>
-
         </form>
       )}
     </main>

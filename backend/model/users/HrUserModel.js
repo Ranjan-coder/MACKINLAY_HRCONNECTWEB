@@ -16,6 +16,9 @@ const hrSchema = new mongoose.Schema({
   userType: {
     type: String,
   },
+  profileImage: {
+    type: String,
+  }
 });
 
 const HrUser = mongoose.model("HrUser", hrSchema);
