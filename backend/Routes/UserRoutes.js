@@ -34,7 +34,7 @@ userRoutes.post("/check-email", checkEmail);
 userRoutes.post("/checkPhoneNumber", checkPhoneNumberExists);
 userRoutes.post("/request-otp", requestOtp);
 userRoutes.post("/verify-otp", verifyOtp);
-userRoutes.post("/signup", upload, signUp);
+userRoutes.post("/signup", upload, signUp); // Ensure 'upload' middleware is used here
 userRoutes.post("/login", login);
 userRoutes.post("/logout", logout);
 userRoutes.get("/analytics/login-frequency/half-hourly", getHalfHourlyLoginFrequency);
