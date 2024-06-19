@@ -119,36 +119,38 @@ const handleView = async () =>{
     const fetchData = async () => {
       setLoading(true);
       try {
-        const [allJobsResponse, jobDetailsResponse] = await Promise.all([
-          axios.get(`${baseUrl}/jobs/All-jobs`),
-          axios.get(`${baseUrl}/jobs/job/${id}`),
-        ]);
-
-        if (allJobsResponse.data.success) {
-          setAllJobData(allJobsResponse.data.jobs);
+        // Fetch recommended jobs
+        const recommendedJobsResponse = await axios.post(`${baseUrl}/recommendations`, { email });
+  
+        if (recommendedJobsResponse.data.success && recommendedJobsResponse.data.recommendedJobs.length > 0) {
+          setAllJobData(recommendedJobsResponse.data.recommendedJobs);
         } else {
-          setAllJobData([]);
+          // Fetch all jobs as a fallback
+          const allJobsResponse = await axios.get(`${baseUrl}/jobs/All-jobs`);
+          if (allJobsResponse.data.success) {
+            setAllJobData(allJobsResponse.data.jobs);
+          } else {
+            setAllJobData([]);
+          }
         }
-
+  
+        // Fetch job details separately if needed
+        const jobDetailsResponse = await axios.get(`${baseUrl}/jobs/job/${id}`);
         if (jobDetailsResponse.data.success) {
           setJobDetails(jobDetailsResponse.data.jobs);
         } else {
           setJobDetails([]);
         }
-
-        setLoading(false);
       } catch (error) {
-        toast.error(
-          `Server failed to load! Reload your page: ${error.message}`
-        );
+        toast.error(`Server failed to load! Reload your page: ${error.message}`);
+      } finally {
         setLoading(false);
       }
     };
-
+  
     fetchData();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [email, id]); // Make sure to include all dependencies
+    
 
   
     const targetRef = useRef(null);
