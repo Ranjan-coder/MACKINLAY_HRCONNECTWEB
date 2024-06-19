@@ -14,6 +14,8 @@ function MyResume() {
   const [btn_Popup, setbtnPopup] = useState(false);
   const email = localStorage.getItem("email");
   const [selectedFile, setSelectedFile] = useState();
+  
+  // console.log(selectedFile);
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     setSelectedFile(file);
@@ -30,6 +32,7 @@ function MyResume() {
     formData.append("email", email);
     formData.append("resumefile", selectedFile);
     setbtnPopup(false);
+    setSelectedFile(null)
 
     try {
       const response = await axios.post(`${newUrl}/resume/upload`, formData, {
@@ -108,7 +111,7 @@ function MyResume() {
             {resume_type === "myresume" ? (
               <CurrentResume email={email} />
             ) : (
-              <PreviousResume />
+              <PreviousResume  />
             )}
           </div>
         </div>

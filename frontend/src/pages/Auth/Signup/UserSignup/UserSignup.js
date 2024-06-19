@@ -57,7 +57,7 @@ const Signup = () => {
     userType: "user",
     step: 1, // Initial step
   });
-
+console.log(formData);
   const nav = useNavigate();
 
   const currentYear = new Date().getFullYear();

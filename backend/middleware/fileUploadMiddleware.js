@@ -1,32 +1,23 @@
 const multer = require('multer');
 const path = require('path');
+const cloudinary = require('cloudinary').v2;
 
-// Define storage for resume uploads
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads');
-  },
-  filename: function (req, file, cb) {
-    const sanitizedFilename = file.originalname.replace(/[^a-zA-Z0-9.]/g, '_');
-    cb(null, Date.now() + '-' + sanitizedFilename);
-  }
+// Configure Cloudinary with your credentials
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// File filter
+// Use memory storage to handle buffer directly
+const storage = multer.memoryStorage();
+
+// File filter to ensure only PDF files are uploaded
 const fileFilter = (req, file, cb) => {
   if (file.mimetype === 'application/pdf') {
     cb(null, true);
   } else {
     cb(new Error('Only PDF files are allowed'), false);
-  }
-};
-
-// Photo filter
-const photoFilter = (req, file, cb) => {
-  if (file.mimetype.includes('image/')) {
-    cb(null, true);
-  } else {
-    cb(new Error('Only JPG/PNG files are allowed'), false);
   }
 };
 
@@ -37,18 +28,27 @@ const upload = multer({
   fileFilter: fileFilter
 }).single('resume');
 
-//upload photo
+// Photo filter for image uploads
+const photoFilter = (req, file, cb) => {
+  if (file.mimetype.includes('image/')) {
+    cb(null, true);
+  } else {
+    cb(new Error('Only JPG/PNG files are allowed'), false);
+  }
+};
+
+// Upload photo middleware
 const uploadPhoto = multer({
   storage: storage,
   limits: { fileSize: 2000000 }, // Limit file size to 2MB
   fileFilter: photoFilter
 }).single('jobPoster');
 
-//upload Profile-Photo
+// Upload profile photo middleware
 const uploadProfile = multer({
   storage: storage,
   limits: { fileSize: 2000000 }, // Limit file size to 2MB
   fileFilter: photoFilter
 }).single('profileImage');
 
-module.exports = { upload, uploadPhoto, uploadProfile }
+module.exports = { upload, uploadPhoto, uploadProfile };

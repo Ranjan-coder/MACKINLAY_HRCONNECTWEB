@@ -12,6 +12,7 @@ const PreviousResume = () => {
   const [uploadTrigger, setUploadTrigger] = useState(false); // State to trigger re-fetch
   const [IsLoaded,setIsLoaded]=useState(false)
   const email = localStorage.getItem("email");
+  // console.log(resumes);
 
   useEffect(() => {
     const fetchResumes = async () => {
@@ -37,7 +38,7 @@ const PreviousResume = () => {
     };
 
     fetchResumes();
-  }, [email, uploadTrigger,resumes]); // Add uploadTrigger to dependencies
+  }, [email, uploadTrigger,resumes,resumes._id]); // Add uploadTrigger to dependencies
 
   const rgbArray = [
     "#ff7f50",
@@ -59,7 +60,7 @@ const PreviousResume = () => {
     "https://d25zcttzf44i59.cloudfront.net/official-resume-template.png",
   ];
 
-  const handleDeleteResume = async (filename) => {
+  const handleDeleteResume = async (public_id) => {
     setIsLoaded(false)
     try {
     
@@ -68,7 +69,7 @@ const PreviousResume = () => {
         {
           data: {
             email: email,
-            filename: filename,
+            public_id: public_id,
           },
         }
       );
@@ -106,7 +107,7 @@ const PreviousResume = () => {
           <p>{resume.filename}</p>
           <i
             className="fa-solid fa-xmark"
-            onClick={() => handleDeleteResume(resume.filename)}
+            onClick={() => handleDeleteResume(resume.public_id)}
           ></i>
         </div>
       </div>

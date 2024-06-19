@@ -7,8 +7,9 @@ const newURl = process.env.REACT_APP_BACKEND_BASE_URL_WITHOUT_API;
 const CurrentResume = ({ email }) => {
   const [latestResume, setLatestResume] = useState(null); // Initialize latestResume as null
   const [IsLoaded,setIsLoaded]=useState(false)
+  // console.log(latestResume);
 
-  // console.log(email);
+  // console.log(email);   
   // const email = localStorage.getItem("email");
 
   useEffect(() => {
@@ -46,8 +47,8 @@ const CurrentResume = ({ email }) => {
       </div>
 
       {latestResume &&
-        latestResume.path && ( // Render PdfComp only if latestResume and latestResume.path are defined
-          <PdfComp key={latestResume._id} pdf={`${newURl}/${latestResume.path}`} />
+        latestResume.public_id && ( // Render PdfComp only if latestResume and latestResume.path are defined
+          <PdfComp key={latestResume._id} pdf={`${latestResume.url}`} />
         )}
     </div>
 :<Loader/>}

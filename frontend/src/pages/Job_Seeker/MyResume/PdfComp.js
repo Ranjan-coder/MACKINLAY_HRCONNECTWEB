@@ -3,6 +3,7 @@ import { Document, Page, pdfjs } from "react-pdf";
 import ResumeStyle from "../MyResume/MyResume.module.css";
 
 function PdfComp(props) {
+  // console.log(props);
   const [numPages, setNumPages] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -36,7 +37,7 @@ function PdfComp(props) {
 
       loadPDF();
     }
-  }, [props.pdf, ]); // Trigger effect when props.pdf changes
+  }, [props.pdf]); // Trigger effect when props.pdf changes
 
   return (
     <div className={props.pagesize==="full"?`${ResumeStyle.show_full_pdf}`:`${ResumeStyle.show_pdf_box}`}>

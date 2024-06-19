@@ -118,68 +118,26 @@ const signUp = async (req, res) => {
       company_start_date,
       company_end_date,
     } = req.body;
-    const resumeFileName = req.file;
+
+    const resumeFile = req.file;
+    // console.log(resumeFile);
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res
-        .status(400)
-        .json({ message: `${email} is already registered` });
+      return res.status(400).json({ message: `${email} is already registered` });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Adjust company_end_date to null if received as "null" from the frontend
-    const adjustedCompanyEndDate =
-      company_end_date === "null" ? null : company_end_date;
+    const adjustedCompanyEndDate = company_end_date === "null" ? null : company_end_date;
 
-    const newUser = new User({
-      email,
-      password: hashedPassword,
-      name,
-      phone_number,
-      dob,
-      country,
-      state,
-      college,
-      course,
-      course_start_date,
-      course_end_date,
-      percentage,
-      job_title: req.body.job_title || null,
-      company: req.body.company || null,
-      company_start_date: req.body.company_start_date || null,
-      company_end_date: adjustedCompanyEndDate,
-      profileImage: req.body.profileImage || null,
-      biography: req.body.biography || null,
-      skills: req.body.skills || null,
-      note: req.body.note || null,
-
-      resume: resumeFileName,
-      savedJob: [],
-      appliedJob: [],
-    });
-    await newUser.save();
-
-    const newUserSession = new UserSession({
-      userId: newUser._id,
-      startTime: new Date(),
-      endTime: null,
-    });
-    await newUserSession.save();
-
-    req.email = email;
-    const recommendedJobs = await recommendJobsForUser(req);
-
-    const token = jwt.sign({ userId: newUser._id }, SECRET_KEY, {
-      expiresIn: "2d",
-    });
-
+    // Upload the resume to Cloudinary
     const uploadStream = cloudinary.uploader.upload_stream(
       {
         resource_type: 'raw', // Use 'raw' for non-image files like PDFs
         folder: 'resumes',
-        public_id: `${resumeFileName.originalname}_${Date.now()}`,
+        public_id: `${resumeFile.originalname}_${Date.now()}`,
       },
       async (error, result) => {
         if (error) {
@@ -187,38 +145,75 @@ const signUp = async (req, res) => {
           return res.status(500).json({ message: 'Cloudinary upload error', error });
         }
 
-        // Append the new resume to the user's resumes array
-        newUser.resume.push({
-          filename: result.original_filename,
-          url: result.secure_url,
-          public_id: result.public_id,
+        // Create the new user after the resume is uploaded
+        const newUser = new User({
+          email,
+          password: hashedPassword,
+          name,
+          phone_number,
+          dob,
+          country,
+          state,
+          college,
+          course,
+          course_start_date,
+          course_end_date,
+          percentage,
+          job_title: job_title || null,
+          company: company || null,
+          company_start_date: company_start_date || null,
+          company_end_date: adjustedCompanyEndDate,
+          profileImage: req.body.profileImage || null,
+          biography: req.body.biography || null,
+          skills: req.body.skills || null,
+          note: req.body.note || null,
+          resume: [{
+            filename: resumeFile.originalname,
+            url: result.secure_url,
+            public_id: result.public_id,
+          }],
+          savedJob: [],
+          appliedJob: [],
         });
 
-        // Save the updated user document
         await newUser.save();
 
-        res.status(201).json({ message: 'Resume uploaded successfully', user: newUser });
+        const newUserSession = new UserSession({
+          userId: newUser._id,
+          startTime: new Date(),
+          endTime: null,
+        });
+        await newUserSession.save();
+
+        // Set email in request for recommending jobs
+        req.email = email;
+        const recommendedJobs = await recommendJobsForUser(req);
+
+        const token = jwt.sign({ userId: newUser._id }, SECRET_KEY, {
+          expiresIn: "2d",
+        });
+
+        res.status(201).json({
+          message: `${name} your account is created successfully`,
+          token,
+          name,
+          email,
+          resume: newUser.resume,
+          recommendedJobs,
+          savedJob: [],
+          appliedJob: [],
+        });
       }
     );
 
-    streamifier.createReadStream(file.buffer).pipe(uploadStream);
-
-
-    return res.status(201).json({
-      message: `${name} your account is created successfully`,
-      token,
-      name,
-      email,
-      resume: resumeFileName,
-      recommendedJobs,
-      savedJob: [],
-      appliedJob: [],
-    });
+    // Use streamifier to create a readable stream and pipe it to the uploadStream
+    streamifier.createReadStream(resumeFile.buffer).pipe(uploadStream);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
 
 const login = async (req, res) => {
   try {
