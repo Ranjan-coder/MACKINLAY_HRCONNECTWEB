@@ -901,7 +901,7 @@ const Signup = () => {
 
                   <Form.Control
                     type="text"
-                    placeholder="Course"
+                    placeholder="Enter Field Of Specialization"
                     name="course"
                     onChange={handleChange}
                     className={signupStyle.personal_input_field}

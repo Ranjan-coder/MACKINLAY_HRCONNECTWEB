@@ -29,6 +29,8 @@ const {
   getJobApplicationAnalytics,
 } = require("../controller/UserAnalytics/JobApplicationAnalytics");
 
+const {recommendJobsForUser} = require("../controller/recommendationLogic")
+
 userRoutes.get("/user", getUser);
 userRoutes.post("/check-email", checkEmail);
 userRoutes.post("/checkPhoneNumber", checkPhoneNumberExists);
@@ -36,6 +38,7 @@ userRoutes.post("/request-otp", requestOtp);
 userRoutes.post("/verify-otp", verifyOtp);
 userRoutes.post("/signup", upload, signUp);
 userRoutes.post("/login", login);
+userRoutes.post("/recommendations", recommendJobsForUser)
 userRoutes.post("/logout", logout);
 userRoutes.get("/analytics/login-frequency/half-hourly", getHalfHourlyLoginFrequency);
 userRoutes.get("/analytics/login-frequency/weekly", getWeeklyLoginFrequency);
