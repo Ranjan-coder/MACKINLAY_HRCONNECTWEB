@@ -88,9 +88,12 @@
 }
 
 .sub_container3_imgstyl {
-  height: 99%;
-  width: 99%;
+  height: 49%;
+  width: 49%;
   border-radius: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
 }
 
 .sub_container3_styl1 {
@@ -241,10 +244,13 @@ input::placeholder {
 
 .manage_account {
   border: 1px solid black;
-  width: 55%;
+  width: fit-content;
   border-radius: 20px;
   padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 3px;
   background-color: rgba(199, 225, 255, 1);
+  margin: auto;
 }
 
 .pass_company_logo {

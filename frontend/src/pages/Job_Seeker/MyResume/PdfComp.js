@@ -3,6 +3,7 @@ import { Document, Page, pdfjs } from "react-pdf";
 import ResumeStyle from "../MyResume/MyResume.module.css";
 
 function PdfComp(props) {
+  // console.log(props);
   const [numPages, setNumPages] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -13,12 +14,10 @@ function PdfComp(props) {
   }, []); // This effect runs once on component mount to set the worker source URL
 
   useEffect(() => {
-    // console.log('PDF URL:', props.pdf);
-    // console.log('Loading:', loading);
-    // console.log('Error:', error);
 
     // Fetch PDF document when props.pdf changes
     if (props.pdf) {
+      // console.log(props.pdf);
       setLoading(true); // Set loading state to true when fetching new PDF
       setNumPages(null); // Reset numPages state
       setError(null); // Reset error state
@@ -38,10 +37,10 @@ function PdfComp(props) {
 
       loadPDF();
     }
-  }, [props.pdf, ]); // Trigger effect when props.pdf changes
+  }, [props.pdf]); // Trigger effect when props.pdf changes
 
   return (
-    <div className={ResumeStyle.show_pdf_box}>
+    <div className={props.pagesize==="full"?`${ResumeStyle.show_full_pdf}`:`${ResumeStyle.show_pdf_box}`}>
       {loading && <p>Loading...</p>}
       {error && <p className={ResumeStyle.error}>Error: {error}</p>}
       {!loading && !error && numPages && (

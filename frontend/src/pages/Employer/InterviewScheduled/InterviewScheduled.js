@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Table, Image, Modal, Button, Form } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
-import tableImage from "../../../Assets/tableImage.PNG";
+// import tableImage from "../../../Assets/tableImage.PNG";
 import InterviewStyle from "./InterviewScheduled.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarXmark, faCalendarCheck, faCalendarDays } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const InterviewScheduled = () => {
   const [interviewedUsers, setInterviewedUsers] = useState([]);
@@ -55,9 +56,9 @@ const InterviewScheduled = () => {
       });
       console.log(response.data);
       if (response.data.success) {
-        alert('Feedback sent successfully!');
+        toast.success('Feedback sent successfully')
       } else {
-        alert('Failed to send feedback.');
+        toast.error('Feedback sent failed')
       }
     } catch (error) {
       console.error('Error sending feedback:', error);
@@ -68,11 +69,11 @@ const InterviewScheduled = () => {
   const rows = interviewedUsers.map((user, index) => {
     console.log(user); 
     return (
-      <tr key={index}>
+      <tr key={index} className={InterviewStyle.Maincontainer}>
         <td className={InterviewStyle.name_column}>
           <div className={InterviewStyle.name_content}>
             <Image
-              src={tableImage}
+              src={user.UserProfile}
               roundedCircle
               className={InterviewStyle.avatar}
             />

@@ -57,7 +57,7 @@ const Signup = () => {
     userType: "user",
     step: 1, // Initial step
   });
-
+console.log(formData);
   const nav = useNavigate();
 
   const currentYear = new Date().getFullYear();
@@ -901,7 +901,7 @@ const Signup = () => {
 
                   <Form.Control
                     type="text"
-                    placeholder="Course"
+                    placeholder="Enter Field Of Specialization"
                     name="course"
                     onChange={handleChange}
                     className={signupStyle.personal_input_field}

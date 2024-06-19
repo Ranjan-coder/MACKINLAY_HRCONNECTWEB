@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import companyLogo from '../../../../Assets/enlarge_title_logo.png'
 import loginImage from "../../../../Assets/Login form Image.PNG";
 import google from "../../../../Assets/Google Logo.jpg";
 import linkedin from "../../../../Assets/linkedin logo.jpg";
@@ -202,7 +203,7 @@ function UserLogin({ toggleLoginType, isHRLogin }) {
                   <div>
                     <img
                       className={LoginStyle.sub_container3_imgstyl}
-                      src="https://mackinlay.in/img/title_logo.png"
+                      src={companyLogo}
                       alt="not_loaded"
                     />
                   </div>
@@ -265,8 +266,8 @@ function UserLogin({ toggleLoginType, isHRLogin }) {
                       }}
                     >
                       Don't have an account?
-                      <span style={{ color: "rgba(35, 88, 251, 1)" }}>
-                        Create Account
+                      <span style={{ color: "rgba(35, 88, 251, 1)", paddingLeft:"2px" }}>
+                       Create Account
                       </span>
                     </span>
                   </div>
@@ -321,11 +322,8 @@ function UserLogin({ toggleLoginType, isHRLogin }) {
                 </h1>
                 <div className={LoginStyle.user_login_detail}>
                   <div className={LoginStyle.user_name}>Hi {name}</div>
-                  <div>
-                    <select className={LoginStyle.manage_account}>
-                      <option>{formData.email}</option>
-                      <option>Manage Account</option>
-                    </select>
+                  <div className={LoginStyle.manage_account}>
+                    <div >{formData.email}</div>
                   </div>
                 </div>
               </div>
@@ -334,7 +332,7 @@ function UserLogin({ toggleLoginType, isHRLogin }) {
                   <div>
                     <img
                       className={`${LoginStyle.pass_company_logo} animate__animated animate__zoomIn`}
-                      src="https://mackinlay.in/img/title_logo.png"
+                      src={companyLogo}
                       alt="not_loaded"
                     />
                   </div>
