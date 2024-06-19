@@ -3,9 +3,9 @@ const path = require("path");
 
 module.exports = multer({
   storage: multer.diskStorage({}),
+  limits: {fileSize: 5 * 2400 * 1600},
   fileFilter: (req, file, cb) => {
     let ext = path.extname(file.originalname);
-
     if (
       ext !== ".mp4" &&
       ext !== ".mkv" &&

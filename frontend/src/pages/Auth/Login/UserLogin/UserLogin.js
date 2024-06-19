@@ -266,8 +266,8 @@ function UserLogin({ toggleLoginType, isHRLogin }) {
                       }}
                     >
                       Don't have an account?
-                      <span style={{ color: "rgba(35, 88, 251, 1)" }}>
-                        Create Account
+                      <span style={{ color: "rgba(35, 88, 251, 1)", paddingLeft:"2px" }}>
+                       Create Account
                       </span>
                     </span>
                   </div>
@@ -322,11 +322,8 @@ function UserLogin({ toggleLoginType, isHRLogin }) {
                 </h1>
                 <div className={LoginStyle.user_login_detail}>
                   <div className={LoginStyle.user_name}>Hi {name}</div>
-                  <div>
-                    <select className={LoginStyle.manage_account}>
-                      <option>{formData.email}</option>
-                      <option>Manage Account</option>
-                    </select>
+                  <div className={LoginStyle.manage_account}>
+                    <div >{formData.email}</div>
                   </div>
                 </div>
               </div>

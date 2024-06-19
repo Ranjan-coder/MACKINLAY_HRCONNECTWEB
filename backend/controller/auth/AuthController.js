@@ -15,6 +15,7 @@ const SECRET_KEY = process.env.SECRET_KEY;
 const UserSession = require("../../model/users/UserSession");
 const cloudinary = require('cloudinary').v2;
 const streamifier = require('streamifier');
+const { recommendJobsForUser } = require('../recommendationLogic');
 
 // Configure Cloudinary
 cloudinary.config({
@@ -38,33 +39,6 @@ const getUser = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-
-//Delete User
-const deleteUser = async (req, res) => {
-  const { email } = req.params;
-  let id = req.params.id;
-  const deleteUser = await User.deleteOne({ email });
-  const deleteAppliedJobs = await appliedJobCollection.deleteMany({ jobID: id });
-  const deletesavedJobs = await savedJobCollection.deleteMany({ jobID: id });
-  try {
-    if (deleteUser.acknowledged &&
-      deletesavedJobs.acknowledged &&
-      deleteAppliedJobs.acknowledged) {
-      res.send({
-        success: true,
-        msg: "Account deleted succesfully"
-      })
-    }
-    else {
-      res.send({
-        success: false,
-        msg: "Account not found !!"
-      })
-    }
-  } catch (error) {
-    res.status(401).json({ success: false, error })
-  }
-}
 
 const checkEmail = async (req, res) => {
   const { email } = req.body;
@@ -211,6 +185,10 @@ const signUp = async (req, res) => {
         });
         await newUserSession.save();
 
+        // Set email in request for recommending jobs
+        req.email = email;
+        const recommendedJobs = await recommendJobsForUser(req);
+
         const token = jwt.sign({ userId: newUser._id }, SECRET_KEY, {
           expiresIn: "2d",
         });
@@ -221,6 +199,7 @@ const signUp = async (req, res) => {
           name,
           email,
           resume: newUser.resume,
+          recommendedJobs,
           savedJob: [],
           appliedJob: [],
         });
@@ -234,6 +213,7 @@ const signUp = async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
 
 const login = async (req, res) => {
   try {
@@ -269,6 +249,9 @@ const login = async (req, res) => {
 
     await userSession.save();
 
+    req.email = email;
+    const recommendedJobs = await recommendJobsForUser(req);
+
     const token = jwt.sign({ userId: user._id }, SECRET_KEY, {
       expiresIn: "2d",
     });
@@ -279,11 +262,13 @@ const login = async (req, res) => {
       email,
       userType: "user",
       profileImage: user.profileImage,
+      recommendedJobs,
       savedJob: user.userSavedJob,
       appliedJob: user.userAppliedJob,
     });
   } catch (error) {
-    return res.status(500).json({ message: "Internal Server Error" });
+    console.log(error);
+    return res.status(500).json({ message: "Internal Server Error"});
   }
 };
 
@@ -428,6 +413,33 @@ const updateUserField = async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+//Delete User
+const deleteUser = async (req, res) => {
+  const { email } = req.params;
+  let id = req.params.id;
+  const deleteUser = await User.deleteOne({ email });
+  const deleteAppliedJobs = await appliedJobCollection.deleteMany({ jobID: id });
+  const deletesavedJobs = await savedJobCollection.deleteMany({ jobID: id });
+  try {
+    if (deleteUser.acknowledged &&
+      deletesavedJobs.acknowledged &&
+      deleteAppliedJobs.acknowledged) {
+      res.send({
+        success: true,
+        msg: "Account deleted succesfully"
+      })
+    }
+    else {
+      res.send({
+        success: false,
+        msg: "Account not found !!"
+      })
+    }
+  } catch (error) {
+    res.status(401).json({ success: false, error })
+  }
+}
 
 module.exports = {
   getUser,
