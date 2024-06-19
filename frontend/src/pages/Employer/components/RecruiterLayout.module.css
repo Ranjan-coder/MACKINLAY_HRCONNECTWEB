@@ -200,13 +200,22 @@
     }
 
     .__navbar {
-        gap: 1em;
+        gap: .1em;
     }
 
     .__navbar_Links,
     .active {
-        margin: .3em 0;
+        margin: .1em 0;
         padding-left: 2.5em;
+    }
+
+    .__user_Info span {
+        display: none;
+    }
+
+    .__user_Img {
+        width: 45px;
+        height: 45px;
     }
 
     .__btn_Logout {
@@ -228,10 +237,6 @@
     .__userSection,
     .__logout_Text {
         display: none;
-    }
-
-    .__user_Img {
-        width: 35px;
     }
 
     .__subContainer {

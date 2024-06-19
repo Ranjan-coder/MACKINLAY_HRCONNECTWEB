@@ -56,7 +56,7 @@ const HrJobDetail = ({ jobId, ShowApplicantDetails, CbToggleDetails }) => {
         <p>{job && job.jobDescription}</p>
         <p style={{ paddingTop: "20px", fontSize: "18px" }}>
           <strong>Requirements</strong>
-          <p style={{textAlign: 'justify' }}>{job && job.responsibility}</p>
+          <p style={{ textAlign: 'justify' }}>{job && job.responsibility}</p>
         </p>
 
         <div className={hrdashboard.hr_job_detail_skill_container_main}>
@@ -73,23 +73,23 @@ const HrJobDetail = ({ jobId, ShowApplicantDetails, CbToggleDetails }) => {
         </div>
 
         <div className={hrdashboard.hr_job_detail_location}>
-          <div className={hrdashboard.__jobLeftSection} style={{display: 'flex' }}>
+          <div className={hrdashboard.__jobLeftSection} style={{ display: 'flex' }}>
             <p className={hrdashboard.hr_job_detail_location_childrens}>
               Location -
-              <span style={{paddingLeft:".5em"}}>
+              <span style={{ paddingLeft: ".5em" }}>
                 <strong>{job && job.location}</strong>
               </span>
             </p>
             <p className={hrdashboard.hr_job_detail_location_childrens}>
               Type -
-              <span style={{paddingLeft:".5em"}}>
+              <span style={{ paddingLeft: ".5em" }}>
                 <strong>{job && job.employmentType}</strong>
               </span>
             </p>
           </div>
           <p className={hrdashboard.hr_job_detail_location_childrens}>
             Salary :
-            <span style={{paddingLeft:".5em"}}>
+            <span style={{ paddingLeft: ".5em" }}>
               <strong>{job && job.salaryRange} LPA</strong>
             </span>
           </p>
@@ -106,10 +106,9 @@ const HrJobDetail = ({ jobId, ShowApplicantDetails, CbToggleDetails }) => {
                     <img className={hrdashboard.__userPF} src={user.profileImage ?? 'https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg'} alt="" onError={(e) => { e.target.src = `https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg`; e.onError = null; }} />
                     <section>
                       <span style={{ fontSize: '20px' }}><strong>{user.name}</strong></span>
-                      <p style={{ fontSize: '15px' }}>{user.biography}</p>
+                      <p style={{ fontSize: '15px', overflow: "hidden", display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 2 }}>{user.biography}</p>
                     </section>
-                    {/* bookmark here */}
-                    <FaRegBookmark style={{ fontSize: '20px' }} />
+                    <FaRegBookmark className={hrdashboard.__bookmark} style={{ fontSize: '20px' }} />
                   </div>
                   <div className={hrdashboard.__appliedBody}>
                     <span>Location - <strong>{user.location}</strong></span>

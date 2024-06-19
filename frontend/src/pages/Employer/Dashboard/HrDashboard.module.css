@@ -286,8 +286,8 @@ p {
     cursor: pointer;
     font-size: 20px;
     position: absolute;
-    right: 3vw;
-    top: 1vh;
+    right: .2em;
+    top: 0;
 }
 
 .__appliedBody {
