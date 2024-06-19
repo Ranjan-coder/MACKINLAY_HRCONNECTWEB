@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-  googleId:{
+  googleId: {
     type: String
   },
   name: {
@@ -18,10 +18,8 @@ const userSchema = new mongoose.Schema({
     type: String,
   },
   phone_number: {
-    type: Number,
+    type: String,
     unique: true,
-    minlength: 10,
-    maxlength: 10,
     sparse: true
   },
   dob: {
@@ -90,7 +88,8 @@ const userSchema = new mongoose.Schema({
   resume: [
     {
       filename: String,
-      path: String,
+      url: String,
+      public_id: String,
       uploadedAt: {
         type: Date,
         default: Date.now,

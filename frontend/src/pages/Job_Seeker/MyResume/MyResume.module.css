@@ -352,6 +352,14 @@
    margin: auto;
 
  }
+ .show_full_pdf{
+  overflow-y: scroll;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+  height: 90vh;
+  /* width: 80%; */
+  margin: auto;
+ }
 
  .pdf_file {
    /* width: 100%; */

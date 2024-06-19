@@ -1,64 +1,78 @@
-// const UserResume = require('../../model/ResumeModel/ResumeModel');
 const User = require('../../model/users/UserModel');
+const cloudinary = require('cloudinary').v2;
+const streamifier = require('streamifier');
 
 const uploadResume = async (req, res) => {
   try {
     const { email } = req.body;
-    const { filename, path } = req.file;
-    // console.log(email,filename,path);
+    const file = req.file;
 
-    // Find the user by email
-    let user = await User.findOne({ email });
-
-    if (!user) {
-      // If user does not exist, create a new user
-      user = new User({ email }); // You can add more fields as needed
-
-      // Save the new user document asynchronously
-      await user.save();
+    if (!file) {
+      return res.status(400).json({ message: 'No file uploaded' });
     }
 
-    // Append the new resume to the user's resumes array
-    user.resume.push({
-      filename: filename,
-      path: path
-    });
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
 
-    // Save the updated user document
-    await user.save();
+    const uploadStream = cloudinary.uploader.upload_stream(
+      {
+        resource_type: 'raw',
+        folder: 'resumes',
+        public_id: `${file.originalname}_${Date.now()}`
+      },
+      async (error, result) => {
+        if (error) {
+          console.error('Cloudinary upload error:', error);
+          return res.status(500).json({ message: 'Cloudinary upload error', error });
+        }
 
-    res.status(201).json({ message: 'Resume uploaded successfully',user:user });
+        user.resume.push({
+          filename: file.originalname,
+          url: result.secure_url,
+          public_id: result.public_id,
+          uploadedAt: new Date(),
+        });
+
+        await user.save();
+
+        res.status(201).json({ message: 'Resume uploaded successfully', user });
+      }
+    );
+
+    streamifier.createReadStream(file.buffer).pipe(uploadStream);
   } catch (error) {
     console.error('Error uploading resume:', error);
-    res.status(500).json({ error: 'Failed to upload resume' });
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 };
 
-const getResumes=async(req,res)=>{
-    const { email } = req.params;
-    // console.log(email);
+const getResumes = async (req, res) => {
+  const { email } = req.params;
 
-    try {
-      // Find the user by email
-      const user = await User.findOne({ email });
-  
-      if (!user) {
-        return res.status(404).json({ error: 'User not found' });
-      }
-  
-      // Get the resumes array from the user object
-      const resumes = user.resume;
-      // console.log(resumes);
-  
-      res.status(200).json({ resumes });
-    } catch (error) {
-      console.error('Error fetching resumes:', error);
-      res.status(500).json({ error: 'Failed to fetch resumes' });
+  try {
+    // Find the user by email
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
     }
-}
+
+    // Get the resumes array from the user object
+    const resumes = user.resume;
+
+    res.status(200).json({ resumes });
+  } catch (error) {
+    console.error('Error fetching resumes:', error);
+    res.status(500).json({ error: 'Failed to fetch resumes' });
+  }
+};
+
 const deleteResume = async (req, res) => {
   try {
-    const { email, filename } = req.body;
+    const { email, public_id } = req.body;
+    // console.log(public_id);
 
     // Find the user by email
     const user = await User.findOne({ email });
@@ -67,8 +81,8 @@ const deleteResume = async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    // Filter out the resume with the matching filename
-    user.resume = user.resume.filter((resume) => resume.filename !== filename);
+    // Filter out the resume with the matching public_id
+    user.resume = user.resume.filter((resume) => resume.public_id !== public_id);
 
     // Save the updated user document
     await user.save();
@@ -79,4 +93,5 @@ const deleteResume = async (req, res) => {
     res.status(500).json({ error: 'Failed to delete resume' });
   }
 };
-module.exports = { uploadResume,getResumes,deleteResume };
+
+module.exports = { uploadResume, getResumes, deleteResume };

@@ -55,10 +55,7 @@ export default function HR_Navbar() {
             alt='HrProfilePicture'
             onError={(e) => { e.target.src = `https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg`; e.onError = null; }}
           />
-          {name}
-          {/* <div className={layout.__userSection}>
-            <button onClick={() => navigateTo('/Setting/Editprofile')} className={layout.__btn_Edit_Profile}>EDIT MY PROFILE</button>
-          </div> */}
+          <span style={{fontSize:"20px"}}>{name}</span>
         </div>
         <button className={layout.__btn_Logout} onClick={handleLogoutClick}>
           <FontAwesomeIcon icon={faArrowRightFromBracket} /> <span className={layout.__logout_Text}>Log Out</span>

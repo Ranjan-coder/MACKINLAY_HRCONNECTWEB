@@ -179,18 +179,6 @@ export default function CreatePost() {
             </div>
 
             <div className={createPost.__input_Grps}>
-              <label htmlFor="jobDescription">Job Description</label> <br />
-              <input
-                type="text"
-                name="jobDescription"
-                id="jobDescription"
-                value={post.jobDescription}
-                className={createPost.__inputs}
-                onChange={handleOnChange}
-              />
-            </div>
-
-            <div className={createPost.__input_Grps}>
               <label htmlFor="employmentType">Employment Type</label> <br />
               <select
                 className={createPost.__createPost_Select}
@@ -307,6 +295,18 @@ export default function CreatePost() {
               />
             </div>
 
+            <div className={createPost.__input_Grps}>
+              <label htmlFor="jobDescription">Job Description</label> <br />
+              <textarea
+                type="text"
+                name="jobDescription"
+                id="jobDescription"
+                value={post.jobDescription}
+                className={createPost.__inputs}
+                onChange={handleOnChange}
+              />
+            </div>
+            
             <div className={createPost.__input_Grps}>
               <label htmlFor="howToApply">How to Apply</label> <br />
               <input

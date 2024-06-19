@@ -168,7 +168,6 @@ const ReduxSlice = createSlice({
       state.currentUser.userType = "";
       state.currentUser.savedJob = [];
       state.currentUser.appliedJob = [];
-
       localStorage.clear();
     },
   },

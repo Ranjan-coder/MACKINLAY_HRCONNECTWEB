@@ -23,6 +23,8 @@ function MyResume() {
   const [btn_Popup, setbtnPopup] = useState(false);
   const email = localStorage.getItem("email");
   const [selectedFile, setSelectedFile] = useState();
+  
+  // console.log(selectedFile);
   const [selectedTemplates, setSelectedTemplates] = useState([]);
 
   const handleFileChange = (event) => {
@@ -40,6 +42,8 @@ function MyResume() {
     const formData = new FormData();
     formData.append("email", email);
     formData.append("resumefile", selectedFile);
+    setbtnPopup(false);
+    setSelectedFile(null)
 
     try {
       const response = await axios.post(`${newUrl}/resume/upload`, formData, {
@@ -48,7 +52,11 @@ function MyResume() {
         },
       });
       toast.success(response.data.message);
+      
+      // After successful upload, toggle the upload popup
+
       setbtnPopup(false);
+      
     } catch (error) {
       console.error("Error uploading resume:", error);
     }
@@ -156,7 +164,7 @@ function MyResume() {
             {resume_type === "myresume" ? (
               <CurrentResume email={email} />
             ) : (
-              <PreviousResume />
+              <PreviousResume  />
             )}
           </div>
         </div>

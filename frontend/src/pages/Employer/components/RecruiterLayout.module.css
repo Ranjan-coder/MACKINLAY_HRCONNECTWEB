@@ -75,7 +75,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: .5em;
 }
 
 .__user_Info {
@@ -84,7 +83,6 @@
     align-items: center;
     justify-content: center;
     color: white;
-    gap: 1em;
 }
 
 .__user_Img {
@@ -94,13 +92,6 @@
     border-radius: 50%;
     margin: 0 .5em;
 }
-
-/* .__userSection {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 20px;
-} */
 
 .__btn_Edit_Profile {
     font-size: 10px;
@@ -232,6 +223,7 @@
     }
 
     .__hide,
+    .__userSection,
     .__logout_Text {
         display: none;
     }

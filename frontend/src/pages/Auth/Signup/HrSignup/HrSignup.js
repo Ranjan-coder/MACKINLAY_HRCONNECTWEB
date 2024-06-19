@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, Modal } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import signupStyle from "../Signup.module.css";
 import { useDispatch } from "react-redux";
@@ -14,8 +13,19 @@ const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
 
 const Signup = () => {
   const dispatchTO = useDispatch();
-  const [isSubmitting, setIsSubmitting]= useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [emailValid, setEmailValid] = useState(true);
+  const [otpSent, setOtpSent] = useState(false);
+  const [isOtpValid, setIsOtpValid] = useState(false);
+  const [isSendingOtp, setIsSendingOtp] = useState(false);
+  const [isVerifyingOtp, setIsVerifyingOtp] = useState(false);
+  const [isOtpResend, setIsOtpResend] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [otpInputs, setOtpInputs] = useState(["", "", "", "", "", ""]);
+  const [resendTimer, setResendTimer] = useState(0);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -28,9 +38,38 @@ const Signup = () => {
 
   const nav = useNavigate();
 
+  useEffect(() => {
+    let timer;
+    if (resendTimer > 0) {
+      timer = setTimeout(() => setResendTimer(resendTimer - 1), 1000);
+    }
+    return () => clearTimeout(timer);
+  }, [resendTimer]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  const handleOtpInputChange = (index, value) => {
+    if (/^\d$/.test(value) || value === "") {
+      const newOtpInputs = [...otpInputs];
+      newOtpInputs[index] = value;
+      setOtpInputs(newOtpInputs);
+      // Move focus to the next input field
+      if (value !== "" && index < otpInputs.length - 1) {
+        const nextInput = document.getElementById(`otp-input-${index + 1}`);
+        if (nextInput) {
+          nextInput.focus();
+        }
+      }
+    }
+  };
+
+  const handleOtpKeyDown = (index, e) => {
+    if (e.key === "Backspace" && otpInputs[index] === "" && index > 0) {
+      document.getElementById(`otp-input-${index - 1}`).focus();
+    }
   };
 
   const toggleShowPassword = (fieldName) => {
@@ -51,20 +90,122 @@ const Signup = () => {
     }
   };
 
+  const validateCompanyEmail = (email) => {
+    const domain = email.split("@")[1];
+    const genericDomains = [
+      "gmail.com",
+      "yahoo.com",
+      "outlook.com",
+      "hotmail.com",
+    ];
+
+    if (genericDomains.includes(domain)) {
+      toast.error("Please use your company email address");
+      return false;
+    }
+
+    return true;
+  };
+
   const handleEmailBlur = async () => {
+    const isValidCompanyEmail = validateCompanyEmail(formData.email);
+    if (!isValidCompanyEmail) {
+      setEmailValid(false);
+      return;
+    }
+
     const isValid = await checkEmailExists(formData.email);
     setEmailValid(isValid);
   };
 
+  const requestOtp = async () => {
+    setIsSendingOtp(true);
+    try {
+      const response = await axios.post(`${baseUrl}/hr/request-otp`, {
+        email: formData.email,
+      });
+      if (response.status === 200) {
+        setOtpSent(true);
+        toast.success("OTP sent to your email");
+        setResendTimer(60);
+      }
+    } catch (error) {
+      toast.error("Failed to send OTP. Please try again.");
+    } finally {
+      setIsSendingOtp(false);
+    }
+  };
+
+  const handleRequestOtp = () => {
+    requestOtp();
+    openModal();
+  };
+
+  const handleResendOtp = async () => {
+    setIsOtpResend(true);
+    try {
+      await requestOtp();
+    } catch (error) {
+      toast.error("Failed to Resend OTP. Please try again.");
+    } finally {
+      setIsOtpResend(false);
+    }
+  };
+
+  const handleOtpModalSubmit = async () => {
+    const otp = otpInputs.join("");
+    setIsVerifyingOtp(true);
+
+    try {
+      const response = await axios.post(`${baseUrl}/hr/verify-otp`, {
+        email: formData.email,
+        otp,
+      });
+      if (response.status === 200) {
+        setIsOtpValid(true);
+        toast.success("OTP verified successfully");
+        setIsModalOpen(false);
+      } else {
+        toast.error("Invalid OTP. Please try again.");
+      }
+    } catch (error) {
+      toast.error("Invalid OTP. Please try again.");
+    } finally {
+      setIsVerifyingOtp(false);
+    }
+  };
+
+  const renderOtpInputs = () => {
+    return otpInputs.map((value, index) => (
+      <input
+        key={index}
+        type="text"
+        id={`otp-input-${index}`}
+        value={value}
+        maxLength={1}
+        onChange={(e) => handleOtpInputChange(index, e.target.value)}
+        onKeyDown={(e) => handleOtpKeyDown(index, e)}
+        style={{
+          width: "50px",
+          height: "50px",
+          margin: "5px",
+          textAlign: "center",
+          fontSize: "20px",
+        }}
+      />
+    ));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSubmitting(true)
+    setIsSubmitting(true);
     if (formData.password !== formData.conf_password) {
       toast.error("Passwords do not match");
+      setIsSubmitting(false);
       return;
     }
-    if (!emailValid) {
-      toast.error("Please enter a valid email");
+    if (!emailValid || !isOtpValid) {
+      toast.error("Please enter a valid email and verify OTP");
       setIsSubmitting(false);
       return;
     }
@@ -109,8 +250,8 @@ const Signup = () => {
         console.error("Error:", error.message);
         toast.error(error.message);
       }
-    }finally{
-      setIsSubmitting(false)
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -139,7 +280,16 @@ const Signup = () => {
               </div>
             </div>
             <div className={signupStyle.step_2_part_2}>
-              <h4 style={{ paddingBottom: "10px" }}>Personal Information</h4>
+              <h4
+                style={{
+                  paddingBottom: "10px",
+                  fontFamily: "roboto",
+                  textAlign: "center",
+                  marginLeft:"-3rem"
+                }}
+              >
+                Personal Information
+              </h4>
               <div>
                 <Form onSubmit={handleSubmit}>
                   <Form.Control
@@ -154,12 +304,71 @@ const Signup = () => {
                   <Form.Control
                     type="email"
                     name="email"
-                    placeholder="Enter Email Id"
+                    placeholder="Enter Your Company Email Id"
                     onChange={handleChange}
                     onBlur={handleEmailBlur}
                     className={signupStyle.personal_input_field}
                     required
                   />
+
+                  {!otpSent && formData.email && emailValid && (
+                    <Button
+                      onClick={handleRequestOtp}
+                      disabled={!emailValid}
+                      className={`btn btn-primary btn-lg ${signupStyle.request_otp_button}`}
+                    >
+                      {isSendingOtp ? "Sending OTP..." : "Verify Email"}
+                    </Button>
+                  )}
+
+                  <Modal show={isModalOpen} onHide={closeModal} centered>
+                    <Modal.Header closeButton>
+                      <Modal.Title>Please Verify OTP</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                      <div
+                        style={{ display: "flex", justifyContent: "center" }}
+                      >
+                        {renderOtpInputs()}
+                      </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          marginTop: "10px",
+                        }}
+                      >
+                        <Button
+                          variant="link"
+                          onClick={handleResendOtp}
+                          disabled={isOtpResend || resendTimer}
+                        >
+                          {resendTimer > 0
+                            ? `Resend OTP in ${resendTimer}s`
+                            : isOtpResend
+                            ? "Resending OTP..."
+                            : "Resend OTP"}
+                        </Button>
+                      </div>
+                    </Modal.Body>
+                    <Modal.Footer>
+                      <Button variant="secondary" onClick={closeModal}>
+                        Close
+                      </Button>
+                      <Button
+                        variant="primary"
+                        onClick={handleOtpModalSubmit}
+                        disabled={isVerifyingOtp}
+                        style={{
+                          color: "white",
+                          background:
+                            "linear-gradient(90deg, #0050d1 0%, #00296b 100%)",
+                        }}
+                      >
+                        {isVerifyingOtp ? "Verifying OTP..." : "Verify OTP"}
+                      </Button>
+                    </Modal.Footer>
+                  </Modal>
 
                   <div className={signupStyle.password_container}>
                     <div>
@@ -207,8 +416,9 @@ const Signup = () => {
                     onClick={handleLogin}
                     style={{
                       paddingTop: "10px",
-                      fontSize: "14px",
+                      fontSize: "16px",
                       cursor: "pointer",
+                      fontFamily: "roboto",
                     }}
                   >
                     Already have employer account?&nbsp;
@@ -217,8 +427,12 @@ const Signup = () => {
                     </span>
                   </div>
                   <div className={signupStyle.step_button_container}>
-                    <Button className={signupStyle.step_button} type="submit" disabled={isSubmitting}>
-                      {isSubmitting ? "Creating Account...": "Create Account"}
+                    <Button
+                      className={signupStyle.step_button}
+                      type="submit"
+                      disabled={isSubmitting || !isOtpValid}
+                    >
+                      {isSubmitting ? "Creating Account..." : "Create Account"}
                     </Button>
                   </div>
                 </Form>

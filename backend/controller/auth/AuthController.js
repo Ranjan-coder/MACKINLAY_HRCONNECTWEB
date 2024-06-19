@@ -1,4 +1,10 @@
 const User = require("../../model/users/UserModel");
+const {
+  savedJobCollection,
+  appliedJobCollection,
+} = require("../../model/MyJob.model");
+const Otp = require("../../model/UserOtp")
+const sendUserOtpEmail = require("../../services/jobSeekerEmailService")
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
@@ -7,6 +13,17 @@ const dotenv = require("dotenv");
 dotenv.config();
 const SECRET_KEY = process.env.SECRET_KEY;
 const UserSession = require("../../model/users/UserSession");
+const cloudinary = require('cloudinary').v2;
+const streamifier = require('streamifier');
+const { recommendJobsForUser } = require('../recommendationLogic');
+
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
 
 const getUser = async (req, res) => {
   try {
@@ -23,9 +40,9 @@ const getUser = async (req, res) => {
   }
 };
 
-const checkEmail = async(req,res) =>{
+const checkEmail = async (req, res) => {
   const { email } = req.body;
-  const user = await User.findOne({ email }); 
+  const user = await User.findOne({ email });
   if (user) {
     return res.status(400).json({ message: 'Email already registered' });
   }
@@ -37,15 +54,49 @@ const checkPhoneNumberExists = async (req, res) => {
     const { phoneNumber } = req.body;
     const existingUserByPhone = await User.findOne({ phone_number: phoneNumber });
     if (existingUserByPhone) {
-      return res.json({ available: false }); 
+      return res.json({ available: false });
     }
-    return res.json({ available: true }); 
+    return res.json({ available: true });
   } catch (error) {
     console.error("Error checking phone number existence:", error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
+const requestOtp = async (req, res) => {
+  const { email } = req.body;
+  // console.log('Request received to send OTP to:', email);
+
+  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+  // console.log('Generated OTP:', otp);
+
+  // Remove any existing OTP for this email
+  await Otp.findOneAndDelete({ email });
+  const newOtp = new Otp({ email, otp });
+  await newOtp.save();
+
+  try {
+    // console.log('Calling sendUserOtpEmail...');
+    await sendUserOtpEmail(email, otp);
+    // console.log('OTP email sent successfully.');
+    res.status(200).json({ msg: 'OTP sent' });
+  } catch (error) {
+    console.error('Failed to send OTP:', error);
+    res.status(500).json({ msg: 'Failed to send OTP', error: error.message });
+  }
+};
+
+const verifyOtp = async (req, res) => {
+  const { email, otp } = req.body;
+  const otpRecord = await Otp.findOne({ email, otp });
+
+  if (!otpRecord) {
+    return res.status(400).json({ msg: 'Invalid OTP' });
+  }
+
+  await Otp.findOneAndDelete({ email, otp });
+  res.status(200).json({ msg: 'OTP verified' });
+}
 
 const signUp = async (req, res) => {
   try {
@@ -67,74 +118,102 @@ const signUp = async (req, res) => {
       company_start_date,
       company_end_date,
     } = req.body;
-    const resumeFileName = req.file;
+
+    const resumeFile = req.file;
+    // console.log(resumeFile);
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res
-        .status(400)
-        .json({ message: `${email} is already registered` });
+      return res.status(400).json({ message: `${email} is already registered` });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Adjust company_end_date to null if received as "null" from the frontend
-    const adjustedCompanyEndDate =
-      company_end_date === "null" ? null : company_end_date;
+    const adjustedCompanyEndDate = company_end_date === "null" ? null : company_end_date;
 
-    const newUser = new User({
-      email,
-      password: hashedPassword,
-      name,
-      phone_number,
-      dob,
-      country,
-      state,
-      college,
-      course,
-      course_start_date,
-      course_end_date,
-      percentage,
-      job_title: req.body.job_title || null,
-      company: req.body.company || null,
-      company_start_date: req.body.company_start_date || null,
-      company_end_date: adjustedCompanyEndDate,
-      profileImage: req.body.profileImage || null,
-      biography: req.body.biography || null,
-      skills: req.body.skills || null,
-      note: req.body.note || null,
+    // Upload the resume to Cloudinary
+    const uploadStream = cloudinary.uploader.upload_stream(
+      {
+        resource_type: 'raw', // Use 'raw' for non-image files like PDFs
+        folder: 'resumes',
+        public_id: `${resumeFile.originalname}_${Date.now()}`,
+      },
+      async (error, result) => {
+        if (error) {
+          console.error('Error uploading to Cloudinary:', error);
+          return res.status(500).json({ message: 'Cloudinary upload error', error });
+        }
 
-      resume: resumeFileName,
-      savedJob: [],
-      appliedJob: [],
-    });
-    await newUser.save();
+        // Create the new user after the resume is uploaded
+        const newUser = new User({
+          email,
+          password: hashedPassword,
+          name,
+          phone_number,
+          dob,
+          country,
+          state,
+          college,
+          course,
+          course_start_date,
+          course_end_date,
+          percentage,
+          job_title: job_title || null,
+          company: company || null,
+          company_start_date: company_start_date || null,
+          company_end_date: adjustedCompanyEndDate,
+          profileImage: req.body.profileImage || null,
+          biography: req.body.biography || null,
+          skills: req.body.skills || null,
+          note: req.body.note || null,
+          resume: [{
+            filename: resumeFile.originalname,
+            url: result.secure_url,
+            public_id: result.public_id,
+          }],
+          savedJob: [],
+          appliedJob: [],
+        });
 
-    const newUserSession = new UserSession({
-      userId: newUser._id,
-      startTime: new Date(),
-      endTime: null,
-    });
-    await newUserSession.save();
+        await newUser.save();
 
-    const token = jwt.sign({ userId: newUser._id }, SECRET_KEY, {
-      expiresIn: "2d",
-    });
+        const newUserSession = new UserSession({
+          userId: newUser._id,
+          startTime: new Date(),
+          endTime: null,
+        });
+        await newUserSession.save();
 
-    return res.status(201).json({
-      message: `${name} your account is created successfully`,
-      token,
-      name,
-      email,
-      resume: resumeFileName,
-      savedJob: [],
-      appliedJob: [],
-    });
+        // Set email in request for recommending jobs
+        req.email = email;
+        const recommendedJobs = await recommendJobsForUser(req);
+
+        const token = jwt.sign({ userId: newUser._id }, SECRET_KEY, {
+          expiresIn: "2d",
+        });
+
+        res.status(201).json({
+          message: `${name} your account is created successfully`,
+          token,
+          name,
+          email,
+          resume: newUser.resume,
+          recommendedJobs,
+          savedJob: [],
+          appliedJob: [],
+        });
+      }
+    );
+
+    // Use streamifier to create a readable stream and pipe it to the uploadStream
+    streamifier.createReadStream(resumeFile.buffer).pipe(uploadStream);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
 
 const login = async (req, res) => {
   try {
@@ -170,6 +249,9 @@ const login = async (req, res) => {
 
     await userSession.save();
 
+    req.email = email;
+    const recommendedJobs = await recommendJobsForUser(req);
+
     const token = jwt.sign({ userId: user._id }, SECRET_KEY, {
       expiresIn: "2d",
     });
@@ -180,11 +262,13 @@ const login = async (req, res) => {
       email,
       userType: "user",
       profileImage: user.profileImage,
+      recommendedJobs,
       savedJob: user.userSavedJob,
       appliedJob: user.userAppliedJob,
     });
   } catch (error) {
-    return res.status(500).json({ message: "Internal Server Error" });
+    console.log(error);
+    return res.status(500).json({ message: "Internal Server Error"});
   }
 };
 
@@ -292,8 +376,8 @@ const updateUserField = async (req, res) => {
     req.body.skills =
       req.body.skills?.length > 0
         ? req.body.skills
-            ?.split(",")
-            .map((skill, index) => ({ name: skill.trim(), index }))
+          ?.split(",")
+          .map((skill, index) => ({ name: skill.trim(), index }))
         : "";
 
     for (const key in req.body) {
@@ -330,14 +414,44 @@ const updateUserField = async (req, res) => {
   }
 };
 
+//Delete User
+const deleteUser = async (req, res) => {
+  const { email } = req.params;
+  let id = req.params.id;
+  const deleteUser = await User.deleteOne({ email });
+  const deleteAppliedJobs = await appliedJobCollection.deleteMany({ jobID: id });
+  const deletesavedJobs = await savedJobCollection.deleteMany({ jobID: id });
+  try {
+    if (deleteUser.acknowledged &&
+      deletesavedJobs.acknowledged &&
+      deleteAppliedJobs.acknowledged) {
+      res.send({
+        success: true,
+        msg: "Account deleted succesfully"
+      })
+    }
+    else {
+      res.send({
+        success: false,
+        msg: "Account not found !!"
+      })
+    }
+  } catch (error) {
+    res.status(401).json({ success: false, error })
+  }
+}
+
 module.exports = {
+  getUser,
+  deleteUser,
+  checkEmail,
+  checkPhoneNumberExists,
+  requestOtp,
+  verifyOtp,
   signUp,
   login,
   forgotPassword,
   resetPassword,
-  getUser,
   updateUserField,
-  logout,
-  checkEmail,
-  checkPhoneNumberExists
+  logout
 };

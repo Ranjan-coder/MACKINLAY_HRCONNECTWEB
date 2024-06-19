@@ -35,29 +35,41 @@ function Dashboard() {
   const [selectedSort, setSelectedSort] = useState("Sort By");
   const { FilterOptions, SearchOptions } = useSelector((state) => state.Filter);
   const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
+
   useEffect(() => {
-    setLoading(true);
-    axios
-      .get(`${baseUrl}/jobs/All-jobs`)
-      .then((response) => {
-        if (response.data.success) {
-          setAllJobData(
-            response.data.jobs.sort((a, b) => b.createdAt - a.createdAt)
-          );
-          setBestmatch(response.data.jobs);
-          dispatch(fetchUserData(email))
-          setLoading(false);
+    const fetchJobs = async () => {
+      try {
+        setLoading(true);
+  
+        // Fetch recommended jobs
+        const recommendedJobsResponse = await axios.post(
+          `${baseUrl}/recommendations`,
+          { email }
+        );
+  
+        if (recommendedJobsResponse.data.success && recommendedJobsResponse.data.recommendedJobs.length > 0) {
+          // Set both BestMatch and allJobsData to recommended jobs
+          setBestmatch(recommendedJobsResponse.data.recommendedJobs);
+          setAllJobData(recommendedJobsResponse.data.recommendedJobs);
         } else {
-          setAllJobData([]);
-          setLoading(false);
+          // Fetch all jobs if no recommended jobs found
+          const allJobsResponse = await axios.get(`${baseUrl}/jobs/All-jobs`);
+          if (allJobsResponse.data.success) {
+            setBestmatch(allJobsResponse.data.jobs);
+            setAllJobData(allJobsResponse.data.jobs);
+          }
         }
-      })
-      .catch((error) => {
-        toast.error(`Server failed to load! Reload your page`);
+  
+        dispatch(fetchUserData(email));
         setLoading(false);
-      });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [email,dispatch]);
+      } catch (error) {
+        toast.error("Server failed to load! Reload your page");
+        setLoading(false);
+      }
+    };
+  
+    fetchJobs();
+  }, [email, dispatch, baseUrl]);
 
   const handleSaveToLaterClick = (e, item) => {
     e.preventDefault();
