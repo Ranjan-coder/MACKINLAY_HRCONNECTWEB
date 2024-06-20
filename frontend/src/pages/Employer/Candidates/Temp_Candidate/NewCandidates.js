@@ -222,8 +222,8 @@ setShowpdf(false)
                             </select>
                         </div>
                         <div>
-                        <button style={{backgroundColor:"red"}}>Rejected</button>
-                        <button style={{backgroundColor:"green"}}>Selected</button>
+                        <button className='rejected-btn'>Rejected</button>
+                        <button className='selected-btn'>Selected</button>
                         <input type='checkbox' id='selectAll' onClick={()=>setSelectAll(!SelectAll)}/><label htmlFor='selectAll'>SelectAll</label>
                             <table className='candidate-table'>
                                 <thead style={{ backgroundColor: "#fa7902", height: "2%" }}>

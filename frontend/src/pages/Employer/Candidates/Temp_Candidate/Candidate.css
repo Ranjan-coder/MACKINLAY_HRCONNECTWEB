@@ -272,10 +272,10 @@ body{
         margin-left: 1%;
     }
 
-    .progress-ring-circle {
+    /* .progress-ring-circle {
         cx: 48;
         r: 25;
-    }
+    } */
 
     .candidate-sub-main-1 {
         width: 39%;
@@ -349,10 +349,10 @@ body{
         margin-left: 1%;
     }
 
-    .progress-ring-circle {
+    /* .progress-ring-circle {
         cx: 48;
         r: 25;
-    }
+    } */
 
     .candidate-sub-main-1 {
         width: 39%;
@@ -422,4 +422,25 @@ body{
     .bookmark-profile-left-div{
         width: 40%;
     }
+}
+
+.rejected-btn{
+    background:blue;
+    border-radius: 8px;
+    margin:5px;
+    outline:none;
+    border:none;
+    padding:10px;
+    width:80px;
+    color:white;
+}
+.selected-btn{
+    background:rgb(255, 0, 0);
+    border-radius: 8px;
+    margin:5px;
+    outline:none;
+    border:none;
+    padding:10px;
+    width:80px;
+    color:white;
 }
