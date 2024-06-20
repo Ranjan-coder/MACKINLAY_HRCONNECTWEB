@@ -21,7 +21,7 @@ function ChatBot() {
   }, []);
 
   return (
-    <div>
+    <div className={ChatBotStyle.__chatbotPage}>
       <Helmet>
         <style>{`
           .JobSeeker_RightSideContainer__topHeaderContainer{
