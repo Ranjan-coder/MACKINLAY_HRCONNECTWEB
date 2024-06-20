@@ -5,32 +5,6 @@
     user-select: none;
     font-family: "Playfair Display";
 }
-/* global.css */
-body {
-    transition: background-color 0.3s, color 0.3s;
-  }
-
-  .dark-mode {
-    background-color: #3b4252;
-    color: #FFFFFF;
-  }
-
-/*   
-  .light-mode {
-    background-color: #FFFFFF;
-    color: #000000;
-  }
-   */
-  /* Target specific elements within dark-mode */
-  .dark-mode h1, .dark-mode h2, .dark-mode h3, .dark-mode h4, .dark-mode h5, .dark-mode h6,
-  .dark-mode p, .dark-mode span, .dark-mode a, .dark-mode div {
-    color: #FFFFFF !important; 
-  }
-
-
-
-
-
 
 
 /* These block of code may be temp block so do not touch that even i don't know where this blocks of code will apply */

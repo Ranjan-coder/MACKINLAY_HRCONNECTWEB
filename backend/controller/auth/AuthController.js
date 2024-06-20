@@ -214,7 +214,6 @@ const signUp = async (req, res) => {
   }
 };
 
-
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -302,7 +301,6 @@ const logout = async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
-
 const forgotPassword = async (req, res) => {
   const { email } = req.body;
   try {
@@ -419,8 +417,8 @@ const deleteUser = async (req, res) => {
   const { email } = req.params;
   let id = req.params.id;
   const deleteUser = await User.deleteOne({ email });
-  const deleteAppliedJobs = await appliedJobCollection.deleteMany({ jobID: id });
-  const deletesavedJobs = await savedJobCollection.deleteMany({ jobID: id });
+  const deleteAppliedJobs = await appliedJobCollection.findOneAndDelete({ jobID: id });
+  const deletesavedJobs = await savedJobCollection.findOneAndDelete({ jobID: id });
   try {
     if (deleteUser.acknowledged &&
       deletesavedJobs.acknowledged &&
