@@ -3,6 +3,7 @@ const {
   savedJobCollection,
   appliedJobCollection,
 } = require("../../model/MyJob.model");
+const jobCollection = require("../../model/Job.Model");
 const Otp = require("../../model/UserOtp")
 const sendUserOtpEmail = require("../../services/jobSeekerEmailService")
 const bcrypt = require("bcrypt");
@@ -267,7 +268,7 @@ const login = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Internal Server Error"});
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
@@ -414,15 +415,17 @@ const updateUserField = async (req, res) => {
 
 //Delete User
 const deleteUser = async (req, res) => {
-  const { email } = req.params;
-  let id = req.params.id;
-  const deleteUser = await User.deleteOne({ email });
-  const deleteAppliedJobs = await appliedJobCollection.findOneAndDelete({ jobID: id });
-  const deletesavedJobs = await savedJobCollection.findOneAndDelete({ jobID: id });
   try {
+    const { email } = req.params;
+    const deleteUser = await User.deleteOne({ email });
+    const deleteAppliedJobs = await appliedJobCollection.deleteMany({ userEmail: email });
+    const deletesavedJobs = await savedJobCollection.deleteMany({ userEmail: email });
+    // const deleteAppliedCandidates = await jobCollection.appliedBy.deleteMany({ email: email });
+
     if (deleteUser.acknowledged &&
       deletesavedJobs.acknowledged &&
-      deleteAppliedJobs.acknowledged) {
+      deleteAppliedJobs.acknowledged &&
+      deleteAppliedCandidates.acknowledged) {
       res.send({
         success: true,
         msg: "Account deleted succesfully"

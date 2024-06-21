@@ -45,7 +45,7 @@ export default function HRDashboard() {
         )}`
       )
       .then((response) => {
-        setJobPost(response.data.jobs);
+        setJobPost(response.data.jobs); 
         setSortedJob(
           response.data.jobs.toSorted((a, b) => a.createdAt - b.createdAt)
         );
