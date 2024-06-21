@@ -368,8 +368,11 @@ const updateUserField = async (req, res) => {
   try {
     const { email } = req.params;
     const updateFields = {};
-    const result = req.file && (await uploadonCloudinary(req.file.path));
-    req.body.profileImage = result && result?.secure_url;
+       // Check if a file is uploaded
+       if (req.file) {
+        const result = await uploadonCloudinary(req.file.buffer, req.file.originalname);
+        req.body.profileImage = result?.secure_url;
+      }
 
     req.body.skills =
       req.body.skills?.length > 0

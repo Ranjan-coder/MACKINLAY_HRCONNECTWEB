@@ -264,19 +264,23 @@ const resetPassword = async (req, res) => {
   }
 };
 
+
 const HRupdateUserField = async (req, res) => {
   try {
     const { email } = req.params;
     const updateFields = {};
-    const result = req.file && (await uploadonCloudinary(req.file.path));
-    req.body.profileImage = result && result?.secure_url;
 
-    req.body.skills =
-      req.body.skills?.length > 0
-        ? req.body.skills
-          ?.split(",")
-          .map((skill, index) => ({ name: skill.trim(), index }))
-        : "";
+    // Check if a file is uploaded
+    if (req.file) {
+      const result = await uploadonCloudinary(req.file.buffer, req.file.originalname);
+      req.body.profileImage = result?.secure_url;
+    }
+
+    if (req.body.skills) {
+      req.body.skills = req.body.skills
+        .split(",")
+        .map((skill, index) => ({ name: skill.trim(), index }));
+    }
 
     for (const key in req.body) {
       if (
@@ -289,7 +293,7 @@ const HRupdateUserField = async (req, res) => {
       }
     }
 
-    const findUser = await Hr.findOneAndUpdate({ email: email }, updateFields, {
+    const findUser = await Hr.findOneAndUpdate({ email }, updateFields, {
       new: true,
     });
 
@@ -309,6 +313,8 @@ const HRupdateUserField = async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+
 
 module.exports = {
   checkEmail,
