@@ -2,10 +2,10 @@ const multer = require("multer");
 const path = require("path");
 
 module.exports = multer({
-  storage: multer.diskStorage({}),
-  limits: {fileSize: 5 * 2400 * 1600},
+  storage: multer.memoryStorage(), // Use memory storage to get file buffer
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB file size limit
   fileFilter: (req, file, cb) => {
-    let ext = path.extname(file.originalname);
+    const ext = path.extname(file.originalname).toLowerCase();
     if (
       ext !== ".mp4" &&
       ext !== ".mkv" &&
@@ -15,8 +15,8 @@ module.exports = multer({
       ext !== ".webm"
     ) {
       cb(new Error("file type is not supported"), false);
-      return;
+    } else {
+      cb(null, true);
     }
-    cb(null, true);
   },
 });
