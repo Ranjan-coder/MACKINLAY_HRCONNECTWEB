@@ -284,46 +284,47 @@ function Setting() {
         </div>
       </div>
       {darkModePopup && (
-        <div className={SettingStyle.darkModePopup}>
-          <div className={SettingStyle.popupContent}>
-            <h3>Dark Mode</h3>
-            <p>Choose how your profile experience looks for this device.</p>
-            <div>
-              <label>
-                <input
-                  type="checkbox"
-                  className={SettingStyle.circularCheckbox}
-                  checked={darkMode === 'Device settings'}
-                  onChange={() => handleDarkModeSelection('Device settings')}
-                />
-                Device settings
-              </label>
-            </div>
-            <div>
-              <label>
-                <input
-                  type="checkbox"
-                  className={SettingStyle.circularCheckbox}
-                  checked={darkMode === 'Always on'}
-                  onChange={() => handleDarkModeSelection('Always on')}
-                />
-                Always on
-              </label>
-            </div>
-            <div>
-              <label>
-                <input
-                  type="checkbox"
-                  className={SettingStyle.circularCheckbox}
-                  checked={darkMode === 'Always off'}
-                  onChange={() => handleDarkModeSelection('Always off')}
-                />
-                Always off
-              </label>
-            </div>
-            <p>If you choose Device settings, this app will use the mode that's already selected in this device's settings. </p>
-          </div>
+      <div className={SettingStyle.darkModePopup}>
+      <div className={SettingStyle.popupContent}>
+        <h3 className="exclude-dark-mode">Dark Mode</h3>
+        <p className="exclude-dark-mode">Choose how your profile experience looks for this device.</p>
+        <div>
+          <label>
+            <input
+              type="checkbox"
+              className={SettingStyle.circularCheckbox}
+              checked={darkMode === 'Device settings'}
+              onChange={() => handleDarkModeSelection('Device settings')}
+            />
+            Device settings
+          </label>
         </div>
+        <div>
+          <label>
+            <input
+              type="checkbox"
+              className={SettingStyle.circularCheckbox}
+              checked={darkMode === 'Always on'}
+              onChange={() => handleDarkModeSelection('Always on')}
+            />
+            Always on
+          </label>
+        </div>
+        <div>
+          <label>
+            <input
+              type="checkbox"
+              className={SettingStyle.circularCheckbox}
+              checked={darkMode === 'Always off'}
+              onChange={() => handleDarkModeSelection('Always off')}
+            />
+            Always off
+          </label>
+        </div>
+        <p className="exclude-dark-mode">If you choose Device settings, this app will use the mode that's already selected in this device's settings.</p>
+      </div>
+    </div>
+    
       )}
     </div>
   );
