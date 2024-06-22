@@ -41,7 +41,7 @@ const CurrentResume = ({ email }) => {
   {IsLoaded?    <div className={ResumeStyle.Current_Resume_Container}>
       <div className={ResumeStyle.resume_name_box}>
         <p style={{ fontWeight: "bold" }}>Name</p>
-        <p className={ResumeStyle.pdf_name}>
+        <p style={{background:"linear-gradient(90deg, #00296B 0%, #0050D1 100%)",color:"white" }} className={ResumeStyle.pdf_name}>
           {latestResume ? latestResume.filename : "No Resume Available"}
         </p>
       </div>

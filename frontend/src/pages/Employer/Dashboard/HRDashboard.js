@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import hrdashboard from "./HrDashboard.module.css";
 import user from "../../../Assets/user.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowUpRightFromSquare, faTrash,} from "@fortawesome/free-solid-svg-icons";
+import { faArrowUpRightFromSquare, faTrash, } from "@fortawesome/free-solid-svg-icons";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import axios from "axios";
@@ -132,7 +132,6 @@ export default function HRDashboard() {
       ) : (
         <>
           <header className={hrdashboard.__dashboard_Header}>
-            <h2 style={{ fontWeight: "700" }}>Dashboard</h2>
             <div className={hrdashboard.__dropdown}>
               <select
                 className={hrdashboard.selectOption}
@@ -147,12 +146,12 @@ export default function HRDashboard() {
                 <option value="city">City</option>
               </select>
             </div>
+            {/* <h2 style={{ fontWeight: "700" }}>Dashboard</h2> */}
           </header>
 
           <div className={hrdashboard.__post_Impression}>
             <header className={hrdashboard.__postImpression_Header}>
               <h3>Post Impressions</h3>
-              <p className="">see all</p>
             </header>
             <Carousel
               className={hrdashboard.__post_Section}
@@ -227,8 +226,7 @@ export default function HRDashboard() {
           {!selectedJobId && (
             <div className={hrdashboard.__latest_Post}>
               <div className={hrdashboard.__latest_Post_Header}>
-                <h3>Latest Post</h3>
-                <p className="">see all</p>
+                <h3 style={{ margin: ".5em 0" }}>Latest Posts</h3>
               </div>
               <section className={hrdashboard.__latestPosts}>
                 {

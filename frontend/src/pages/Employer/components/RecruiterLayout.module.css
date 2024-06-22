@@ -51,14 +51,15 @@
 
 .__navbar_Links,
 .active {
+    /* border: 1px solid red; */
     text-decoration: none;
     color: white;
     border-radius: 0 20px 20px 0;
-    padding: .4em 1em .4em 2em;
+    padding: .5em 1em .4em 2em;
     margin: .1em 0;
-    width: 90%;
+    width: 95%;
     display: flex;
-    align-items: center;
+    align-items: baseline;
     gap: 8px;
 }
 
@@ -71,7 +72,6 @@
 }
 
 .__nav_footer_actions {
-    margin: 1em 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -83,6 +83,7 @@
     align-items: center;
     justify-content: center;
     color: white;
+    gap: 1em;
 }
 
 .__user_Img {
@@ -173,7 +174,7 @@
 }
 
 
-.searchItemContainer{
+.searchItemContainer {
     border-radius: 5px;
     border: 1px solid grey;
     background-color: white;
@@ -182,15 +183,16 @@
     position: absolute;
     z-index: 2;
     top: 10em;
-    left:50%;
+    left: 50%;
     overflow: scroll;
     transform: translate(-60%, -45%);
-  }
-.SearchList__Item{
+}
+
+.SearchList__Item {
     width: 100%;
     margin-top: 10px;
     padding-left: 2em;
-  }
+}
 
 @media screen and (max-width: 950px) {
     .__navbar_Page {
@@ -198,13 +200,22 @@
     }
 
     .__navbar {
-        gap: 1em;
+        gap: .1em;
     }
 
     .__navbar_Links,
     .active {
-        margin: .3em 0;
+        margin: .1em 0;
         padding-left: 2.5em;
+    }
+
+    .__user_Info span {
+        display: none;
+    }
+
+    .__user_Img {
+        width: 45px;
+        height: 45px;
     }
 
     .__btn_Logout {
@@ -226,10 +237,6 @@
     .__userSection,
     .__logout_Text {
         display: none;
-    }
-
-    .__user_Img {
-        width: 35px;
     }
 
     .__subContainer {
