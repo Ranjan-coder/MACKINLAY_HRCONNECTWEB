@@ -15,8 +15,8 @@ import axios from 'axios';
 function Setting() {
   const { name, profileImage } = useSelector((state) => state.Assessment.currentUser);
   const [settingtype, setsettingtype] = useState("");
-  // const { userEmail } = useSelector((state) => state.User)
-  const userEmail = localStorage.getItem("email")
+  const { email } = useSelector((state) => state.Assessment.currentUser);
+  console.log();
   const navi = useNavigate();
   const dispatch = useDispatch()
 
@@ -35,7 +35,7 @@ function Setting() {
   const handlePopupClose = () => { setDel(false) }
 
   const handleAgree = () => {
-    axios.delete(`http://localhost:8585/api/delete-user/${userEmail}`)
+    axios.delete(`http://localhost:8585/api/delete-user/${email}`)
       .then((response) => {
         if (response.data.success) {
           toast.success(`${response.data.msg}`);

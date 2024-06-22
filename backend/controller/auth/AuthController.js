@@ -420,12 +420,19 @@ const deleteUser = async (req, res) => {
     const deleteUser = await User.deleteOne({ email });
     const deleteAppliedJobs = await appliedJobCollection.deleteMany({ userEmail: email });
     const deletesavedJobs = await savedJobCollection.deleteMany({ userEmail: email });
-    // const deleteAppliedCandidates = await jobCollection.appliedBy.deleteMany({ email: email });
-
+    const result = await jobCollection.updateMany(
+      {
+        appliedBy: {
+          $elemMatch: {
+            email: email
+          }
+        }
+      }, { $pull: { appliedBy: { email: email } } }
+    );
     if (deleteUser.acknowledged &&
       deletesavedJobs.acknowledged &&
       deleteAppliedJobs.acknowledged &&
-      deleteAppliedCandidates.acknowledged) {
+      result.acknowledged) {
       res.send({
         success: true,
         msg: "Account deleted succesfully"
