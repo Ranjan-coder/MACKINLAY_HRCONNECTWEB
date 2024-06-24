@@ -59,6 +59,7 @@ function Setting() {
 
   const handleDeleteAccount = () => {
     setDel(true);
+
     
   };
 
