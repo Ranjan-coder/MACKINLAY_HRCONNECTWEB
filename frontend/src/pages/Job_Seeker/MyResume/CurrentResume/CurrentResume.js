@@ -34,7 +34,7 @@ const CurrentResume = ({ email }) => {
     };
 
     fetchResumes();
-  }, [email,latestResume]);
+  }, [email]);
 
   return (
   <>
