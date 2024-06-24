@@ -89,7 +89,7 @@ function Setting() {
   const handleDoneClick = () => {
     // Add any necessary logic when "Done" is clicked inside job preference
     // For now, simply toggle settingtype to an empty string to hide the section
-    setSettingType('');
+    setsettingtype('');
     
   };
 
@@ -103,7 +103,7 @@ function Setting() {
                 <p><FaSync /></p>
                 <span>Sync</span>
               </div>
-              <div className={SettingStyle.Profile_cont2_One} onClick={() => setSettingType('Setting/JobPreference')}>
+              <div className={SettingStyle.Profile_cont2_One} onClick={() => setsettingtype('Setting/JobPreference')}>
                 <p><RiUserSettingsFill /></p>
                 <span>Job Preference</span>
               </div>
@@ -339,19 +339,19 @@ function Setting() {
       </div>
       <div className={SettingStyle.Setting_opt_container}>
         <div className={SettingStyle.setting_opt_left}>
-          <div className={settingtype === 'Setting/Profile' ? `${SettingStyle.setting_opt_active} ` : SettingStyle.setting_opt} onClick={() => setSettingType('Setting/Profile')}>
+          <div className={settingtype === 'Setting/Profile' ? `${SettingStyle.setting_opt_active} ` : SettingStyle.setting_opt} onClick={() => setsettingtype('Setting/Profile')}>
             <i className="fa-solid fa-user" /> Profile
           </div>
-          <div className={settingtype === 'Setting/privacy' ? SettingStyle.setting_opt_active : SettingStyle.setting_opt} onClick={() => setSettingType('Setting/privacy')}>
+          <div className={settingtype === 'Setting/privacy' ? SettingStyle.setting_opt_active : SettingStyle.setting_opt} onClick={() => setsettingtype('Setting/privacy')}>
             <i className="fa-solid fa-lock" /> Privacy & Service
           </div>
-          <div className={settingtype === 'Setting/appearance' ? SettingStyle.setting_opt_active : SettingStyle.setting_opt} onClick={() => setSettingType('Setting/appearance')}>
+          <div className={settingtype === 'Setting/appearance' ? SettingStyle.setting_opt_active : SettingStyle.setting_opt} onClick={() => setsettingtype('Setting/appearance')}>
             <i className="fa-solid fa-wand-magic-sparkles" /> Appearance
           </div>
-          <div className={settingtype === 'Setting/notification' ? SettingStyle.setting_opt_active : SettingStyle.setting_opt} onClick={() => setSettingType('Setting/notification')}>
+          <div className={settingtype === 'Setting/notification' ? SettingStyle.setting_opt_active : SettingStyle.setting_opt} onClick={() => setsettingtype('Setting/notification')}>
             <i className="fa-solid fa-bell" /> Notification
           </div>
-          <div className={settingtype === 'Setting/support' ? SettingStyle.setting_opt_active : SettingStyle.setting_opt} onClick={() => setSettingType('Setting/support')}>
+          <div className={settingtype === 'Setting/support' ? SettingStyle.setting_opt_active : SettingStyle.setting_opt} onClick={() => setsettingtype('Setting/support')}>
             <i className="fa-solid fa-headset" /> Support
           </div>
         </div>
