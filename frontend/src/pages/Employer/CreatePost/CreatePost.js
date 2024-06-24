@@ -273,7 +273,7 @@ export default function CreatePost() {
 
             <div className={createPost.__input_Grps}>
               <label htmlFor="education">Education</label> <br />
-              <input
+              <textarea
                 type="text"
                 name="education"
                 id="education"
@@ -285,7 +285,7 @@ export default function CreatePost() {
 
             <div className={createPost.__input_Grps}>
               <label htmlFor="responsibility">Responsibility</label> <br />
-              <input
+              <textarea
                 type="text"
                 name="responsibility"
                 id="responsibility"
