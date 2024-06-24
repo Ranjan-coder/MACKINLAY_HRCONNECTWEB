@@ -63,6 +63,7 @@ function Setting() {
 
   const handlePopupClose = () => {
     setDel(false);  
+    
   };
 
   const handleAgree = () => {
