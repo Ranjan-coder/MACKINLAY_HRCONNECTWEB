@@ -58,6 +58,7 @@ function Setting() {
   const [del, setDel] = useState(false);
   const handleDeleteAccount = () => {
     setDel(true);
+    
   };
   const handlePopupClose = () => { setDel(false); };
 
