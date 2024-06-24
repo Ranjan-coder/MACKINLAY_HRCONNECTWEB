@@ -88,6 +88,7 @@ function Setting() {
     // Add any necessary logic when "Done" is clicked inside job preference
     // For now, simply toggle settingtype to an empty string to hide the section
     setSettingType('');
+    
   };
 
   const renderSettingContent = () => {
