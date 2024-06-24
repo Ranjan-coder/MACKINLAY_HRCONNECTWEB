@@ -36,6 +36,7 @@ function Setting() {
       body.classList.remove('dark-mode');
       body.classList.remove('light-mode');
     }
+  
   };
 
   const handleDarkModeSelection = (mode) => {
