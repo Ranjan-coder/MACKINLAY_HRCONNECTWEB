@@ -108,8 +108,10 @@ function Setting() {
             {
               del && <div className={SettingStyle.__popupDelete}>
                 <p>Are you sure you want to delete ??</p>
-                <button onClick={handleAgree}>Agree</button>
-                <button onClick={handlePopupClose}>Cancel</button>
+                <p>
+                <button className={SettingStyle.__btnAgree} onClick={handleAgree}>Agree</button>
+                <button className={SettingStyle.__btnCancel} onClick={handlePopupClose}>Cancel</button>
+                </p>
               </div>
             }
 
