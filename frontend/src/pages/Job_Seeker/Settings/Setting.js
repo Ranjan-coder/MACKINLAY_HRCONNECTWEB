@@ -54,11 +54,12 @@ function Setting() {
     }, 1000);
   };
 
-  
+
   const [del, setDel] = useState(false);
 
   const handleDeleteAccount = () => {
     setDel(true);
+    
   };
 
   const handlePopupClose = () => {
