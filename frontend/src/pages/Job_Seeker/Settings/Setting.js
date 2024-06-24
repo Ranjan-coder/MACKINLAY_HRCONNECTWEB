@@ -13,15 +13,17 @@ import axios from 'axios';
 
 function Setting() {
   const { name, profileImage } = useSelector((state) => state.Assessment.currentUser);
-  const [settingtype, setSettingType] = useState('');
-  const userEmail = localStorage.getItem('email');
+  const [settingtype, setsettingtype] = useState("");
+  const { email } = useSelector((state) => state.Assessment.currentUser);
   const [darkModePopup, setDarkModePopup] = useState(false);
   const [darkMode, setDarkMode] = useState(() => localStorage.getItem('darkMode') || 'Device settings');
   const navi = useNavigate();
+  
   const dispatch = useDispatch();
 
   useEffect(() => {
     applyDarkMode();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [darkMode]);
 
   const applyDarkMode = () => {
@@ -58,6 +60,7 @@ function Setting() {
 
   const handleDeleteAccount = () => {
     setDel(true);
+    
   };
 
   const handlePopupClose = () => {
@@ -66,8 +69,7 @@ function Setting() {
   };
 
   const handleAgree = () => {
-    axios
-      .delete(`http://localhost:8585/api/delete-user/${userEmail}`)
+    axios.delete(`http://localhost:8585/api/delete-user/${email}`)
       .then((response) => {
         if (response.data.success) {
           toast.success(`${response.data.msg}`);
@@ -115,11 +117,16 @@ function Setting() {
               <button className={SettingStyle.__pfLogoutBtn} onClick={handleLogOut}> <FaArrowRight />Logout</button>
               <button className={SettingStyle.__pfDeleteBtn} onClick={handleDeleteAccount}> <GoTrash /> Delete Account</button>
             </div>
-            {del && <div className={SettingStyle.__popupDelete}>
-              <p>Are you sure you want to delete ??</p>
-              <button onClick={handleAgree}>Agree</button>
-              <button onClick={handlePopupClose}>Cancel</button>
-            </div>}
+            {
+              del && <div className={SettingStyle.__popupDelete}>
+                <p>Are you sure you want to delete ??</p>
+                <p>
+                <button className={SettingStyle.__btnAgree} onClick={handleAgree}>Agree</button>
+                <button className={SettingStyle.__btnCancel} onClick={handlePopupClose}>Cancel</button>
+                </p>
+              </div>
+            }
+
           </div>
         );
       case 'Setting/JobPreference':
