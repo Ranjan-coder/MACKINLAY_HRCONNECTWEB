@@ -60,11 +60,12 @@ function Setting() {
   const handleDeleteAccount = () => {
     setDel(true);
 
-    
+
   };
 
   const handlePopupClose = () => {
     setDel(false);
+    
   };
 
   const handleAgree = () => {
