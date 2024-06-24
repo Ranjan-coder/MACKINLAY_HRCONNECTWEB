@@ -44,6 +44,7 @@ function Setting() {
     localStorage.setItem('darkMode', mode);
     setDarkModePopup(false);
     applyDarkMode();
+    
   };
 
   const handleLogOut = () => {
