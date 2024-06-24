@@ -86,14 +86,81 @@
   scrollbar-width: none;
 }
 
-/*--------------------------different box design----------------*/
+/* job preference */
+
+.jobPreferenceSection {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid black;
+  border-radius: 20px;
+  height: 50vw;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0px 3px 3px gray;
+}
+
+.jobPreferenceSection h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.jobInput {
+  margin-bottom: 15px;
+}
+
+.jobInput label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.jobInput input[type="text"],
+.jobInput select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+.jobInput label input[type="checkbox"]{
+  margin-right: 10px;
+  transform: scale(1.2);
+  cursor: pointer;
+}
+
+.startDates {
+  margin-top: 5px;
+}
+
+.startDates label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.doneButton {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: linear-gradient(90deg, #01378f 0%, #0050D1 100%);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 20vh;
+  transition: 300ms linear;
+}
+.doneButton:hover {
+  transform: scale(1.03);
+}
+
+
+
+/* /--------------------------different box design----------------/ */
 .__defaultText {
   display: grid;
   place-items: center;
   margin: 25vh auto;
 }
 
-/*------------------------profile design container1----------*/
+/* /------------------------profile design container1----------/ */
 .Profile_cont1 {
   border-radius: 5px;
   margin-top: 2em;
@@ -177,7 +244,7 @@
   color: white;
 }
 
-/*-------------------profile design container2-------------*/
+/* /-------------------profile design container2-------------/ */
 .Profile_cont2 {
   border: 1px solid black;
   border-radius: 20px;
@@ -202,13 +269,13 @@
   font-size: 20px;
 }
 
-/*---------------------appearance container-----------------*/
+/* /---------------------appearance container-----------------/ */
 .Appearance {
   padding: 7px;
   line-height: 2.2;
 }
 
-/*-------------------------notification------------------*/
+/* /-------------------------notification------------------/ */
 .notification {
   display: flex;
   flex-direction: column;
@@ -293,7 +360,7 @@
   padding: 20px;
   border: 1px solid black;
   border-radius: 20px;
-  height: 56vw;
+  height: auto;
   display: flex;
   flex-direction: column;
   box-shadow: 0px 3px 3px gray;
@@ -317,6 +384,7 @@
 .supportContent {
   padding: 20px;
   border-radius: 10px;
+  height: auto;
 }
 
 .supportContent p {
@@ -352,6 +420,7 @@
   border-radius: 5px;
   cursor: pointer;
   transition: 300ms linear;
+  width: 40vh;
 }
 
 .feedbackForm button:hover {
@@ -387,7 +456,6 @@
 }
 
 /* Media Queries */
-
 @media (max-width: 768px) {
   .setting_opt_left {
     width: 100%;
@@ -420,7 +488,6 @@
   }
 
   .popupContent {
-    width: 90%;
+    width: 90%; 
   }
 }
-
