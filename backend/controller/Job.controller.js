@@ -8,7 +8,17 @@ const User = require("../model/users/UserModel");
 
 const create = async (req, res) => {
   try {
-    const result = await uploadonCloudinary(req.file.path);
+    console.log('File:', req.file);
+
+    if (!req.file || !req.file.buffer) {
+      return res.status(400).json({ message: "File is missing" });
+    }
+
+    const result = await uploadonCloudinary(req.file.buffer, req.file.originalname);
+
+    if (!result || !result.secure_url) {
+      return res.status(500).json({ message: "Error uploading to Cloudinary" });
+    }
     const {
       jobTitle,
       jobDescription,
@@ -27,7 +37,7 @@ const create = async (req, res) => {
     // Parse the skilRequired string into an array of objects
     const skillArray = skilRequired.split(",").map((skill, index) => ({ name: skill.trim(), index }));
 
-      const mcqData = mcq ? mcq : [];
+    const mcqData = mcq ? mcq : [];
 
     const newPost = {
       jobPoster: result.secure_url,

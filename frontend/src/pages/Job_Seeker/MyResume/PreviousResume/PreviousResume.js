@@ -38,7 +38,7 @@ const PreviousResume = () => {
     };
 
     fetchResumes();
-  }, [email, uploadTrigger,resumes,resumes._id]); // Add uploadTrigger to dependencies
+  }, [email, uploadTrigger,resumes._id]); // Add uploadTrigger to dependencies
 
   const rgbArray = [
     "#ff7f50",

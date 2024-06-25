@@ -16,34 +16,13 @@ const getHR = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    res.json({ name: user.name, email: user.email, hrDetails: user });
+    res.json({hrDetails: user, success: true });
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
 
-//Delete HR
-const deleteHR = async (req, res) => {
-  const { email } = req.params;
-  const deleteHr = await Hr.deleteOne({ email });
-  try {
-    if (deleteHr.deletedCount) {
-      res.send({
-        success: true,
-        msg: "Account deleted successfully"
-      })
-    }
-    else {
-      res.send({
-        success: false,
-        msg: "Account not found !!"
-      })
-    }
-  } catch (err) {
-    res.status(401).json({ success: false }, err);
-  }
-}
 
 const checkEmail = async (req, res) => {
   const { email } = req.body;
@@ -264,19 +243,23 @@ const resetPassword = async (req, res) => {
   }
 };
 
+
 const HRupdateUserField = async (req, res) => {
   try {
     const { email } = req.params;
     const updateFields = {};
-    const result = req.file && (await uploadonCloudinary(req.file.path));
-    req.body.profileImage = result && result?.secure_url;
 
-    req.body.skills =
-      req.body.skills?.length > 0
-        ? req.body.skills
-          ?.split(",")
-          .map((skill, index) => ({ name: skill.trim(), index }))
-        : "";
+    // Check if a file is uploaded
+    if (req.file) {
+      const result = await uploadonCloudinary(req.file.buffer, req.file.originalname);
+      req.body.profileImage = result?.secure_url;
+    }
+
+    if (req.body.skills) {
+      req.body.skills = req.body.skills
+        .split(",")
+        .map((skill, index) => ({ name: skill.trim(), index }));
+    }
 
     for (const key in req.body) {
       if (
@@ -289,7 +272,7 @@ const HRupdateUserField = async (req, res) => {
       }
     }
 
-    const findUser = await Hr.findOneAndUpdate({ email: email }, updateFields, {
+    const findUser = await Hr.findOneAndUpdate({ email }, updateFields, {
       new: true,
     });
 
@@ -309,6 +292,28 @@ const HRupdateUserField = async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+//Delete HR
+const deleteHR = async (req, res) => {
+  try {
+    const { email } = req.params;
+    const deleteHr = await Hr.deleteOne({ email });
+    if (deleteHr.deletedCount) {
+      res.send({
+        success: true,
+        msg: "Account deleted successfully"
+      })
+    }
+    else {
+      res.send({
+        success: false,
+        msg: "Account not found !!"
+      })
+    }
+  } catch (err) {
+    res.status(401).json({ success: false }, err);
+  }
+}
 
 module.exports = {
   checkEmail,
