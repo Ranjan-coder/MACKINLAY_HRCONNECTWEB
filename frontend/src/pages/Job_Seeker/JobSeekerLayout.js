@@ -74,7 +74,6 @@ function JobSeekerLayout() {
         </div>
       </div>
 
-
       {ToggleFilter && (
         <Filter handleOnChange={handleFilterOnchange} CbToggle={handleToogleFilter} />
       )}
@@ -418,6 +417,7 @@ function DashboardTopComponent({ CbToggle }) {
   );
 }
 
+// InterviewNavbar Component
 function InterviewTopNavbar() {
   return (
     <div className={JobSeekerStyle.__interview_Top_Navbar}>
@@ -433,8 +433,8 @@ function InterviewTopNavbar() {
 
 function ChatbotNavbar() {
   return (
-    <>
+    <div className={JobSeekerStyle.__chatbotNavbar}>
       {/* to keep this header part , this component should blank */}
-    </>
+    </div>
   )
 }

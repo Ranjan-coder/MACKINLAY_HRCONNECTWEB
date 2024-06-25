@@ -3,18 +3,16 @@ import axios from "axios";
 import hrdashboard from "./HrDashboard.module.css";
 import { FaRegBookmark } from "react-icons/fa";
 import { FaBookmark } from "react-icons/fa6";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import ViewPdf from "./ViewPdf";
 import { GiTireIronCross } from "react-icons/gi";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  handleBookmark,
-  handleRemoveBookmark,
-} from "../../../Redux/ReduxSlice";
+import { handleBookmark, handleRemoveBookmark } from "../../../Redux/ReduxSlice";
 import { io } from "socket.io-client"
 const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
 const newUrl = process.env.REACT_APP_BACKEND_BASE_URL_WITHOUT_API;
+
 function ApplicantsDetails({ jobData, selectedUser, CbToogleDetails }) {
   const socket = io(`${newUrl}`)
   const { bookmarkUser } = useSelector((state) => state.Assessment.currentUser);
@@ -23,18 +21,18 @@ function ApplicantsDetails({ jobData, selectedUser, CbToogleDetails }) {
   const [userDetails, setUserDetails] = useState([]);
   const [showPDF, setShowPDF] = useState(false);
   const [SelectedResume, setSelectedResume] = useState(null);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+
   const handleScheduleInterview = (e, user) => {
     e.preventDefault();
-   
-    navigate('/schedule-interview', { state: { userEmail: user.email, userName: user.name,UserProfile:user.profileImage } });
+    navigate('/schedule-interview', { state: { userEmail: user.email, userName: user.name, UserProfile: user.profileImage } });
   };
   useEffect(() => {
     setUserDetails(
       jobData?.appliedBy?.filter((data) => data.email === selectedUserEmail)
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedUserEmail,jobData]);
+  }, [selectedUserEmail, jobData]);
 
   const handleToggleCardActive = (e, email, jobTitle, userJobID) => {
     // Set the selected user email
@@ -75,7 +73,7 @@ function ApplicantsDetails({ jobData, selectedUser, CbToogleDetails }) {
 
   const handleSeeResumeClick = (e, user) => {
     e.preventDefault();
-console.log(user);
+    console.log(user);
     axios.patch(`${baseUrl}/user/My-jobs/applicationStatus/${user?.email}`, {
       applicationStatus: {
         JobStatus: "In-Progress",
@@ -96,7 +94,7 @@ console.log(user);
         }));
       }
     });
-console.log(jobData);
+    console.log(jobData);
     // const latestResumeIndex = user?.resume.length - 1;
     // console.log(latestResumeIndex);
     const latestResume = user?.resume[0];
@@ -294,11 +292,11 @@ console.log(jobData);
         </div>
 
         {showPDF && (
-        <ViewPdf
-          CbTogglePDF={setShowPDF}
-          SelectedResume={SelectedResume}
-        />
-      )}
+          <ViewPdf
+            CbTogglePDF={setShowPDF}
+            SelectedResume={SelectedResume}
+          />
+        )}
       </div>
     </>
   );
