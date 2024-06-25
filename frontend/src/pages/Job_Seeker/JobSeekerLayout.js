@@ -132,6 +132,7 @@ function DashboardTopComponent({ CbToggle }) {
   // ]
 
   const allCities = [
+    "India",
     "Visakhapatnam",
     "Vijayawada",
     "Guntur",
@@ -370,6 +371,7 @@ function DashboardTopComponent({ CbToggle }) {
     "Kampong Pengkalan Petai",
     "Sarang Rimau",
 
+    "Malaysia",
     "Kuala Lumpur",
     "Seberang Jaya",
     "Klang",
@@ -432,6 +434,7 @@ function DashboardTopComponent({ CbToggle }) {
     "Pak Tin Pa",
     "Cheung Chau",
 
+    "South Korea",
     "Seoul",
     "Busan",
     "Incheon",
@@ -451,6 +454,7 @@ function DashboardTopComponent({ CbToggle }) {
     "Guri",
     "Dongnae",
 
+    "Japan",
     "Tokyo",
     "Ōsaka",
     "Nagoya",

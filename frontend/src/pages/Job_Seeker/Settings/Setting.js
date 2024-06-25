@@ -105,13 +105,13 @@ function Setting() {
                 <p><RiUserSettingsFill /></p>
                 <span>Job Preference</span>
               </div>
-              <div className={SettingStyle.Profile_cont2_One} onClick={()=> setsettingtype('Setting/PersonalInfo')}>
+              <div className={SettingStyle.Profile_cont2_One} onClick={()=> navi("/settings/editprofile")}>
                 <p><TbUserExclamation /></p>
                 <span>Personal Info</span>
               </div>
             </div>
             <div className={SettingStyle.Profile_cont1}>
-              {/* <button className={SettingStyle.__pfEditBtn} onClick={() => { navi('/settings/editprofile') }}>Edit My Profile</button> */}
+              <button className={SettingStyle.__pfEditBtn} onClick={() => { navi('/settings/editprofile') }}>Edit My Profile</button>
               <button className={SettingStyle.__pfLogoutBtn} onClick={handleLogOut}> <FaArrowRight />Logout</button>
               <button className={SettingStyle.__pfDeleteBtn} onClick={handleDeleteAccount}> <GoTrash /> Delete Account</button>
             </div>
@@ -184,13 +184,6 @@ function Setting() {
             <button className={SettingStyle.doneButton} onClick={handleDoneClick}>Done</button>
           </div>
         );
-
-      case 'Setting/PersonalInfo':
-        return (
-          <div className={SettingStyle.__personalInfo}>
-            <button className={SettingStyle.__pfEditBtn} onClick={() => { navi('/settings/editprofile') }}>Edit My Profile</button>
-          </div>
-        )
 
       case 'Setting/privacy':
         return (
@@ -323,14 +316,8 @@ function Setting() {
             </form>
           </div>
         );
-
-      // default:
-      //   return (
-      //     <div>
-      //       <h5 className={SettingStyle.__defaultText}>Select any option from the list</h5>
-      //     </div>
-      //   );
-    }
+    
+      }
   };
 
   return (
