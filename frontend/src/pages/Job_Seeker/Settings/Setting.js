@@ -1,13 +1,12 @@
-
-import React, { useState ,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import SettingStyle from '../Settings/Setting.module.css';
 import { useNavigate } from 'react-router-dom';
-import { GoTrash } from "react-icons/go";
-import { FaArrowRightToBracket } from "react-icons/fa6";
-import { FaSync } from "react-icons/fa";
-import { RiUserSettingsFill } from "react-icons/ri";
-import { TbUserExclamation } from "react-icons/tb";
-import { useDispatch, useSelector } from 'react-redux'
+import { GoTrash } from 'react-icons/go';
+import { FaArrowRight } from 'react-icons/fa';
+import { FaSync } from 'react-icons/fa';
+import { RiUserSettingsFill } from 'react-icons/ri';
+import { TbUserExclamation } from 'react-icons/tb';
+import { useDispatch, useSelector } from 'react-redux';
 import { handleUserLogOut } from '../../../Redux/ReduxSlice';
 import toast from 'react-hot-toast';
 import axios from 'axios';
@@ -21,6 +20,7 @@ function Setting() {
   const navi = useNavigate();
   
   const dispatch = useDispatch();
+
   useEffect(() => {
     applyDarkMode();
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -40,26 +40,33 @@ function Setting() {
     }
   };
 
-
   const handleDarkModeSelection = (mode) => {
     setDarkMode(mode);
     localStorage.setItem('darkMode', mode);
     setDarkModePopup(false);
     applyDarkMode();
   };
+
   const handleLogOut = () => {
     dispatch(handleUserLogOut());
-    toast.success(`${name} Logged out !!`);
+    toast.success(`${name} Logged out!!`);
     setTimeout(() => {
       navi('/dashboard');
     }, 1000);
   };
 
+
   const [del, setDel] = useState(false);
+
   const handleDeleteAccount = () => {
     setDel(true);
+    
   };
-  const handlePopupClose = () => { setDel(false); };
+
+  const handlePopupClose = () => {
+    setDel(false);  
+    
+  };
 
   const handleAgree = () => {
     axios.delete(`http://localhost:8585/api/delete-user/${email}`)
@@ -68,21 +75,27 @@ function Setting() {
           toast.success(`${response.data.msg}`);
           dispatch(handleUserLogOut());
           navi('/login');
-
         } else {
-          toast.error("Try Again !!!");
+          toast.error('Try Again !!!');
           handlePopupClose();
         }
       })
-      .catch(err => {
-        toast.error(`${err.msg}`);
+      .catch((err) => {
+        toast.error(`${err.message}`);
         handlePopupClose();
       });
   };
 
+  const handleDoneClick = () => {
+    // Add any necessary logic when "Done" is clicked inside job preference
+    // For now, simply toggle settingtype to an empty string to hide the section
+    setsettingtype('');
+    
+  };
+
   const renderSettingContent = () => {
     switch (settingtype) {
-      case "Setting/Profile":
+      case 'Setting/Profile':
         return (
           <div className={SettingStyle.profile_designs}>
             <div className={SettingStyle.Profile_cont2}>
@@ -90,9 +103,9 @@ function Setting() {
                 <p><FaSync /></p>
                 <span>Sync</span>
               </div>
-              <div className={SettingStyle.Profile_cont2_One}>
+              <div className={SettingStyle.Profile_cont2_One} onClick={() => setsettingtype('Setting/JobPreference')}>
                 <p><RiUserSettingsFill /></p>
-                <span>Profile Preference</span>
+                <span>Job Preference</span>
               </div>
               <div className={SettingStyle.Profile_cont2_One}>
                 <p><TbUserExclamation /></p>
@@ -101,7 +114,7 @@ function Setting() {
             </div>
             <div className={SettingStyle.Profile_cont1}>
               <button className={SettingStyle.__pfEditBtn} onClick={() => { navi('/settings/editprofile') }}>Edit My Profile</button>
-              <button className={SettingStyle.__pfLogoutBtn} onClick={handleLogOut}> <FaArrowRightToBracket />Logout</button>
+              <button className={SettingStyle.__pfLogoutBtn} onClick={handleLogOut}> <FaArrowRight />Logout</button>
               <button className={SettingStyle.__pfDeleteBtn} onClick={handleDeleteAccount}> <GoTrash /> Delete Account</button>
             </div>
             {
@@ -116,7 +129,64 @@ function Setting() {
 
           </div>
         );
-      case "Setting/privacy":
+      case 'Setting/JobPreference':
+        return (
+          <div className={SettingStyle.jobPreferenceSection}>
+            <h3>Job Preference</h3>
+            <div className={SettingStyle.jobInput}>
+              <label>Job Titles<span>*</span></label>
+              <input type="text" placeholder="Enter job titles" />
+            </div>
+            <div className={SettingStyle.jobInput}>
+              <label>Location Types<span>*</span></label>
+              <select>
+                <option value="On-site">On-site</option>
+                <option value="Hybrid">Hybrid</option>
+                <option value="Remote">Remote</option>
+              </select>
+            </div>
+            <div className={SettingStyle.jobInput}>
+              <label>Start Date<span>*</span></label>
+              <div className={SettingStyle.startDates}>
+                <label>
+                  <input type="checkbox" />
+                  <span>Immediately, I am actively applying</span>
+                </label>
+                <label>
+                  <input type="checkbox" />
+                  <span>Flexible, I am casually looking</span>
+                </label>
+              </div>
+            </div>
+            <div className={SettingStyle.jobInput}>
+              <label>Employment Types<span>*</span></label>
+              <div>
+                <label>
+                  <input type="checkbox" />
+                  <span>Full-time</span>
+                </label>
+                <label>
+                  <input type="checkbox" />
+                  <span>Part-time</span>
+                </label>
+                <label>
+                  <input type="checkbox" />
+                  <span>Contract</span>
+                </label>
+                <label>
+                  <input type="checkbox" />
+                  <span>Internship</span>
+                </label>
+                <label>
+                  <input type="checkbox" />
+                  <span>Temporary</span>
+                </label>
+              </div>
+            </div>
+            <button className={SettingStyle.doneButton} onClick={handleDoneClick}>Done</button>
+          </div>
+        );
+      case 'Setting/privacy':
         return (
           <div className={SettingStyle.privacySettings}>
             <h3>Privacy Settings</h3>
@@ -157,7 +227,7 @@ function Setting() {
             </section>
           </div>
         );
-      case "Setting/service":
+      case 'Setting/service':
         return (
           <div className={SettingStyle.serviceSettings}>
             <h3>Service Settings</h3>
@@ -178,51 +248,47 @@ function Setting() {
             </section>
           </div>
         );
-      case "Setting/appearance":
+      case 'Setting/appearance':
         return (
-          <div>
-            <div className={`${SettingStyle.Appearance} ${SettingStyle.Profile_cont2}`}>
-              <div className={SettingStyle.Profile_cont2_One} onClick={() => setDarkModePopup(true)}>
-                <span>Dark Mode</span>
+          <div className={`${SettingStyle.Appearance} ${SettingStyle.Profile_cont2}`}>
+            <div className={SettingStyle.Profile_cont2_One} onClick={() => setDarkModePopup(true)}>
+              <span>Dark Mode</span>
+            </div>
+            <div className={SettingStyle.Profile_cont2_One}>
+              <span>Font Size</span>
+            </div>
+            <div className={SettingStyle.Profile_cont2_One}>
+              <span>Any other appearance button</span>
+            </div>
+          </div>
+        );
+      case 'Setting/notification':
+        return (
+          <div className={`${SettingStyle.notification} ${SettingStyle.Profile_cont1}`}>
+            <div className={SettingStyle.checkboxex}>
+              <label htmlFor="check1">Option 1</label>
+              <div className={SettingStyle.checkbox1}>
+                <input type="checkbox" id="check1" className={SettingStyle.click}></input>
+                <span>Allow Notification</span>
               </div>
-              <div className={SettingStyle.Profile_cont2_One}>
-                <span>Font Size</span>
+            </div>
+            <div className={SettingStyle.checkboxex}>
+              <label htmlFor="check2">Option 2</label>
+              <div className={SettingStyle.checkbox1}>
+                <input type="checkbox" id="check2" className={SettingStyle.click}></input>
+                <span>Allow Notification</span>
               </div>
-              <div className={SettingStyle.Profile_cont2_One}>
-                <span>Any other appearance button</span>
+            </div>
+            <div className={SettingStyle.checkboxex}>
+              <label htmlFor="check3">Option 3</label>
+              <div className={SettingStyle.checkbox1}>
+                <input type="checkbox" id="check3" className={SettingStyle.click}></input>
+                <span>Allow Notification</span>
               </div>
             </div>
           </div>
         );
-      case "Setting/notification":
-        return (
-          <div>
-            <div className={`${SettingStyle.notification} ${SettingStyle.Profile_cont1}`}>
-              <div className={SettingStyle.checkboxex}>
-                <label htmlFor='check1'>Option 1</label>
-                <div className={SettingStyle.checkbox1}>
-                  <input type='checkbox' id='check1' className={SettingStyle.click}></input>
-                  <span>Allow Notification</span>
-                </div>
-              </div>
-              <div className={SettingStyle.checkboxex}>
-                <label htmlFor='check2'>Option 2</label>
-                <div className={SettingStyle.checkbox1}>
-                  <input type='checkbox' id='check2' className={SettingStyle.click}></input>
-                  <span>Allow Notification</span>
-                </div>
-              </div>
-              <div className={SettingStyle.checkboxex}>
-                <label htmlFor='check3'>Option 3</label>
-                <div className={SettingStyle.checkbox1}>
-                  <input type='checkbox' id='check3' className={SettingStyle.click}></input>
-                  <span>Allow Notification</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        );
-      case "Setting/support":
+      case 'Setting/support':
         return (
           <div className={SettingStyle.supportContent}>
             <h3>Support</h3>
@@ -255,31 +321,37 @@ function Setting() {
         );
     }
   };
+
   return (
     <div className={SettingStyle.my_setting_container}>
       <div className={SettingStyle.my_profile_box}>
-        <img className={SettingStyle.__hrImg} title='Profile'
+        <img
+          className={SettingStyle.__hrImg}
+          title="Profile"
           src={profileImage ?? 'https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg'}
-          alt='profile_img'
-          onError={(e) => { e.target.src = 'https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg'; e.onError = null; }}
+          alt="profile_img"
+          onError={(e) => {
+            e.target.src = 'https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg';
+            e.onError = null;
+          }}
         />
         <h4 className={SettingStyle.__pfGreet}> {name}</h4>
       </div>
       <div className={SettingStyle.Setting_opt_container}>
         <div className={SettingStyle.setting_opt_left}>
-          <div className={settingtype === "Setting/Profile" ? `${SettingStyle.setting_opt_active} ` : `${SettingStyle.setting_opt}`} onClick={() => setsettingtype("Setting/Profile")}>
+          <div className={settingtype === 'Setting/Profile' ? `${SettingStyle.setting_opt_active} ` : SettingStyle.setting_opt} onClick={() => setsettingtype('Setting/Profile')}>
             <i className="fa-solid fa-user" /> Profile
           </div>
-          <div className={settingtype === "Setting/privacy" ? `${SettingStyle.setting_opt_active}` : `${SettingStyle.setting_opt}`} onClick={() => setsettingtype("Setting/privacy")}>
+          <div className={settingtype === 'Setting/privacy' ? SettingStyle.setting_opt_active : SettingStyle.setting_opt} onClick={() => setsettingtype('Setting/privacy')}>
             <i className="fa-solid fa-lock" /> Privacy & Service
           </div>
-          <div className={settingtype === "Setting/appearance" ? `${SettingStyle.setting_opt_active}` : `${SettingStyle.setting_opt}`} onClick={() => setsettingtype("Setting/appearance")}>
+          <div className={settingtype === 'Setting/appearance' ? SettingStyle.setting_opt_active : SettingStyle.setting_opt} onClick={() => setsettingtype('Setting/appearance')}>
             <i className="fa-solid fa-wand-magic-sparkles" /> Appearance
           </div>
-          <div className={settingtype === "Setting/notification" ? `${SettingStyle.setting_opt_active}` : `${SettingStyle.setting_opt}`} onClick={() => setsettingtype("Setting/notification")}>
+          <div className={settingtype === 'Setting/notification' ? SettingStyle.setting_opt_active : SettingStyle.setting_opt} onClick={() => setsettingtype('Setting/notification')}>
             <i className="fa-solid fa-bell" /> Notification
           </div>
-          <div className={settingtype === "Setting/support" ? `${SettingStyle.setting_opt_active}` : `${SettingStyle.setting_opt}`} onClick={() => setsettingtype("Setting/support")}>
+          <div className={settingtype === 'Setting/support' ? SettingStyle.setting_opt_active : SettingStyle.setting_opt} onClick={() => setsettingtype('Setting/support')}>
             <i className="fa-solid fa-headset" /> Support
           </div>
         </div>
@@ -288,49 +360,49 @@ function Setting() {
         </div>
       </div>
       {darkModePopup && (
-      <div className={SettingStyle.darkModePopup}>
-      <div className={SettingStyle.popupContent}>
-        <h3 className="exclude-dark-mode">Dark Mode</h3>
-        <p className="exclude-dark-mode">Choose how your profile experience looks for this device.</p>
-        <div>
-          <label>
-            <input
-              type="checkbox"
-              className={SettingStyle.circularCheckbox}
-              checked={darkMode === 'Device settings'}
-              onChange={() => handleDarkModeSelection('Device settings')}
-            />
-            Device settings
-          </label>
+        <div className={SettingStyle.darkModePopup}>
+          <div className={SettingStyle.popupContent}>
+            <h3 className="exclude-dark-mode">Dark Mode</h3>
+            <p className="exclude-dark-mode">Choose how your profile experience looks for this device.</p>
+            <div>
+              <label>
+                <input
+                  type="checkbox"
+                  className={SettingStyle.circularCheckbox}
+                  checked={darkMode === 'Device settings'}
+                  onChange={() => handleDarkModeSelection('Device settings')}
+                />
+                Device settings
+              </label>
+            </div>
+            <div>
+              <label>
+                <input
+                  type="checkbox"
+                  className={SettingStyle.circularCheckbox}
+                  checked={darkMode === 'Always on'}
+                  onChange={() => handleDarkModeSelection('Always on')}
+                />
+                Always on
+              </label>
+            </div>
+            <div>
+              <label>
+                <input
+                  type="checkbox"
+                  className={SettingStyle.circularCheckbox}
+                  checked={darkMode === 'Always off'}
+                  onChange={() => handleDarkModeSelection('Always off')}
+                />
+                Always off
+              </label>
+            </div>
+            <p className="exclude-dark-mode">If you choose Device settings, this app will use the mode that's already selected in this device's settings.</p>
+          </div>
         </div>
-        <div>
-          <label>
-            <input
-              type="checkbox"
-              className={SettingStyle.circularCheckbox}
-              checked={darkMode === 'Always on'}
-              onChange={() => handleDarkModeSelection('Always on')}
-            />
-            Always on
-          </label>
-        </div>
-        <div>
-          <label>
-            <input
-              type="checkbox"
-              className={SettingStyle.circularCheckbox}
-              checked={darkMode === 'Always off'}
-              onChange={() => handleDarkModeSelection('Always off')}
-            />
-            Always off
-          </label>
-        </div>
-        <p className="exclude-dark-mode">If you choose Device settings, this app will use the mode that's already selected in this device's settings.</p>
-      </div>
-    </div>
-    
       )}
     </div>
   );
 }
+
 export default Setting;
