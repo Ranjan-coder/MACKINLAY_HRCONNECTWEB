@@ -3,7 +3,6 @@ import Chatbot from 'react-chatbot-kit';
 import config from './Config.js';
 import actionProvider from './ActionProvider.js';
 import messageParser from './MessageParser.js';
-import './ChatBot.css'
 
 function ChatbotCompo() {
   return (

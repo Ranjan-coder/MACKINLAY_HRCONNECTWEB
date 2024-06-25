@@ -95,8 +95,8 @@ function SideNavbar() {
       <div className={navStyle.SidenavBar__Container}>
         <div className={navStyle.sidenavBar__AppLOGOBOX}>
           <h1 className={navStyle.sidenavBar__appLOGO}>
-            <span className={navStyle.sidenavBar_DeskLOGO}>HRConnect Pro</span>{" "}
-            <span className={navStyle.sidenavBar_LOGO}>HCP</span>
+            <span onClick={(()=>navigateTO("/dashboard"))} className={navStyle.sidenavBar_DeskLOGO}>HRConnect Pro</span>{" "}
+            <span onClick={(()=>navigateTO("/dashboard"))} className={navStyle.sidenavBar_LOGO}>HCP</span>
           </h1>
         </div>
         <nav className={navStyle.JobSeeker_nav}>

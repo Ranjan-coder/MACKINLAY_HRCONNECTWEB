@@ -176,6 +176,12 @@ input {
   font-size: 28px;
 }
 
+/* Chatbot Navbar ------ */
+.__chatbotNavbar {
+  border: 1px solid ;
+  display: none;
+}
+
 @media screen and (max-width: 1025px) {
   .LayoutContainer__LeftSideContainer {
     width: 100px;

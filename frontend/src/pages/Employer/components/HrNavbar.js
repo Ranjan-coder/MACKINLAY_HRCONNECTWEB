@@ -1,7 +1,6 @@
 import layout from './RecruiterLayout.module.css';
 import React, { useEffect, useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
-// import user from '../../../Assets/user.png'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHouse, faUsers, faUser, faChartSimple, faRobot, faCalendarDays, faGear, faMoneyBill1Wave,
@@ -18,7 +17,7 @@ export default function HR_Navbar() {
   const tabScreen = useMediaQuery({ maxWidth: 950 })
   const dispatch = useDispatch();
   const { name, profileImage } = useSelector((state) => state.Assessment.currentUser);
-
+  // console.log(profileImage);
   const handleLogoutClick = () => {
     dispatch(handleUserLogOut());
     toast.success(`${name} Logged out !!`)
@@ -55,7 +54,7 @@ export default function HR_Navbar() {
             alt='HrProfilePicture'
             onError={(e) => { e.target.src = `https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg`; e.onError = null; }}
           />
-          <span style={{fontSize:"20px"}}>{name}</span>
+          <span style={{ fontSize: "20px" }}>{name.split(" ")[0]}</span>
         </div>
         <button className={layout.__btn_Logout} onClick={handleLogoutClick}>
           <FontAwesomeIcon icon={faArrowRightFromBracket} /> <span className={layout.__logout_Text}>Log Out</span>
