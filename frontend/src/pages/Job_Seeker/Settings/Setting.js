@@ -18,12 +18,12 @@ function Setting() {
   const [darkModePopup, setDarkModePopup] = useState(false);
   const [darkMode, setDarkMode] = useState(() => localStorage.getItem('darkMode') || 'Device settings');
   const navi = useNavigate();
-  
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     applyDarkMode();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [darkMode]);
 
   const applyDarkMode = () => {
@@ -60,12 +60,10 @@ function Setting() {
 
   const handleDeleteAccount = () => {
     setDel(true);
-    
   };
 
   const handlePopupClose = () => {
-    setDel(false);  
-    
+    setDel(false);
   };
 
   const handleAgree = () => {
@@ -90,12 +88,12 @@ function Setting() {
     // Add any necessary logic when "Done" is clicked inside job preference
     // For now, simply toggle settingtype to an empty string to hide the section
     setsettingtype('');
-    
   };
 
   const renderSettingContent = () => {
     switch (settingtype) {
-      case 'Setting/Profile':
+      // 'Setting/Profile':
+      default:
         return (
           <div className={SettingStyle.profile_designs}>
             <div className={SettingStyle.Profile_cont2}>
@@ -107,13 +105,13 @@ function Setting() {
                 <p><RiUserSettingsFill /></p>
                 <span>Job Preference</span>
               </div>
-              <div className={SettingStyle.Profile_cont2_One}>
+              <div className={SettingStyle.Profile_cont2_One} onClick={()=> setsettingtype('Setting/PersonalInfo')}>
                 <p><TbUserExclamation /></p>
                 <span>Personal Info</span>
               </div>
             </div>
             <div className={SettingStyle.Profile_cont1}>
-              <button className={SettingStyle.__pfEditBtn} onClick={() => { navi('/settings/editprofile') }}>Edit My Profile</button>
+              {/* <button className={SettingStyle.__pfEditBtn} onClick={() => { navi('/settings/editprofile') }}>Edit My Profile</button> */}
               <button className={SettingStyle.__pfLogoutBtn} onClick={handleLogOut}> <FaArrowRight />Logout</button>
               <button className={SettingStyle.__pfDeleteBtn} onClick={handleDeleteAccount}> <GoTrash /> Delete Account</button>
             </div>
@@ -121,14 +119,14 @@ function Setting() {
               del && <div className={SettingStyle.__popupDelete}>
                 <p>Are you sure you want to delete ??</p>
                 <p>
-                <button className={SettingStyle.__btnAgree} onClick={handleAgree}>Agree</button>
-                <button className={SettingStyle.__btnCancel} onClick={handlePopupClose}>Cancel</button>
+                  <button className={SettingStyle.__btnAgree} onClick={handleAgree}>Agree</button>
+                  <button className={SettingStyle.__btnCancel} onClick={handlePopupClose}>Cancel</button>
                 </p>
               </div>
             }
-
           </div>
         );
+
       case 'Setting/JobPreference':
         return (
           <div className={SettingStyle.jobPreferenceSection}>
@@ -186,6 +184,14 @@ function Setting() {
             <button className={SettingStyle.doneButton} onClick={handleDoneClick}>Done</button>
           </div>
         );
+
+      case 'Setting/PersonalInfo':
+        return (
+          <div className={SettingStyle.__personalInfo}>
+            <button className={SettingStyle.__pfEditBtn} onClick={() => { navi('/settings/editprofile') }}>Edit My Profile</button>
+          </div>
+        )
+
       case 'Setting/privacy':
         return (
           <div className={SettingStyle.privacySettings}>
@@ -227,6 +233,7 @@ function Setting() {
             </section>
           </div>
         );
+
       case 'Setting/service':
         return (
           <div className={SettingStyle.serviceSettings}>
@@ -248,6 +255,7 @@ function Setting() {
             </section>
           </div>
         );
+
       case 'Setting/appearance':
         return (
           <div className={`${SettingStyle.Appearance} ${SettingStyle.Profile_cont2}`}>
@@ -262,6 +270,7 @@ function Setting() {
             </div>
           </div>
         );
+
       case 'Setting/notification':
         return (
           <div className={`${SettingStyle.notification} ${SettingStyle.Profile_cont1}`}>
@@ -288,6 +297,7 @@ function Setting() {
             </div>
           </div>
         );
+
       case 'Setting/support':
         return (
           <div className={SettingStyle.supportContent}>
@@ -313,12 +323,13 @@ function Setting() {
             </form>
           </div>
         );
-      default:
-        return (
-          <div>
-            <h5 className={SettingStyle.__defaultText}>Select any option from the list</h5>
-          </div>
-        );
+
+      // default:
+      //   return (
+      //     <div>
+      //       <h5 className={SettingStyle.__defaultText}>Select any option from the list</h5>
+      //     </div>
+      //   );
     }
   };
 
