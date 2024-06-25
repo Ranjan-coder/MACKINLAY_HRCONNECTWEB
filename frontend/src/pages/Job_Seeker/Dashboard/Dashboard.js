@@ -21,7 +21,8 @@ import {
   handleSavedJob,
   handleRemoveSavedJob,
 } from "../../../Redux/ReduxSlice";
-import {fetchUserData}  from "../../../Redux/UserSlice";
+import { fetchUserData } from "../../../Redux/UserSlice";
+
 function Dashboard() {
   const { email, savedJob, appliedJob } = useSelector(
     (state) => state.Assessment.currentUser
@@ -40,13 +41,13 @@ function Dashboard() {
     const fetchJobs = async () => {
       try {
         setLoading(true);
-  
+
         // Fetch recommended jobs
         const recommendedJobsResponse = await axios.post(
           `${baseUrl}/recommendations`,
           { email }
         );
-  
+
         if (recommendedJobsResponse.data.success && recommendedJobsResponse.data.recommendedJobs.length > 0) {
           // Set both BestMatch and allJobsData to recommended jobs
           setBestmatch(recommendedJobsResponse.data.recommendedJobs);
@@ -59,7 +60,7 @@ function Dashboard() {
             setAllJobData(allJobsResponse.data.jobs);
           }
         }
-  
+
         dispatch(fetchUserData(email));
         setLoading(false);
       } catch (error) {
@@ -67,7 +68,7 @@ function Dashboard() {
         setLoading(false);
       }
     };
-  
+
     fetchJobs();
   }, [email, dispatch, baseUrl]);
 
@@ -95,8 +96,7 @@ function Dashboard() {
     e.preventDefault();
     axios
       .delete(
-        `${baseUrl}/user/My-jobs/delete/save-job/${
-          email + "-" + jobId
+        `${baseUrl}/user/My-jobs/delete/save-job/${email + "-" + jobId
         }`
       )
       .then((response) => {
@@ -125,7 +125,7 @@ function Dashboard() {
         FilterOptions.SalaryRange.some((data) => {
           return (
             Number(data.split("-")[0]) >=
-              Number(job.salaryRange.split("-")[0]) &&
+            Number(job.salaryRange.split("-")[0]) &&
             Number(data.split("-")[1]) <= Number(job.salaryRange.split("-")[1])
           );
         }) ||
@@ -317,72 +317,48 @@ function Dashboard() {
                                 }
                               ></span>
                             </div>
-                            <div
-                              className={DashBoardStyle.rec_company_offer_apply}
-                            >
+                            <div className={DashBoardStyle.rec_company_offer_apply}>
                               {appliedJob?.every(
                                 (data) => data.jobID !== item?._id
                               ) && (
-                                <div
-                                  className={
-                                    DashBoardStyle.rec_company_offer_fav
-                                  }
-                                >
-                                  {savedJob?.some(
-                                    (data) => data.jobID === item?._id
-                                  ) ? (
-                                    <img
-                                      src={fav_filled_icon}
-                                      alt="Favorite Icon"
-                                      className={
-                                        DashBoardStyle.rec_company_offer_fav_image
-                                      }
-                                      onClick={(e) =>
-                                        handleRemoveSaveClick(e, item?._id)
-                                      }
-                                    />
-                                  ) : (
-                                    <img
-                                      src={fav_icon}
-                                      alt="Favorite Icon"
-                                      className={
-                                        DashBoardStyle.rec_company_offer_fav_image
-                                      }
-                                      onClick={(e) =>
-                                        handleSaveToLaterClick(e, item)
-                                      }
-                                    />
-                                  )}
-                                </div>
-                              )}
+                                  <div className={DashBoardStyle.rec_company_offer_fav}>
+                                    {savedJob?.some(
+                                      (data) => data.jobID === item?._id
+                                    ) ? (
+                                      <img
+                                        src={fav_filled_icon}
+                                        alt="Favorite Icon"
+                                        className={
+                                          DashBoardStyle.rec_company_offer_fav_image
+                                        }
+                                        onClick={(e) =>
+                                          handleRemoveSaveClick(e, item?._id)
+                                        }
+                                      />
+                                    ) : (
+                                      <img
+                                        src={fav_icon}
+                                        alt="Favorite Icon"
+                                        className={
+                                          DashBoardStyle.rec_company_offer_fav_image
+                                        }
+                                        onClick={(e) =>
+                                          handleSaveToLaterClick(e, item)
+                                        }
+                                      />
+                                    )}
+                                  </div>
+                                )}
 
-                              <div
-                                className={
-                                  DashBoardStyle.rec_company_offer_apply_button
-                                }
-                              >
+                              <div className={DashBoardStyle.rec_company_offer_apply_button}>
                                 {appliedJob?.some(
                                   (data) => data.jobID === item?._id
                                 ) ? (
-                                  <button
-                                    className={
-                                      DashBoardStyle.DashboardalreadyAppliedButton
-                                    }
-                                    onClick={() =>
-                                      navigateTO(`/dashboard/${item._id}`)
-                                    }
-                                  >
+                                  <button className={DashBoardStyle.DashboardalreadyAppliedButton} onClick={() => navigateTO(`/dashboard/${item._id}`)}>
                                     Applied
                                   </button>
                                 ) : (
-                                  <button
-                                    className={
-                                      DashBoardStyle.rec_company_offer_apply_button_style
-                                    }
-                                    onClick={() =>
-                                      navigateTO(`/dashboard/${item._id}`)
-                                    }
-                                  >
+                                  <button className={DashBoardStyle.rec_company_offer_apply_button_style} onClick={() => navigateTO(`/dashboard/${item._id}`)}>
                                     Apply
                                   </button>
                                 )}

@@ -34,7 +34,7 @@ function CreatePostPreview() {
     formData.append("jobExperience", state.jobExperience);
     formData.append("education", state.education);
     formData.append("responsibility", state.responsibility);
-   formData.append("howToApply", state.howToApply);
+    formData.append("howToApply", state.howToApply);
     const mcqs = state.mcq ?? [];
 
     // Append MCQs if available
@@ -91,37 +91,38 @@ function CreatePostPreview() {
           </div>
 
           <div className={createPost.__PostPreviewPage_PostDescription_Box}>
+
             <p className={createPost.__PostPreviewPage_Description}>
+              <strong style={{paddingRight:"1em"}}>Job Description:</strong>
               {state?.jobDescription}
             </p>
 
             <p className={createPost.__PostPreviewPage_Description}>
-              <strong>Responsibility: </strong>  {state?.responsibility}
+              <strong style={{paddingRight:"1em"}}>Responsibility:</strong>  {state?.responsibility}
             </p>
 
-            <p className={`${createPost.__PostPreviewPage_Description}, ${createPost.__PostPreviewPage_Skils}`}>
-              <strong>Skils: </strong>  {
-                state?.skilRequired?.map((skils, index)=>{
+            <p className={`${createPost.__PostPreviewPage_Skils}`}>
+              <strong>Skills: </strong>  {
+                state?.skilRequired?.map((skils, index) => {
                   return <span key={index} className={createPost.__PostPreviewSkilsTag}>{skils}</span>
                 })
-               
               }
             </p>
 
-            <p className={`${createPost.__PostPreviewPage_Description}, ${createPost.__PostPreviewPage_Skils}`}>
+            <p className={`${createPost.__PostPreviewPage_Description}`}>
               <strong>Qualifications: </strong>  <span> {state?.education}</span>
             </p>
 
-            <p className={`${createPost.__PostPreviewPage_Description}, ${createPost.__PostPreviewPage_Skils}`}>
-              <strong>Experience: </strong>  <span> {state?.jobExperience} Years</span>
+            <p className={`${createPost.__PostPreviewPage_Description}`}>
+              <strong>Experience: </strong>  <span style={{paddingLeft:"1em"}}> {state?.jobExperience} Years</span>
             </p>
 
-            <p className={`${createPost.__PostPreviewPage_Description}, ${createPost.__PostPreviewPage_Skils}`}>
-              <strong>Salary: </strong>  <span> {state?.salaryRange} LPA</span>
+            <p className={`${createPost.__PostPreviewPage_Description}`}>
+              <strong>Salary: </strong>  <span style={{paddingLeft:"1em"}}> {state?.salaryRange} LPA</span>
             </p>
 
-            <p className={`${createPost.__PostPreviewPage_Description}, ${createPost.__PostPreviewPage_Skils}`}>
-              <strong>Location: </strong>  <span> {state?.location}</span>
+            <p className={`${createPost.__PostPreviewPage_Description}`}>
+              <strong>Location: </strong>  <span style={{paddingLeft:"1em"}}> {state?.location}</span>
             </p>
 
           </div>
