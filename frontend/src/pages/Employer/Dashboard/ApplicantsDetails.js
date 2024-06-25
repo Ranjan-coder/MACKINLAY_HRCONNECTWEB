@@ -23,10 +23,7 @@ function ApplicantsDetails({ jobData, selectedUser, CbToogleDetails }) {
   const [SelectedResume, setSelectedResume] = useState(null);
 
   const navigate = useNavigate(); 
-
-  const navigate = useNavigate();
-
-
+  
   const handleScheduleInterview = (e, user) => {
     e.preventDefault();
     navigate('/schedule-interview', { state: { userEmail: user.email, userName: user.name, UserProfile: user.profileImage } });
