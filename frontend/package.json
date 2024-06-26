@@ -24,7 +24,7 @@
     "apexcharts": "^3.48.0",
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
-    "chart.js": "^4.4.2",
+    "chart.js": "^4.4.3",
     "date-fns": "^3.6.0",
     "dotenv": "^16.4.5",
     "javascript-time-ago": "^2.5.9",

@@ -1,3 +1,4 @@
+const jobCollection = require("../model/Job.Model");
 const rejectedCollection = require("../model/RejectedUser.model");
 const HrUser = require("../model/users/HrUserModel");
 
@@ -5,15 +6,54 @@ const HrUser = require("../model/users/HrUserModel");
 
 const createReject = async (req, res) => {
     const { HrEmail } = req.params;
-    const { email, profileImage, name, jobTitle
-        , biography, country, job_title, employmentType, jobDescription, skills, resume, location } = req.body;
-    try {
+    const {
+        _id, 
+        email,
+        profileImage,
+        name,
+        jobTitle,
+        jobID, // Assuming this is the job ID
+        biography,
+        country,
+        employmentType,
+        jobDescription,
+        skills,
+        resume,
+        location
+    } = req.body;
 
-        // Matching the current HR - Email and User - Email with 
+    try {
+        // Check if the candidate already exists in rejectedCollection
+        const existCandidate = await rejectedCollection.findOne({
+            email: email,
+            Job_title: jobTitle
+        });
+
+        if (existCandidate) {
+            // Update the existing candidate's status to 'rejected'
+            existCandidate.status = 'Rejected';
+            await existCandidate.save();
+
+            // Update the jobCollection to reflect the status change
+            await jobCollection.updateOne(
+                { employeeEmail:HrEmail,_id:jobID, 'appliedBy.email': email },
+                {
+                    $set: { 'appliedBy.$.status': 'rejected' },
+                }
+            );
+
+            return res.status(200).json({
+                success: true,
+                msg: "User status updated to rejected"
+            });
+        }
+
+        // Create a new entry in rejectedCollection
         const mongooseResponse = await rejectedCollection.create({
             employeeEmail: HrEmail,
             email: email,
             Job_title: jobTitle,
+            jobID:jobID,
             profileImage,
             name: name,
             biography: biography,
@@ -22,44 +62,53 @@ const createReject = async (req, res) => {
             jobDescription: jobDescription,
             skills: skills,
             resume: resume,
-            location: location
+            location: location,
+            status: 'rejected' // Example field for status
         });
 
-        // Update the hr user collection based on the BOOKMARKED USER
-        await HrUser.updateOne({ email: HrEmail }, {
-            $push: {
-                rejectedUser: {
-                    email: email,
-                    job_title: jobTitle,
+        // Update the HrUser collection with the rejected user
+        await HrUser.updateOne(
+            { email: HrEmail },
+            {
+                $push: {
+                    rejectedUser: {
+                        email: email,
+                        job_title: jobTitle
+                    }
                 }
-            },
-        });
-        if (mongooseResponse) {
+            }
+        );
+
+        // Update the jobCollection to reflect the status change
+      const updateJobCollection=  await jobCollection.updateOne(
+            { employeeEmail:HrEmail,_id:jobID, 'appliedBy.email': email },
+            {
+                $set: { 'appliedBy.$.status': 'selected' },
+            }
+        );
+
+        if (mongooseResponse && updateJobCollection) {
             return res.status(200).json({
                 success: true,
-                msg: "User added to bookmarked collection"
-            })
-
+                msg: "User added to Rejected collection"
+            });
         } else {
             return res.status(200).json({
                 success: false,
                 msg: "Something went wrong, Try again later"
-            })
+            });
         }
-
     } catch (error) {
-        console.log(error)
-        res.status(500).send(`Internal server Error : ${error.message}`)
+        console.log(error);
+        res.status(500).send(`Internal server Error : ${error.message}`);
     }
-
-}
+};
 
 const getRejected = async (req, res) => {
     const { HrEmail } = req.params;
 
     try {
         const mongooseResponse = await rejectedCollection.find({ employeeEmail: HrEmail });
-
         if (mongooseResponse.length > 0) {
             res.status(200).json({
                 success: true,
@@ -94,7 +143,7 @@ const removeRejected = async (req, res) => {
         if (mongooseResponse) {
             return res.status(200).json({
                 success: true,
-                msg: "User removed from  bookmarked collection"
+                msg: "User removed from  rejected collection"
             })
 
         } else {

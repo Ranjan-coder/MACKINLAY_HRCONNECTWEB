@@ -5,7 +5,7 @@ import Loader from "../../Common-Components/Loaders/Loader";
 import pageStyle from "./HrDashboard.module.css";
 import PdfComp from "../../Job_Seeker/MyResume/PdfComp";
 
-const newUrl = process.env.REACT_APP_BACKEND_BASE_URL_WITHOUT_API;
+// const newUrl = process.env.REACT_APP_BACKEND_BASE_URL_WITHOUT_API;
 
 function ViewPdf({ CbTogglePDF, SelectedResume }) {
   const [resumeError, setResumeError] = useState(false);
@@ -18,8 +18,8 @@ function ViewPdf({ CbTogglePDF, SelectedResume }) {
 
         setLoading(true);
         try {
-          const path = SelectedResume.userResume.path;
-          const url = `${newUrl}/${path}`; // Ensure this points to Cloudinary URL
+          const path = SelectedResume.userResume.url;
+          const url = `${path}`; // Ensure this points to Cloudinary URL
           setResumeUrl(url);
         } catch (error) {
           console.error('Error viewing resume:', error);

@@ -21,8 +21,9 @@ function ApplicantsDetails({ jobData, selectedUser, CbToogleDetails }) {
   const [userDetails, setUserDetails] = useState([]);
   const [showPDF, setShowPDF] = useState(false);
   const [SelectedResume, setSelectedResume] = useState(null);
-  const navigate = useNavigate();
 
+  const navigate = useNavigate(); 
+  
   const handleScheduleInterview = (e, user) => {
     e.preventDefault();
     navigate('/schedule-interview', { state: { userEmail: user.email, userName: user.name, UserProfile: user.profileImage } });
@@ -73,7 +74,11 @@ function ApplicantsDetails({ jobData, selectedUser, CbToogleDetails }) {
 
   const handleSeeResumeClick = (e, user) => {
     e.preventDefault();
+
+// console.log(user);
+
     console.log(user);
+
     axios.patch(`${baseUrl}/user/My-jobs/applicationStatus/${user?.email}`, {
       applicationStatus: {
         JobStatus: "In-Progress",
@@ -146,6 +151,9 @@ function ApplicantsDetails({ jobData, selectedUser, CbToogleDetails }) {
       toast.error(`${error.message}`)
     })
   };
+
+
+
 
   return (
     <>
@@ -233,6 +241,7 @@ function ApplicantsDetails({ jobData, selectedUser, CbToogleDetails }) {
                   />
                   <span style={{ fontSize: "20px" }}>
                     <strong>{user.name}</strong>
+
                   </span>
                   {bookmarkUser?.some(
                     (data) =>
@@ -277,6 +286,7 @@ function ApplicantsDetails({ jobData, selectedUser, CbToogleDetails }) {
                   >
                     See Resume
                   </button>
+
 
                   <button
                     className={hrdashboard.__applicantBtn}
