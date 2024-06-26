@@ -77,53 +77,39 @@ const getBookmark = async (req, res) => {
 }
 
 const removeBookmark = async (req, res) => {
+
+    const [employeeEmail, email, Job_title] = req.params.HrEmail.split("-");
     try {
-      const [employeeEmail, email, Job_title] = req.params.HrEmail.split("-");
-    //   console.log(`employeeEmail: ${employeeEmail}, email: ${email}, Job_title: ${Job_title}`);
-  
-      // Delete the bookmarked user from the bookmarkedCollection
-      const mongooseResponse = await bookmarkedCollection.deleteMany({
-        employeeEmail: employeeEmail,
-        email: email,
-        Job_title: Job_title,
-      });
-  
-      // Find the HrUser and update the bookmarkUser array
-      const mongooseUser = await HrUser.findOne({ email: employeeEmail });
-      if (!mongooseUser) {
-        return res.status(404).json({
-          success: false,
-          msg: "HrUser not found",
+        const mongooseResponse = await bookmarkedCollection.deleteMany({
+            employeeEmail: employeeEmail,
+            email: email,
+            Job_title: Job_title,
         });
-      }
-  
-      // Ensure bookmarkUser is an array
-      if (!Array.isArray(mongooseUser.bookmarkUser)) {
-        mongooseUser.bookmarkUser = [];
-      }
-  
-      // Update the bookmarkUser array by filtering out the removed bookmark
-      const updatedBookmarkUser = mongooseUser.bookmarkUser.filter(
-        (data) => !(data.email === email && data.job_title === Job_title)
-      );
-  
-      await HrUser.updateOne(
-        { email: employeeEmail },
-        { $set: { bookmarkUser: updatedBookmarkUser } }
-      );
-  
-      return res.status(200).json({
-        success: true,
-        msg: "User removed from bookmarked collection",
-      });
+        const mongooseUser = await HrUser.findOne({ email: employeeEmail });
+
+        await HrUser.updateOne({ email: employeeEmail }, {
+            bookmarkUser: mongooseUser.bookmarkUser.filter((data) => data.email === email).filter((data) => data.job_title !== Job_title)
+        });
+
+        if (mongooseResponse) {
+            return res.status(200).json({
+                success: true,
+                msg: "User removed from  bookmarked collection"
+            })
+
+        } else {
+            return res.status(200).json({
+                success: false,
+                msg: "Something went wrong, Try again later"
+            })
+        }
+
+
     } catch (error) {
-      console.error(`Internal Server Error: ${error.message}`);
-      res.status(500).json({
-        success: false,
-        msg: `Internal server error: ${error.message}`,
-      });
+        res.status(500).send(`Internal server Error : ${error.message}`)
     }
-  };  
+}
+
 
 module.exports = {
     createBookmark,
