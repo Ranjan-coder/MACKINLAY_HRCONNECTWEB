@@ -1,4 +1,3 @@
-const { url } = require("inspector");
 const mongoose = require("mongoose");
 
 const RejectSchema = new mongoose.Schema({
@@ -38,7 +37,7 @@ const RejectSchema = new mongoose.Schema({
     resume: [
         {
             filename: String,
-            url: String,
+            path: String,
             uploadedAt: {
                 type: Date,
                 default: Date.now,

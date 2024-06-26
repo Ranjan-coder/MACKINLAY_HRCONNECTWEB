@@ -1,5 +1,3 @@
-const jobCollection = require("../model/Job.Model");
-const rejectedCollection = require("../model/RejectedUser.model");
 const shortlistedCollection = require("../model/ShortlistedUser.model");
 const HrUser = require("../model/users/HrUserModel");
 
@@ -7,50 +5,11 @@ const HrUser = require("../model/users/HrUserModel");
 
 const createShortlist = async (req, res) => {
     const { HrEmail } = req.params;
-    const {
-        _id, // User _id
-        email,
-        profileImage,
-        name,
-        jobTitle,
-        jobID,
-        biography,
-        country,
-        employmentType,
-        jobDescription,
-        skills,
-        resume,
-        location,
-        salaryRange
-    } = req.body;
-
+    const { email, profileImage, name, jobTitle
+        , biography, country, job_title, employmentType, jobDescription, skills, resume, location } = req.body;
     try {
-        // Check if the candidate already exists in shortlistedCollection
-        const existCandidate = await shortlistedCollection.findOne({
-            email: email,
-            Job_title: jobTitle
-        });
 
-        if (existCandidate) {
-            // Update the existing candidate's status to 'selected'
-            existCandidate.status = 'selected';
-            await existCandidate.save();
-
-            // Update the jobCollection to reflect the status change
-            await jobCollection.updateOne(
-                { employeeEmail:HrEmail,_id:jobID, 'appliedBy.email': email },
-                {
-                    $set: { 'appliedBy.$.status': 'selected' },
-                }
-            );
-
-            return res.status(200).json({
-                success: true,
-                msg: "User status updated to selected"
-            });
-        }
-
-        // Create a new entry in shortlistedCollection
+        // Matching the current HR - Email and User - Email with 
         const mongooseResponse = await shortlistedCollection.create({
             employeeEmail: HrEmail,
             email: email,
@@ -63,55 +22,44 @@ const createShortlist = async (req, res) => {
             jobDescription: jobDescription,
             skills: skills,
             resume: resume,
-            location: location,
-            salaryRange: salaryRange,
-            status: 'selected' // Example field for status
+            location: location
         });
 
-        // Update the HrUser collection with the shortlisted user
-        await HrUser.updateOne(
-            { email: HrEmail },
-            {
-                $push: {
-                    shortlistedUser: {
-                        email: email,
-                        job_title: jobTitle
-                    }
+        // Update the hr user collection based on the BOOKMARKED USER
+        await HrUser.updateOne({ email: HrEmail }, {
+            $push: {
+                shortlistedUsers: {
+                    email: email,
+                    job_title: jobTitle,
                 }
-            }
-        );
-
-        // Update the jobCollection to reflect the status change
-        await jobCollection.updateOne(
-            { employeeEmail:HrEmail,_id:jobID, 'appliedBy.email': email },
-            {
-                $set: { 'appliedBy.$.status': 'selected' },
-            }
-        );
-
+            },
+        });
         if (mongooseResponse) {
             return res.status(200).json({
                 success: true,
-                msg: "User added to Shortlisted collection"
-            });
+                msg: "User added to bookmarked collection"
+            })
+
         } else {
             return res.status(200).json({
                 success: false,
                 msg: "Something went wrong, Try again later"
-            });
+            })
         }
+
     } catch (error) {
-        console.log(error);
-        res.status(500).send(`Internal server Error : ${error.message}`);
+        console.log(error)
+        res.status(500).send(`Internal server Error : ${error.message}`)
     }
-};
+
+}
+
 const getShortlist = async (req, res) => {
     const { HrEmail } = req.params;
-    // consoles.log(HrEmail);
 
     try {
         const mongooseResponse = await shortlistedCollection.find({ employeeEmail: HrEmail });
-// console.log(mongooseResponse);
+
         if (mongooseResponse.length > 0) {
             res.status(200).json({
                 success: true,
@@ -146,7 +94,7 @@ const removeShortlist = async (req, res) => {
         if (mongooseResponse) {
             return res.status(200).json({
                 success: true,
-                msg: "User removed from  shortlisted collection"
+                msg: "User removed from  bookmarked collection"
             })
 
         } else {
