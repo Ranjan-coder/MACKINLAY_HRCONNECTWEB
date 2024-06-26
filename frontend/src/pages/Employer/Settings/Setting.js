@@ -55,7 +55,8 @@ function Setting() {
   // Function to render content based on setting type
   const renderSettingContent = () => {
     switch (settingtype) {
-      case "Setting/Profile":
+      // case "Setting/Profile":
+      default:
         return (
           <div className={SettingStyle.profile_designs}>
             <div className={SettingStyle.Profile_cont2}>
@@ -67,14 +68,14 @@ function Setting() {
                 <p><RiUserSettingsFill /></p>
                 <span>Profile Preference</span>
               </div>
-              <div className={SettingStyle.Profile_cont2_One}>
+              <div className={SettingStyle.Profile_cont2_One} onClick={()=> navi("/Setting/Editprofile")}>
                 <p><TbUserExclamation /></p>
                 <span>Personal Info</span>
               </div>
             </div>
 
             <div className={SettingStyle.Profile_cont1}>
-              <button className={SettingStyle.__pfEditBtn} onClick={() => { navi('/Setting/Editprofile') }}>Edit My Profile</button>
+              {/* <button className={SettingStyle.__pfEditBtn} onClick={() => { navi('/Setting/Editprofile') }}>Edit My Profile</button> */}
               <button className={SettingStyle.__pfLogoutBtn} onClick={handleLogOut}> <FaArrowRightToBracket />Logout</button>
               <button className={SettingStyle.__pfDeleteBtn} onClick={handleDeleteAccount}> <GoTrash /> Delete Account</button>
             </div>
@@ -101,7 +102,7 @@ function Setting() {
       case "Setting/appearance":
         return (
           <div>
-            <div className={`${SettingStyle.Appearance} ${SettingStyle.Profile_cont2}`}>
+            <div className={`${SettingStyle.Profile_cont2}`}>
               <div className={SettingStyle.Profile_cont2_One}>
                 <span>Dark Mode</span>
               </div>
@@ -146,16 +147,15 @@ function Setting() {
 
       case "Setting/support":
         return (
-          <div>
-          </div>
+          <div></div>
         );
 
-      default:
-        return (
-          <div>
-            <h5 className={SettingStyle.__defaultText}>Select any option from the list</h5>
-          </div>
-        );
+      // default:
+      //   return (
+      //     <div>
+      //       <h5 className={SettingStyle.__defaultText}>Select any option from the list</h5>
+      //     </div>
+      //   );
     }
   };
 

@@ -111,7 +111,7 @@ function Setting() {
               </div>
             </div>
             <div className={SettingStyle.Profile_cont1}>
-              <button className={SettingStyle.__pfEditBtn} onClick={() => { navi('/settings/editprofile') }}>Edit My Profile</button>
+              {/* <button className={SettingStyle.__pfEditBtn} onClick={() => { navi('/settings/editprofile') }}>Edit My Profile</button> */}
               <button className={SettingStyle.__pfLogoutBtn} onClick={handleLogOut}> <FaArrowRight />Logout</button>
               <button className={SettingStyle.__pfDeleteBtn} onClick={handleDeleteAccount}> <GoTrash /> Delete Account</button>
             </div>
@@ -251,7 +251,7 @@ function Setting() {
 
       case 'Setting/appearance':
         return (
-          <div className={`${SettingStyle.Appearance} ${SettingStyle.Profile_cont2}`}>
+          <div className={`${SettingStyle.Profile_cont2}`}>
             <div className={SettingStyle.Profile_cont2_One} onClick={() => setDarkModePopup(true)}>
               <span>Dark Mode</span>
             </div>
