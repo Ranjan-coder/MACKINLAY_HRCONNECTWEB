@@ -194,7 +194,7 @@ function ApplicantsDetails({ jobData, selectedUser, CbToogleDetails }) {
                     <span style={{ fontSize: "20px" }}>
                       <strong>{user.name}</strong>
                     </span>
-                    <p style={{ fontSize: "15px" }}>{user.biography}</p>
+                    <p style={{ fontSize: "15px" }}>{user?.biography?.slice(0,85)}...</p>
                   </section>
                   {/* bookmark here */}
                   <FaRegBookmark style={{ fontSize: "20px" }} />
