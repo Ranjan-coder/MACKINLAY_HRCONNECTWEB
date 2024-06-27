@@ -56,7 +56,8 @@
 .table_container {
   border-radius: 10px;
   overflow: hidden;
-  border: 1px solid black; /* Border around the entire table */
+  border: 1px solid black; 
+  margin: 10px;
 }
 
 .table_wrapper {

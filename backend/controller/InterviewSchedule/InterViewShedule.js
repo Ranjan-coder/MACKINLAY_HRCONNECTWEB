@@ -15,6 +15,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 const InterviewScheduleController = async (req, res) => {
+  const { HrEmail } = req.params;
   const { userEmail, userName, interviewDetails } = req.body;
 
   if (!userEmail || !userName || !interviewDetails) {
@@ -41,6 +42,7 @@ const InterviewScheduleController = async (req, res) => {
 
     // Store interview details in the database
     const newInterview = new Interview({
+      hrEmail: HrEmail,
       userEmail,
       userName,
       interviewDate,
@@ -59,8 +61,10 @@ const InterviewScheduleController = async (req, res) => {
 };
 
 const GetCandidate = async (req, res) => {
+  const { HrEmail } = req.params;
+
   try {
-    const candidates = await Interview.find({});
+    const candidates = await Interview.find({ hrEmail: HrEmail });
     res.status(200).json({ success: true, data: candidates });
   } catch (error) {
     console.error("Error fetching candidates:", error.message);
@@ -68,4 +72,7 @@ const GetCandidate = async (req, res) => {
   }
 };
 
-module.exports = { InterviewScheduleController: [upload.single('file'), InterviewScheduleController], GetCandidate };
+
+
+
+module.exports = { InterviewScheduleController: [upload.single('file'), InterviewScheduleController] ,GetCandidate};
