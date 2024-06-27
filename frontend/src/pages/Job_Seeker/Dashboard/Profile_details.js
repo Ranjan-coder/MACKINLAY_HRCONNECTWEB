@@ -148,11 +148,11 @@ const Profile_details = () => {
               StatusText: "Applied",
               updatedAt: Date.now(),
             },
-            // {
-            //   JobStatus: "In-Progress",
-            //   StatusText: "Application Sent",
-            //   updatedAt: Date.now(),
-            // },
+            {
+              JobStatus: "In-Progress",
+              StatusText: "Application Sent",
+              updatedAt: Date.now(),
+            },
           ],
         };
 
