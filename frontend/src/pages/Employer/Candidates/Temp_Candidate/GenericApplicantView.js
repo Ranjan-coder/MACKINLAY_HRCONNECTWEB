@@ -15,19 +15,23 @@ import ViewPdf from "../../Dashboard/ViewPdf";
 const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
 const newUrl = process.env.REACT_APP_BACKEND_BASE_URL_WITHOUT_API;
 
-function GenericApplicantView({ jobData, selectedUser, CbToogleDetails }) {
+function GenericApplicantView({ Users, selectedUser, CbToogleDetails }) {
+    // console.log(selectedUser);
+    // console.log(Users);
   const socket = io(`${newUrl}`)
   const { bookmarkUser } = useSelector((state) => state.Assessment.currentUser);
   const dispatch = useDispatch();
   const [selectedUserEmail, setSelectedUserEmail] = useState(selectedUser);
+  // console.log(selectedUserEmail);
   const [userDetails, setUserDetails] = useState([]);
-  console.log(userDetails);
+  // console.log(userDetails);
   const [ShowPDF, SetshowPDF] = useState(false);
   const [SelectedResume, setSelectedResume] = useState(null);
+  // console.log(SelectedResume);
 
   useEffect(() => {
     setUserDetails(
-      jobData?.appliedBy?.filter((data) => data.email === selectedUserEmail)
+      Users?.filter((data) => data._id === selectedUserEmail)
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedUserEmail]);
@@ -71,7 +75,7 @@ function GenericApplicantView({ jobData, selectedUser, CbToogleDetails }) {
 
   const handleSeeResumeClick = (e, user) => {
     e.preventDefault();
-
+// console.log(user);
     // update the application status of the user in the applied collection
     axios.patch(`${baseUrl}/user/My-jobs/applicationStatus/${user?.email}`, {
       applicationStatus: {
@@ -91,11 +95,12 @@ function GenericApplicantView({ jobData, selectedUser, CbToogleDetails }) {
         }));
       }
     })
-
+console.log(user);
     SetshowPDF(true);
     setSelectedResume({
       userProfile: user?.profileImage,
       userResume: user?.resume[0],
+      userEmail: user?.email,
     });
   };
 
@@ -120,21 +125,33 @@ function GenericApplicantView({ jobData, selectedUser, CbToogleDetails }) {
 
   const handleRemoveUserBookmark = (e, user) => {
     e.preventDefault();
+  
+    // Dispatch the Redux action
     dispatch(
       handleRemoveBookmark({
         email: user.email,
         jobTitle: user.jobTitle,
       })
     );
-    axios.delete(`${baseUrl}/user/bookmarkd/delete-bookmark/${localStorage.getItem('email')}-${user.email}-${user.jobTitle}`).then((response) => {
-      if (response.data.success) {
-        toast.success(response.data.msg);
-      } else {
-        toast.error(response.data.msg);
-      }
-    }).catch((error) => {
-      toast.error(`${error.message}`)
-    })
+
+  
+    // Construct the URL
+    const email = localStorage.getItem('email');
+    const url = `${baseUrl}/user/bookmarkd/delete-bookmark/${email}-${user.email}-${user.Job_title}`;
+  
+    // Make the delete request
+    axios.delete(url)
+      .then((response) => {
+        console.log(response.data);
+        if (response.data.success) {
+          toast.success(response.data.msg);
+        } else {
+          toast.error(response.data.msg);
+        }
+      })
+      .catch((error) => {
+        toast.error(`Error: ${error.message}`);
+      });
   };
 
   return (
@@ -148,7 +165,7 @@ function GenericApplicantView({ jobData, selectedUser, CbToogleDetails }) {
       </h1>
       <div className={hrdashboard.__applicationDetailsContainer}>
         <div className={hrdashboard.__applicantDetails__ListBox}>
-          {jobData?.appliedBy?.map((user) => {
+          {Users?.map((user) => {
             return (
               <div
                 className={`appliedUserCard ${hrdashboard.__appliedUsers} ${hrdashboard.__Secondary_appliedUsers
@@ -156,7 +173,7 @@ function GenericApplicantView({ jobData, selectedUser, CbToogleDetails }) {
                   hrdashboard.__active_appliedUsers
                   }`}
                 key={user._id}
-                onClick={(e) => handleToggleCardActive(e, user.email, user?.jobTitle, user?.jobID
+                onClick={(e) => handleToggleCardActive(e, user._id,
                 )}
               >
                 <div className={hrdashboard.__appliedHeader}>
@@ -226,7 +243,7 @@ function GenericApplicantView({ jobData, selectedUser, CbToogleDetails }) {
                   </span>
                   {bookmarkUser?.some(
                     (data) =>
-                      data.email === user.email && data.job_title === user.jobTitle
+                      data.email === user.email && data.job_title === user.Job_title
                   ) ? (
                     <FaBookmark
                       className={hrdashboard.__bookmark}
@@ -267,7 +284,6 @@ function GenericApplicantView({ jobData, selectedUser, CbToogleDetails }) {
                   >
                     See Resume
                   </button>
-
                   <button
                     className={hrdashboard.__applicantBtn}
                     style={{ background: "blue", padding: "0 4em" }}

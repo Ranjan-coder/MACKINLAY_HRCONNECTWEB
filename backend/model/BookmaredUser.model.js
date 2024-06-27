@@ -1,3 +1,4 @@
+const { url } = require("inspector");
 const mongoose = require("mongoose");
 
 const BookmarkedSchema = new mongoose.Schema({
@@ -37,7 +38,7 @@ const BookmarkedSchema = new mongoose.Schema({
     resume: [
         {
             filename: String,
-            path: String,
+            url: String,
             uploadedAt: {
                 type: Date,
                 default: Date.now,

@@ -74,7 +74,6 @@ function JobSeekerLayout() {
         </div>
       </div>
 
-
       {ToggleFilter && (
         <Filter handleOnChange={handleFilterOnchange} CbToggle={handleToogleFilter} />
       )}
@@ -123,7 +122,17 @@ function DashboardTopComponent({ CbToggle }) {
     }
   };
 
+  // const countries = [
+  //   "India",
+  //   "Singapore",
+  //   "Malaysia",
+  //   "Hong Kong",
+  //   "South Korea",
+  //   "Japan"
+  // ]
+
   const allCities = [
+    "India",
     "Visakhapatnam",
     "Vijayawada",
     "Guntur",
@@ -285,6 +294,214 @@ function DashboardTopComponent({ CbToggle }) {
     "Karaikal",
     "Mahe",
     "Yanam",
+
+    "Singapore",
+    "Kampong Serangoon Kechil",
+    "Jalan Kayu",
+    "Bukit Sembawang Estate",
+    "Choa Chu Kang New Town",
+    "Keat Hong Village",
+    "Bukit Panjang Estate",
+    "Kampong Cutforth",
+    "Matilda Estate",
+    "Serangoon",
+    "Kampong Pinang",
+    "Kampong Tongkang Pechah",
+    "Kampong Teban",
+    "Kampong Sungai Tengah",
+    "Kangkar",
+    "Kampong Beremban",
+    "Seletar Hills Estate",
+    "Song Hah Estate",
+    "Woodlands New Town",
+    "Mok Peng Hiang Estate",
+    "Jurong Town",
+    "Tay Keng Loon Estate",
+    "Bukit Panjang New Town",
+    "Marsiling",
+    "Kampong Kranji",
+    "Chia Keng",
+    "Jurong West",
+    "Kampong Ulu Jurong",
+    "Somapah Serangoon",
+    "Boon Lay",
+    "Kampong Sireh",
+    "Kampong Bukit Panjang",
+    "Marsiling Estate",
+    "Ong Lee",
+    "Kampong Chai Chee",
+    "Ulu Bedok",
+    "Kampong Pachitan",
+    "Bedok New Town",
+    "Bedok Ville",
+    "Kampong Ladang",
+    "Kampong Reteh",
+    "Kampong Ubi",
+    "Kampong Wak Hassan",
+    "Chong Pang",
+    "Sembawang",
+    "Yio Chu Kang",
+    "Yio Chu Kang Estate",
+    "Ang Mo Kio New Town",
+    "Singapore United Plantation",
+    "Kampong Amoy Quee",
+    "Kampong Lew Lian",
+    "Kampong Kebun Baharu",
+    "Saint Michael’s Estate",
+    "Kam Wak Hassan",
+    "Sungai Simpang",
+    "Teacher’s Housing Estate",
+    "Tanjong Pagar",
+    "Kampong Kopit",
+    "Saga",
+    "Kampong Siren",
+    "Nee Soon Estate",
+    "Kampong Pengkalan Kundor",
+    "Kampong Punggol",
+    "Punggol",
+    "Yew Tee",
+    "Kampong Sungai Blukar",
+    "Kampong Loyang",
+    "Springleaf Park",
+    "Kampong Tebing Terjun",
+    "Kampong Belimbing",
+    "West Coast Village",
+    "Kampong Sungai Pandan",
+    "Yishun New Town",
+    "Kampong Pengkalan Petai",
+    "Sarang Rimau",
+
+    "Malaysia",
+    "Kuala Lumpur",
+    "Seberang Jaya",
+    "Klang",
+    "Ipoh",
+    "George Town",
+    "Petaling Jaya",
+    "Kuantan",
+    "Shah Alam",
+    "Sungai Petani",
+    "Johor Bahru",
+    "Kota Bharu",
+    "Melaka",
+    "Kota Kinabalu",
+    "Seremban",
+    "Sandakan",
+    "Kuching",
+    "Kluang",
+    "Muar",
+    "Pasir Gudang",
+    "Kuala Terengganu",
+    "Sibu",
+    "Taiping",
+    "Kajang",
+    "Miri",
+    "Teluk Intan",
+    "Kulai",
+    "Alor Setar",
+    "Bukit Mertajam",
+    "Lahad Datu",
+    "Segamat",
+    "Tumpat",
+    "Keningau",
+    "Batu Pahat",
+    "Batu Gajah",
+    "Tuaran",
+    "Bayan Lepas",
+    "Port Dickson",
+    "Bintulu",
+    "Tawau",
+    "Simanggang",
+    "Labuan",
+    "Cukai",
+    "Butterworth",
+    "Putrajaya",
+    "Taman Johor Jaya",
+    "Kangar",
+
+    "Hong Kong",
+    "Kowloon",
+    "Sha Tin",
+    "Kowloon City",
+    "Sham Shui Po",
+    "Tin Shui Wai",
+    "Central District",
+    "Tsing Yi Town",
+    "Lam Tin",
+    "San Tung Chung Hang",
+    "Kennedy Town",
+    "Kwai Chung",
+    "Pak Tin Pa",
+    "Cheung Chau",
+
+    "South Korea",
+    "Seoul",
+    "Busan",
+    "Incheon",
+    "Daegu",
+    "Gwangju",
+    "Daejeon",
+    "Suwon",
+    "Ulsan",
+    "Tongjin",
+    "Goyang",
+    "Changwon",
+    "Sŏngnam",
+    "Bucheon",
+    "Anyang",
+    "Gwangmyeongni",
+    "Kunp’o",
+    "Guri",
+    "Dongnae",
+
+    "Japan",
+    "Tokyo",
+    "Ōsaka",
+    "Nagoya",
+    "Yokohama",
+    "Fukuoka",
+    "Sapporo",
+    "Kawasaki",
+    "Kōbe",
+    "Kyōto",
+    "Saitama",
+    "Hiroshima",
+    "Sendai",
+    "Setagaya",
+    "Nerima",
+    "Ōta-ku",
+    "Edogawa",
+    "Adachi",
+    "Itabashi",
+    "Suginami-ku",
+    "Kōtō-ku",
+    "Katsushika-ku",
+    "Shinagawa-ku",
+    "Toyonaka",
+    "Kita-ku",
+    "Shinjuku",
+    "Nakano",
+    "Toshima",
+    "Meguro",
+    "Sumida",
+    "Minato",
+    "Bunkyō-ku",
+    "Chōfugaoka",
+    "Shibuya-ku",
+    "Arakawa",
+    "Taitō",
+    "Nishitōkyō",
+    "Kamirenjaku",
+    "Chūō-ku",
+    "Musashino",
+    "Moriguchi",
+    "Kokubunji",
+    "Koganei",
+    "Hōyachō",
+    "Shibuya",
+    "Komae",
+    "Tanashichō",
+    "Warabi",
   ];
 
   const handleSearchInputChange = (e) => {
@@ -318,7 +535,7 @@ function DashboardTopComponent({ CbToggle }) {
   // use Effect for socket only
 
   useEffect(() => {
-    socket.emit("userConnect", JSON.stringify({userEmail: email}));
+    socket.emit("userConnect", JSON.stringify({ userEmail: email }));
     LoadNotifications();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -418,6 +635,7 @@ function DashboardTopComponent({ CbToggle }) {
   );
 }
 
+// InterviewNavbar Component
 function InterviewTopNavbar() {
   return (
     <div className={JobSeekerStyle.__interview_Top_Navbar}>
@@ -433,8 +651,8 @@ function InterviewTopNavbar() {
 
 function ChatbotNavbar() {
   return (
-    <>
+    <div className={JobSeekerStyle.__chatbotNavbar}>
       {/* to keep this header part , this component should blank */}
-    </>
+    </div>
   )
 }

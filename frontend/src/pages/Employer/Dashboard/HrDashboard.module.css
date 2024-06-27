@@ -15,12 +15,9 @@ p {
     min-height: 100%;
 }
 
-.__dashboard_Header,
-.__postImpression_Header,
-.__latest_Post_Header {
+.__dashboard_Header {
     display: flex;
-    justify-content: space-between;
-    position: relative;
+    justify-content: flex-end;
 }
 
 /* Select ----------------- */
@@ -82,10 +79,6 @@ p {
 }
 
 /* Posts Impression ------------ */
-.__post_Impression {
-    margin: 1em 0;
-}
-
 .__post_Section {
     height: 200px;
     padding: 1em;
@@ -113,6 +106,7 @@ p {
     border-radius: 50%;
     object-fit: contain;
     border: .1px solid rgba(0, 0, 0, 0.3);
+    background: white;
 }
 
 .__postTitle {
@@ -155,8 +149,9 @@ p {
 
 /* Job details------------ */
 ._jobDetails {
+    margin: .5em 0;
     color: rgb(13, 83, 13);
-    padding: .5em .5em 1em;
+    padding: 1em 1.5em;
     border-radius: 7px;
     box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
 }
@@ -168,25 +163,16 @@ p {
 
 /* HR JOB DETAIL CSS */
 .hr_job_detail_skill_container_main {
+    width: 100%;
     display: flex;
-    justify-content: space-between;
-    width: fit-content;
+    align-items: center;
+    gap: 2em;
+    margin: 1em 0;
 }
 
-.hr_job_detail_skill_container {
+.hr_job_detail_skill_container ul {
     display: flex;
-    justify-content: flex-start;
     flex-wrap: wrap;
-    width: 66vw;
-}
-
-.hr_job_detail_location {
-    display: flex;
-    justify-content: space-between;
-}
-
-.hr_job_detail_location_childrens {
-    padding-right: 60px;
 }
 
 .hr_job_detail_skill {
@@ -199,8 +185,17 @@ p {
     padding: .2em 2em;
     border-radius: 30px;
     text-align: center;
-    margin-right: 10px;
-    margin-top: 15px;
+    margin: 0 .5em;
+}
+
+.hr_job_detail_location {
+    display: flex;
+    justify-content: space-between;
+}
+
+.__jobLeftSection {
+    display: flex;
+    gap: 2em;
 }
 
 .job_seeker_card {
@@ -291,8 +286,8 @@ p {
     cursor: pointer;
     font-size: 20px;
     position: absolute;
-    right: 3vw;
-    top: 1vh;
+    right: .2em;
+    top: 0;
 }
 
 .__appliedBody {
