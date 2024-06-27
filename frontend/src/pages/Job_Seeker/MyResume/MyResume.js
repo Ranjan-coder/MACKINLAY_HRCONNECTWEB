@@ -10,7 +10,7 @@ import Resume4 from "./canvaresume4.webp";
 import Resume5 from "./canvaresume5.webp";
 import Resume6 from "./canvaresume6.webp"; 
 import Resume7 from "./canvaresume7.webp";
-import Resume8 from "./canvaresume8.webp";
+import Resume8 from "./canvaresume8.webp"
 import CurrentResume from "./CurrentResume/CurrentResume";
 import PreviousResume from "./PreviousResume/PreviousResume";
 import Modal from "./Model";
@@ -99,7 +99,7 @@ function MyResume() {
     {
       url:"https://www.canva.com/p/templates/EAE-TBgRwsI-pink-simple-profile-resume/",
       image:Resume8
-    },
+    }
   ];
 
   const handleGenerateResume = () => {
