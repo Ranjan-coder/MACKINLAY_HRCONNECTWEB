@@ -51,17 +51,68 @@ body{
 .candidate-main-2 {
     width: 100%;
 }
-
+.progress-ring{
+    height: 70px;
+}
 .candidate-table {
     width: 100%;
     /* border-bottom: 1px solid black; */
     overflow-y: scroll;
 }
 
+.bulkAction_btn{
+    width: 100px;
+    height: 30px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    margin-left: 5px;
+    border: 1px solid white;
+
+}
+
+.block{
+    display: none;
+}
+.select{
+    background-color: rgb(153, 232, 153);
+    border: 1px solid rgb(153, 232, 153);
+    animation: select 1s linear   forwards ;
+}
+@keyframes select {
+    0%{
+        background-color: white;
+    }
+    50%{
+        background-color: rgb(188, 234, 188);
+    }
+    100%{
+        background-color: rgb(72, 186, 72);
+    }
+
+    }
+.reject{
+    background-color: rgb(247, 110, 110);
+    border: 1px solid rgb(247, 110, 110);
+    animation: reject 1s linear   forwards ;
+
+
+}
+@keyframes reject {
+    0%{
+        background-color: white;
+    }
+    50%{
+        background-color: rgb(249, 185, 185);
+    }
+    100%{
+        background-color: rgb(247, 110, 110);
+    }
+}
+
 .candidate-table th {
     color: white;
     font-weight: lighter;
-    padding: 1%;
+    padding-left: 5px;
     text-align: left;
 }
 

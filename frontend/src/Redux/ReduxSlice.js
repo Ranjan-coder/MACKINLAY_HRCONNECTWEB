@@ -13,6 +13,8 @@ const initialState = {
     savedJob: localStorage.getItem("savedJob") ? JSON.parse(localStorage.getItem("savedJob")) : [],
     appliedJob: localStorage.getItem("appliedJob") ? JSON.parse(localStorage.getItem("appliedJob")) : [],
     bookmarkUser: localStorage.getItem("bookmarkUser") ? JSON.parse(localStorage.getItem("bookmarkUser")) : [],
+    SelectedUser: localStorage.getItem("SelectedUser") ? JSON.parse(localStorage.getItem("SelectedUser")) : [],
+    RejectedUser: localStorage.getItem("RejectedUser") ? JSON.parse(localStorage.getItem("RejectedUser")) : [],
   },
 };
 
@@ -146,6 +148,26 @@ const ReduxSlice = createSlice({
         JSON.stringify(state.currentUser.bookmarkUser)
       );
     },
+    handleSelected(state, action) {
+      state.currentUser.SelectedUser.push({
+        email: action.payload.email,
+        job_title: action.payload.jobTitle,
+      });
+      localStorage.setItem(
+        "SelectedUser",
+        JSON.stringify(state.currentUser.SelectedUser)
+      );
+    },
+    handleRejected(state, action) {
+      state.currentUser.RejectedUser.push({
+        email: action.payload.email,
+        job_title: action.payload.jobTitle,
+      });
+      localStorage.setItem(
+        "RejectedUser",
+        JSON.stringify(state.currentUser.RejectedUser)
+      );
+    },
 
     handleRemoveBookmark(state, action) {
       let filteredData = state.currentUser.bookmarkUser.filter(
@@ -182,6 +204,8 @@ export const {
   handleRemoveSavedJob,
   handleAppliedJob,
   handleBookmark,
-  handleRemoveBookmark
+  handleRemoveBookmark,
+  handleSelected,
+  handleRejected,
 } = ReduxSlice.actions;
 export default ReduxSlice.reducer;
