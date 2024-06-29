@@ -80,12 +80,12 @@ const InterviewScheduled = () => {
               roundedCircle
               className={InterviewStyle.avatar}
             />
-            <span className={InterviewStyle.name}>{user.userName}</span>
-          </div>
+            <span className={`${InterviewStyle.name} keep-text-black`}>{user.userName}</span>
+            </div>
         </td>
         <td className={InterviewStyle.data_cell}>
-          <span className={InterviewStyle.gold_star}>&#9733;</span>
-          {user.interviewType}
+        <span className={`${InterviewStyle.gold_star} keep-text-black`} >&#9733;</span>
+        {user.interviewType}
         </td>
         <td className={InterviewStyle.data_cell}>
           {user.interviewDate}
