@@ -138,8 +138,8 @@ export default function Payroll() {
                         />
 
                         <span
-                          className={PayrollStyle.paypal_verified_connected}
-                        >
+                          className={`${PayrollStyle.paypal_verified_connected} keep-text-black`}
+                          >
                           Connected
                         </span>
                       </div>
@@ -399,8 +399,8 @@ export default function Payroll() {
 
                     <div className={PayrollStyle.history_money_off_button}>
                       <button
-                        className={PayrollStyle.history_money_off_button_button}
-                      >
+                        className={`${PayrollStyle.history_money_off_button_button} keep-text-white`}
+                        >
                         <BsBagFill /> Send Invoice
                       </button>
                     </div>
@@ -432,8 +432,8 @@ export default function Payroll() {
 
                 <div className={PayrollStyle.outstanding_title_paid}>
                   March 1,2024
-                  <div className={PayrollStyle.outstanding_title_paid_button}>
-                    <BsDot className={PayrollStyle.dot} /> PAID
+                  <div className={`${PayrollStyle.outstanding_title_paid_button}  keep-text-black`}>
+                    <BsDot className={`${PayrollStyle.dot} keep-text-black`} /> PAID
                   </div>
                 </div>
               </div>
@@ -464,10 +464,10 @@ export default function Payroll() {
                   <div className={PayrollStyle.outstanding_title_paid}>
                     April 1,2024
                     <div
-                      className={PayrollStyle.outstanding_title_pending_button}
-                    >
-                      <BsDot className={PayrollStyle.dot} /> PENDING
-                    </div>
+                      className={`${PayrollStyle.outstanding_title_pending_button} keep-text-black`}
+                      >
+                      <BsDot className={`${PayrollStyle.dot} keep-text-black`} /> PENDING
+                      </div>
                   </div>
                 </div>
                 <div className={PayrollStyle.employee_details_main}>
@@ -582,8 +582,8 @@ export default function Payroll() {
                         />
 
                         <span
-                          className={PayrollStyle.paypal_verified_connected}
-                        >
+                          className={`${PayrollStyle.paypal_verified_connected} keep-text-black`}
+                          >
                           Connected
                         </span>
                       </div>
@@ -665,7 +665,7 @@ export default function Payroll() {
                     </div>
                   </div>
 
-                  <button className={PayrollStyle.view}>
+                  <button className={`${PayrollStyle.view} keep-text-white`} >
                     <TiEye /> View Transaction
                   </button>
                 </div>

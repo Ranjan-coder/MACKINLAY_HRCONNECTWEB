@@ -4,21 +4,21 @@ import { RxCross1 } from "react-icons/rx";
 import { MdOutlineMarkEmailUnread } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { CalculateTimeAgo } from "./TimeAgo";
-import noNotificationPoster from "../../Assets/No_notification.png"
+import noNotificationPoster from "../../Assets/No_notification.png";
 import Loader from "./Loaders/Loader";
 import axios from "axios";
-import toast from "react-hot-toast"
+import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
-const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL
+const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
 function NotificationBox({ notificationCounter, CbCloseNotification }) {
   const { email } = useSelector((state) => state.Assessment.currentUser);
   const [notificationLoading, setNotificationLoading] = useState(false);
-  const [notificationFilter, setNotificationFilter] = useState('All')
+  const [notificationFilter, setNotificationFilter] = useState('All');
   const [AllNotification, setAllnotification] = useState([]);
 
   // !Load Notifications
   const LoadNotifications = () => {
-    setNotificationFilter('All')
+    setNotificationFilter('All');
     setNotificationLoading(true);
     axios.get(`${baseUrl}/user/notifications/get-notification/${email}`).then((response) => {
       if (response.data.success) {
@@ -31,44 +31,44 @@ function NotificationBox({ notificationCounter, CbCloseNotification }) {
       }
     }).catch((error) => {
       setNotificationLoading(false);
-      console.log(error)
+      console.log(error);
     })
   }
 
   // ! Delete the individual notification
   const handleDeleteNotificationClick = (e, notificationId) => {
-    setNotificationFilter("All")
+    setNotificationFilter("All");
     e.preventDefault();
     axios.delete(`${baseUrl}/user/notifications/delete-notification/${notificationId}`).then((response) => {
       if (response.data.success) {
         toast.success(`${response.data.msg}`);
-        LoadNotifications()
+        LoadNotifications();
       } else {
         toast.error(`${response.data.msg}`);
-        LoadNotifications()
+        LoadNotifications();
       }
     }).catch((error) => {
       toast.error(`Check your internet connection and Try again ! ${error.message}`)
-      LoadNotifications()
+      LoadNotifications();
     })
   }
 
   // ! Mark All notifications as Read
   const handleMakrAllReadClick = (e) => {
     e.preventDefault();
-    setNotificationFilter('All')
+    setNotificationFilter('All');
     axios.patch(`${baseUrl}/user/notifications/update-all-notification-status/${email}`).then((response) => {
       if (response.data.success) {
         toast.success(`${response.data.msg}`);
-        LoadNotifications()
+        LoadNotifications();
       } else {
         toast.error(`${response.data.msg}`);
-        LoadNotifications()
+        LoadNotifications();
       }
     }).catch((error) => {
       console.log(error)
       toast.error(`Check your internet connection and Try again ! ${error.message}`)
-      LoadNotifications()
+      LoadNotifications();
     })
   }
 
@@ -78,14 +78,14 @@ function NotificationBox({ notificationCounter, CbCloseNotification }) {
     axios.patch(`${baseUrl}/user/notifications/update-notification-status/${notificationId}`).then((response) => {
       if (response.data.success) {
         toast.success(`${response.data.msg}`);
-        LoadNotifications()
+        LoadNotifications();
       } else {
         toast.error(`${response.data.msg}`);
-        LoadNotifications()
+        LoadNotifications();
       }
     }).catch((error) => {
       toast.error(`Check your internet connection and Try again ! ${error.message}`)
-      LoadNotifications()
+      LoadNotifications();
     })
   }
 
@@ -106,21 +106,39 @@ function NotificationBox({ notificationCounter, CbCloseNotification }) {
   return (
     <section className={notificationStyle.notificationBox__container}>
       <div className={notificationStyle.notificationBox}>
-        <h1 className={notificationStyle.notificationBox_header}>
+        <h1 className={`${notificationStyle.notificationBox_header} keep-text-black`}>
           {notificationFilter} Notifications
-          <span className={notificationStyle.notificationCount}>
+          <span className={`${notificationStyle.notificationCount} keep-text-black`}>
             {AllNotification.length}
           </span>
         </h1>
 
         <div className={notificationStyle.notification__buttonContainer}>
           <div>
-            <button className={`${notificationStyle.notificationActionButton} ${notificationFilter === "All" && notificationStyle.notificationActiveButton}`} onClick={(e) => handleToggleActiveNotification(e, "All")} type="button" > All</button>
-            <button className={`${notificationStyle.notificationActionButton} ${notificationFilter === "Unread" && notificationStyle.notificationActiveButton}`} onClick={(e) => handleToggleActiveNotification(e, "Unread")} type="button" > Unread</button>
-            <button className={`${notificationStyle.notificationActionButton} ${AllNotification.some((notification) => notification.notificationStatus === 'Unread') && notificationStyle.notificationActionActiveButton}`} type="button" onClick={handleMakrAllReadClick} > Mark all as read</button>
+          <button
+              className={`${notificationStyle.notificationActionButton} ${notificationFilter === "All" && notificationStyle.notificationActiveButton} keep-text-black`}
+              onClick={(e) => handleToggleActiveNotification(e, "All")}
+              type="button"
+            >
+              All
+            </button>
+            <button
+              className={`${notificationStyle.notificationActionButton} ${notificationFilter === "Unread" && notificationStyle.notificationActiveButton} keep-text-black`}
+              onClick={(e) => handleToggleActiveNotification(e, "Unread")}
+              type="button"
+            >
+              Unread
+            </button>
+            <button
+              className={`${notificationStyle.notificationActionButton} ${AllNotification.some((notification) => notification.notificationStatus === 'Unread') && notificationStyle.notificationActionActiveButton} keep-text-black`}
+              type="button"
+              onClick={handleMakrAllReadClick}
+            >
+              Mark all as read
+            </button>
           </div>
           <>
-            <RxCross1 className={notificationStyle.notificationCloseButton} onClick={(e) => CbCloseNotification(false)} />
+            <RxCross1 className={`${notificationStyle.notificationCloseButton} keep-text-black`} onClick={(e) => CbCloseNotification(false)} />
           </>
         </div>
 
@@ -132,27 +150,27 @@ function NotificationBox({ notificationCounter, CbCloseNotification }) {
                 <NoNotification />
               ) : (
                 <>
-                  {AllNotification.sort((a, b) => b.notificationTime - a.notificationTime).map((notification) => {
-                    return (
-                      <div className={notificationStyle.notification__ListItem} key={notification._id}>
-                        {
-                          notification?.notificationStatus === "Unread" ? <span className={notificationStyle.notification__UnreadDot}></span> : <span className={notificationStyle.notification__readDot}></span>
-                        }
-                        <p className={`${notificationStyle.notification__Text} ${notification?.notificationStatus === "Unread" && notificationStyle.notification__ListItem_Unread}`}>
-                          {notification.notificationText}.
-                          <span className={notificationStyle.notification__time}>
-                            <CalculateTimeAgo time={notification?.notificationTime} />
-                          </span>
-                        </p>
-                        <div className={notificationStyle.notificationItem__iconContainer}>
-                          <RiDeleteBin6Line onClick={(e) => handleDeleteNotificationClick(e, notification?._id)} className={notificationStyle.notificationItem__icon} title="Delete Notification" />
-                          {
-                            notification?.notificationStatus === "Unread" && <MdOutlineMarkEmailUnread className={notificationStyle.notificationItem__icon} onClick={(e) => handleMakrAsReadClick(e, notification?._id)} />
-                          }
-                        </div>
+                 {AllNotification.sort((a, b) => b.notificationTime - a.notificationTime).map((notification) => (
+                    <div className={`${notificationStyle.notification__ListItem} keep-text-black`} key={notification._id}>
+                      {notification?.notificationStatus === "Unread" ? (
+                        <span className={notificationStyle.notification__UnreadDot}></span>
+                      ) : (
+                        <span className={notificationStyle.notification__readDot}></span>
+                      )}
+                      <p className={`${notificationStyle.notification__Text} ${notification?.notificationStatus === "Unread" && notificationStyle.notification__ListItem_Unread} keep-text-black`}>
+                        {notification.notificationText}.
+                        <span className={`${notificationStyle.notification__time} keep-text-black`}>
+                          <CalculateTimeAgo time={notification?.notificationTime} />
+                        </span>
+                      </p>
+                      <div className={notificationStyle.notificationItem__iconContainer}>
+                        <RiDeleteBin6Line onClick={(e) => handleDeleteNotificationClick(e, notification?._id)} className={`${notificationStyle.notificationItem__icon} keep-text-black`} title="Delete Notification" />
+                        {notification?.notificationStatus === "Unread" && (
+                          <MdOutlineMarkEmailUnread className={`${notificationStyle.notificationItem__icon} keep-text-black`} onClick={(e) => handleMakrAsReadClick(e, notification?._id)} />
+                        )}
                       </div>
-                    );
-                  })}
+                      </div>
+                  ))}
                 </>
               )}
             </>
@@ -169,7 +187,7 @@ export default NotificationBox;
 const NoNotification = () => {
   return <div className={notificationStyle.no_notificationBox}>
     <img src={noNotificationPoster} alt="No New Notification" />
-    <h2 className={notificationStyle.no_notificationPrimaryText}>No notifications yet</h2>
-    <h3 className={notificationStyle.no_notificationSecondaryText}>We will let you know when something needs your attention</h3>
+    <h2 className={`${notificationStyle.no_notificationPrimaryText} keep-text-black`}>No notifications yet</h2>
+    <h3 className={`${notificationStyle.no_notificationSecondaryText} keep-text-black`}>We will let you know when something needs your attention</h3>
   </div>
 }

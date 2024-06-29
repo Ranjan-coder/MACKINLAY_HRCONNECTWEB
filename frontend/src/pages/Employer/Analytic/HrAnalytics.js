@@ -139,7 +139,7 @@ function HRAnalyticsPageCarousel() {
             className={hrAnalyticStyle.AnalyticsPageCarousel_Card}
             style={{ backgroundColor: `${data.cardBG}` }}
           >
-            <div className={hrAnalyticStyle.AnalyticsPageCarousel_CardTitle}>
+            <div className={`${hrAnalyticStyle.AnalyticsPageCarousel_CardTitle} keep-text-black`}>
               <img
                 src={data.cardICON}
                 alt=""
@@ -147,7 +147,7 @@ function HRAnalyticsPageCarousel() {
               />{" "}
               {data?.cardTitle}
             </div>
-            <p className={hrAnalyticStyle.AnalyticsPageCarousel_CardData}>
+            <p className={`${hrAnalyticStyle.AnalyticsPageCarousel_CardData} keep-text-black`}>
               <strong>{data.cardData}</strong>
             </p>
           </div>
@@ -195,28 +195,28 @@ const Hiringdata = [
   }
 ];
 
-const HiringLineChart = ()=>{
+const HiringLineChart = () => {
   return(
     <div className={hrAnalyticStyle.hr_bar_container}>
-    <div style={{paddingBottom:'10px'}}><strong>Hiring in past few months</strong></div>
-  <LineChart
-  width={500}
-  height={200}
-  data={Hiringdata}
-  syncId="anyId"
-  margin={{
-    top: 10,
-    right: 30,
-    left: 0,
-    bottom: 0
-  }}
->
-  <CartesianGrid strokeDasharray="3 3" />
-  <XAxis dataKey="name" />
-  <YAxis />
-  <Tooltip />
-  <Line type="monotone" dataKey="pv" stroke="#82ca9d" fill="#82ca9d" />
-</LineChart>
+        <div style={{ paddingBottom: '10px' }}><strong>Hiring in past few months</strong></div>
+      <LineChart
+        width={500}
+        height={200}
+        data={Hiringdata}
+        syncId="anyId"
+        margin={{
+          top: 10,
+          right: 30,
+          left: 0,
+          bottom: 0
+        }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="name" />
+        <YAxis />
+        <Tooltip />
+        <Line type="monotone" dataKey="pv" stroke="#82ca9d" fill="#82ca9d" />
+      </LineChart>
     </div>
   )
 }
