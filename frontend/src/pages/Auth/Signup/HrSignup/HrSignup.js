@@ -265,27 +265,26 @@ const Signup = () => {
         <div className={signupStyle.step_container}>
           <div className={signupStyle.step_flex_container}>
             <div className={signupStyle.step_1_part_1}>
-              <h1
-                className={` ${signupStyle.kumar_one_regular} ${signupStyle.step_1_banner_heading_signup}`}
-              >
+              <h1 className={`${signupStyle.kumar_one_regular} ${signupStyle.step_1_banner_heading_signup} keep-text-black`}>
                 WELCOME <br />
                 BACK
               </h1>
+
               <div className={signupStyle.create_account_name_container}>
-                <h3>Create an Account</h3>
-                <div>
+                <h3 className="keep-text-black">Create an Account</h3>
+                <div className="keep-text-black">
                   To keep connected with us please signup <br /> with your
                   personal info
                 </div>
               </div>
             </div>
             <div className={signupStyle.step_2_part_2}>
-              <h4
+              <h4 className="keep-text-black"
                 style={{
                   paddingBottom: "10px",
                   fontFamily: "roboto",
                   textAlign: "center",
-                  marginLeft:"-3rem"
+                  marginLeft: "-3rem"
                 }}
               >
                 Personal Information
@@ -346,8 +345,8 @@ const Signup = () => {
                           {resendTimer > 0
                             ? `Resend OTP in ${resendTimer}s`
                             : isOtpResend
-                            ? "Resending OTP..."
-                            : "Resend OTP"}
+                              ? "Resending OTP..."
+                              : "Resend OTP"}
                         </Button>
                       </div>
                     </Modal.Body>
@@ -414,6 +413,7 @@ const Signup = () => {
                   </div>
                   <div
                     onClick={handleLogin}
+                    className="keep-text-black"
                     style={{
                       paddingTop: "10px",
                       fontSize: "16px",
@@ -422,7 +422,7 @@ const Signup = () => {
                     }}
                   >
                     Already have employer account?&nbsp;
-                    <span style={{ color: "rgba(35, 88, 251, 1)" }}>
+                    <span className="keep-text-blue" style={{ color: "rgba(35, 88, 251, 1)" }}>
                       login here
                     </span>
                   </div>

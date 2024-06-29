@@ -59,7 +59,7 @@ const HRAnalytic = () => {
       <div className={hrAnalyticStyle.hr_analytic_container}>
         <HRAnalyticsPageCarousel />
         {/* <SplineChart /> */}
-        <HiringLineChart/>
+        <HiringLineChart />
         <EmailSentBarGraph data={dummyData} />
         <PieArcLabel />
       </div>
@@ -139,7 +139,7 @@ function HRAnalyticsPageCarousel() {
             className={hrAnalyticStyle.AnalyticsPageCarousel_Card}
             style={{ backgroundColor: `${data.cardBG}` }}
           >
-            <div className={hrAnalyticStyle.AnalyticsPageCarousel_CardTitle}>
+            <div className={`${hrAnalyticStyle.AnalyticsPageCarousel_CardTitle} keep-text-black`}>
               <img
                 src={data.cardICON}
                 alt=""
@@ -147,9 +147,10 @@ function HRAnalyticsPageCarousel() {
               />{" "}
               {data?.cardTitle}
             </div>
-            <p className={hrAnalyticStyle.AnalyticsPageCarousel_CardData}>
+            <p className={`${hrAnalyticStyle.AnalyticsPageCarousel_CardData} keep-text-black`}>
               <strong>{data.cardData}</strong>
             </p>
+
           </div>
         );
       })}
@@ -195,55 +196,55 @@ const Hiringdata = [
   }
 ];
 
-const HiringLineChart = ()=>{
-  return(
+const HiringLineChart = () => {
+  return (
     <div className={hrAnalyticStyle.hr_bar_container}>
-    <div style={{paddingBottom:'10px'}}><strong>Hiring in past few months</strong></div>
-  <LineChart
-  width={500}
-  height={200}
-  data={Hiringdata}
-  syncId="anyId"
-  margin={{
-    top: 10,
-    right: 30,
-    left: 0,
-    bottom: 0
-  }}
->
-  <CartesianGrid strokeDasharray="3 3" />
-  <XAxis dataKey="name" />
-  <YAxis />
-  <Tooltip />
-  <Line type="monotone" dataKey="pv" stroke="#82ca9d" fill="#82ca9d" />
-</LineChart>
+      <div style={{ paddingBottom: '10px' }}><strong>Hiring in past few months</strong></div>
+      <LineChart
+        width={500}
+        height={200}
+        data={Hiringdata}
+        syncId="anyId"
+        margin={{
+          top: 10,
+          right: 30,
+          left: 0,
+          bottom: 0
+        }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="name" />
+        <YAxis />
+        <Tooltip />
+        <Line type="monotone" dataKey="pv" stroke="#82ca9d" fill="#82ca9d" />
+      </LineChart>
     </div>
   )
 }
 
- const EmailSentBarGraph = ({ data }) => {
+const EmailSentBarGraph = ({ data }) => {
   return (
     <>
-       <div className={hrAnalyticStyle.hr_bar_container}>
-        <div style={{fontSize:'25px', fontWeight:'500'}}>Mail Sent</div>
-        <div><span style={{color:'lightgreen'}}>+1.43%</span> &nbsp; March 25 - March 31</div>
-       <ResponsiveContainer width="100%" height={400}>
-      <BarChart
-        data={data}
-        margin={{
-          top: 20,
-          right: 30,
-          left: 20,
-          bottom: 5,
-        }}
-      >
-        <XAxis dataKey="name" axisLine={false} tick={{ dy: 10 }} />
-        <Tooltip />
-        <Legend />
-        <Bar dataKey="value" fill="#8884d8" barSize={40} shape={<RoundedRectangle />}/>
-      </BarChart>
-    </ResponsiveContainer>
-       </div>
+      <div className={hrAnalyticStyle.hr_bar_container}>
+        <div style={{ fontSize: '25px', fontWeight: '500' }}>Mail Sent</div>
+        <div><span style={{ color: 'lightgreen' }}>+1.43%</span> &nbsp; March 25 - March 31</div>
+        <ResponsiveContainer width="100%" height={400}>
+          <BarChart
+            data={data}
+            margin={{
+              top: 20,
+              right: 30,
+              left: 20,
+              bottom: 5,
+            }}
+          >
+            <XAxis dataKey="name" axisLine={false} tick={{ dy: 10 }} />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="value" fill="#8884d8" barSize={40} shape={<RoundedRectangle />} />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
     </>
   );
 };

@@ -4,7 +4,7 @@ import clockICON from "../../../Assets/clockICON.jpg";
 import activeICON from "../../../Assets/ActiveICON.jpg";
 import callICON from "../../../Assets/callICON.png";
 import loginICON from "../../../Assets/loginICON.png";
-import { NavLink,useLocation, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from "recharts";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
@@ -53,8 +53,8 @@ function UserAnalytics() {
     <>
       <div className={userAnalyticsStyle.analyticsPage__box}>
         <AnalyticsPageNavbar />
-         <AnalyticsPageCarousel period={period} />
-        <AnalyticsReportComponent/>
+        <AnalyticsPageCarousel period={period} />
+        <AnalyticsReportComponent />
       </div>
     </>
   );
@@ -65,19 +65,31 @@ export default UserAnalytics;
 function AnalyticsPageNavbar() {
   return (
     <nav className={userAnalyticsStyle.analyticsPage__navbar}>
-      <NavLink to={"/analytics/weekly"} className={({ isActive }) =>
-                  isActive ? userAnalyticsStyle.active : userAnalyticsStyle.analyticsPage__navLInks
-                }>
+      <NavLink
+        to={"/analytics/weekly"}
+        className={({ isActive }) =>
+          isActive ? `${userAnalyticsStyle.active} keep-text-black`
+         : `${userAnalyticsStyle.analyticsPage__navLInks} keep-text-black`
+        } >
         Weekly
       </NavLink>
-      <NavLink to={"/analytics/monthly"} className={({ isActive }) =>
-                  isActive ? userAnalyticsStyle.active : userAnalyticsStyle.analyticsPage__navLInks
-                }>
+
+      <NavLink
+        to={"/analytics/monthly"}
+        className={({ isActive }) =>
+          isActive
+            ? `${userAnalyticsStyle.active} keep-text-black`
+            : `${userAnalyticsStyle.analyticsPage__navLInks} keep-text-black`
+        } >
         Monthly
       </NavLink>
-      <NavLink to={"/analytics/yearly"} className={({ isActive }) =>
-                  isActive ? userAnalyticsStyle.active : userAnalyticsStyle.analyticsPage__navLInks
-                }>
+      <NavLink 
+       to={"/analytics/yearly"}
+       className={({ isActive }) =>
+        isActive
+        ? `${userAnalyticsStyle.active} keep-text-black`
+          : `${userAnalyticsStyle.analyticsPage__navLInks} keep-text-black`
+      }>
         Yearly
       </NavLink>
     </nav>
@@ -135,31 +147,31 @@ function AnalyticsReportComponent() {
   const [analyticsData, setAnalyticsData] = useState([]);
   const [jobViewData, setjobViewData] = useState([]);
 
-   useEffect(() => {
-     const fetchAnalyticsData = async () => {
+  useEffect(() => {
+    const fetchAnalyticsData = async () => {
       const email = localStorage.getItem("email")
-       try {
-         const response = await axios.get(`${baseUrl}/analytics/job-application?email=${email}`)
-         setAnalyticsData(response.data);
+      try {
+        const response = await axios.get(`${baseUrl}/analytics/job-application?email=${email}`)
+        setAnalyticsData(response.data);
         //  console.log(response.data)
-       } catch (error) {
-         console.error('Error fetching analytics data:', error);
-       }
-     };
- 
-     fetchAnalyticsData();
-   }, []); 
+      } catch (error) {
+        console.error('Error fetching analytics data:', error);
+      }
+    };
 
-   useEffect(() => {
+    fetchAnalyticsData();
+  }, []);
+
+  useEffect(() => {
     const fetchJobViewData = async () => {
-     const email = localStorage.getItem("email")
-     try {
-      const response = await axios.get(`${baseUrl}/jobs/get-job-views?userEmail=${email}`);
-      const data = response.data.jobViewsData;
+      const email = localStorage.getItem("email")
+      try {
+        const response = await axios.get(`${baseUrl}/jobs/get-job-views?userEmail=${email}`);
+        const data = response.data.jobViewsData;
 
-      // Convert jobViewsData object to array of objects
-      const jobViewsArray = Object.keys(data).map(month => ({ month, views: data[month] }));
-      setjobViewData(jobViewsArray);
+        // Convert jobViewsData object to array of objects
+        const jobViewsArray = Object.keys(data).map(month => ({ month, views: data[month] }));
+        setjobViewData(jobViewsArray);
       } catch (error) {
         console.error('Error fetching analytics data:', error);
       }
@@ -178,10 +190,10 @@ function AnalyticsReportComponent() {
             Success rate
           </span>
         </div>
-        <div style={{ height: "400px", width:'80%', marginLeft:'69px', marginTop:'20px' }}>
+        <div style={{ height: "400px", width: '80%', marginLeft: '69px', marginTop: '20px' }}>
           <ResponsiveContainer>
             <BarChart data={analyticsData}>
-              <XAxis dataKey="month" axisLine={false} tickLine={false}  />
+              <XAxis dataKey="month" axisLine={false} tickLine={false} />
               <YAxis axisLine={false} tickLine={false} />
               <Bar dataKey="jobApplications" fill="#00296B" barSize={35} />
             </BarChart>
@@ -197,7 +209,7 @@ function AnalyticsReportComponent() {
           <span className={userAnalyticsStyle.analysisBox__header__secondaryText}>20 views</span>
         </div>
 
-        <div className={userAnalyticsStyle.spline_chart_design} style={{height:'400px', width:'80%', marginLeft:'100px'}}>
+        <div className={userAnalyticsStyle.spline_chart_design} style={{ height: '400px', width: '80%', marginLeft: '100px' }}>
           <ResponsiveContainer>
             <SplineChart />
           </ResponsiveContainer>
@@ -211,11 +223,11 @@ function AnalyticsReportComponent() {
             Success rate
           </span>
         </div>
-        <div style={{height:'400px', width:'80%', marginLeft:'100px', marginTop:'30px'}}>
+        <div style={{ height: '400px', width: '80%', marginLeft: '100px', marginTop: '30px' }}>
           <ResponsiveContainer>
             <BarChart data={dummyData}>
-              <XAxis dataKey={"name"}  axisLine={false} tickLine={false} />
-              <YAxis  axisLine={false} tickLine={false} />
+              <XAxis dataKey={"name"} axisLine={false} tickLine={false} />
+              <YAxis axisLine={false} tickLine={false} />
               <Bar dataKey={"value"} fill="#00296B" barSize={35} />
             </BarChart>
           </ResponsiveContainer>
@@ -231,14 +243,14 @@ function AnalyticsReportComponent() {
         </div>
 
         <div style={{ height: '400px', width: '80%', marginLeft: '100px', marginTop: '30px' }}>
-        <ResponsiveContainer>
-          <BarChart data={jobViewData}>
-            <XAxis dataKey="month" axisLine={false} tickLine={false} />
-            <YAxis axisLine={false} tickLine={false}/>
-            <Bar dataKey="views" fill="#00296B" barSize={35} />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
+          <ResponsiveContainer>
+            <BarChart data={jobViewData}>
+              <XAxis dataKey="month" axisLine={false} tickLine={false} />
+              <YAxis axisLine={false} tickLine={false} />
+              <Bar dataKey="views" fill="#00296B" barSize={35} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
       </div>
 
       <div className={userAnalyticsStyle.analyticsPage__analysis__Box}>
@@ -258,7 +270,7 @@ function AnalyticsReportComponent() {
 }
 
 function AnalyticsPageCarousel({ period }) {
-  const [email, setEmail] = useState(null); 
+  const [email, setEmail] = useState(null);
   const [loginFrequency, setLoginFrequency] = useState(null);
   const [timeSpent, setTimeSpent] = useState(null);
 
@@ -305,7 +317,7 @@ function AnalyticsPageCarousel({ period }) {
     };
 
     fetchData();
-  }, [period, email]); 
+  }, [period, email]);
 
 
 
@@ -346,7 +358,7 @@ function AnalyticsPageCarousel({ period }) {
       cardID: 3,
       cardICON: clockICON,
       cardTitle: "Time Spent",
-      cardData: `${timeSpent} Min`, 
+      cardData: `${timeSpent} Min`,
       cardBG: "#CBF0FB",
     },
     {
@@ -360,7 +372,7 @@ function AnalyticsPageCarousel({ period }) {
       cardID: 5,
       cardICON: loginICON,
       cardTitle: "Login Frequency",
-      cardData: `${loginFrequency} Times`, 
+      cardData: `${loginFrequency} Times`,
       cardBG: "#f9bbbb",
     },
   ];
@@ -383,7 +395,7 @@ function AnalyticsPageCarousel({ period }) {
           <div
             key={data.cardID}
             className={userAnalyticsStyle.AnalyticsPageCarousel_Card}
-            style={{ backgroundColor: `${data.cardBG}`, marginLeft:'35px' }}
+            style={{ backgroundColor: `${data.cardBG}`, marginLeft: '35px' }}
           >
             <h1 className={userAnalyticsStyle.AnalyticsPageCarousel_CardTitle}>
               <img

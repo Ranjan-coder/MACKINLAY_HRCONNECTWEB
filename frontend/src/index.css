@@ -5,6 +5,7 @@
     user-select: none;
     font-family: "Playfair Display";
 }
+
 /* global.css */
 body {
     transition: background-color 0.3s, color 0.3s;
@@ -28,6 +29,16 @@ body {
 .dark-mode .exclude-dark-mode {
   color: black !important; 
 }
+.dark-mode .keep-text-black {
+  color: black !important;
+}
+.dark-mode .keep-text-white{
+  color: #FFFFFF !important;
+}
+.dark-mode .keep-text-blue{
+  color: #0000ff !important;
+}
+
 /* These block of code may be temp block so do not touch that even i don't know where this blocks of code will apply */
 .Work_from_Office {
     display: block;

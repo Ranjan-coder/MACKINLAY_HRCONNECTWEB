@@ -511,14 +511,14 @@ console.log(formData);
             <div className={signupStyle.step_flex_container}>
               <div className={signupStyle.step_1_part_1}>
                 <h1
-                  className={` ${signupStyle.kumar_one_regular} ${signupStyle.step_1_banner_heading_signup}`}
+                  className= {` ${signupStyle.kumar_one_regular} ${signupStyle.step_1_banner_heading_signup} keep-text-black`} 
                 >
                   WELCOME <br />
                   BACK
                 </h1>
                 <div className={signupStyle.create_account_name_container}>
-                  <h3>Create an Account</h3>
-                  <div>
+                  <h3 className="keep-text-black">Create an Account</h3>
+                  <div className="keep-text-black">
                     To keep connected with us please signup <br /> with your
                     personal info
                   </div>
@@ -526,7 +526,7 @@ console.log(formData);
               </div>
 
               <div className={signupStyle.step_1_part_2}>
-                <h3 className={signupStyle.upload_resume_heading}>
+                <h3 className={`${signupStyle.upload_resume_heading} keep-text-black`}>
                   Upload Resume
                 </h3>
                 <Form onSubmit={nextStep}>
@@ -552,7 +552,7 @@ console.log(formData);
                   </div>
                 </Form>
                 <div className={signupStyle.forgot_style1}>
-                  <span
+                  <span className="keep-text-black"
                     onClick={handleLogin}
                     style={{
                       cursor: "pointer",
@@ -561,7 +561,7 @@ console.log(formData);
                     }}
                   >
                     Already have an account?
-                    <span style={{ color: "rgba(35, 88, 251, 1)" }}>
+                    <span className="keep-text-blue" style={{ color: "rgba(35, 88, 251, 1)" }}>
                       Login here
                     </span>
                   </span>
@@ -608,7 +608,7 @@ console.log(formData);
                   WELCOME <br />
                   BACK
                 </h1>
-                <div className={signupStyle.create_account_name_container}>
+                <div className={signupStyle.create_account_name_container}  >
                   <h3>Create an Account</h3>
                   <div>
                     To keep connected with us please signup <br /> with your

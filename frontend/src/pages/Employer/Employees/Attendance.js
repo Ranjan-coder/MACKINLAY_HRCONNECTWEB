@@ -27,7 +27,8 @@ export default function Attendance() {
     <div className={employees.__leaveReq_Table}>
       <TableContainer component={Paper}>
         <div className={employees.__leaveReq_Table_header}>
-          <h3 className={employees.__leaveReq_Table_PrimaryText}>Attendance Overview</h3>
+        <h3 className={`${employees.__leaveReq_Table_PrimaryText} keep-text-black`}>Attendance Overview</h3>
+
           <>
             <button type="button" className={employees.__leaveReq_Table_Button}><VscSettings className={employees.__leaveReq_Table_ButtonICON} /> View Attendance</button>
           </>
@@ -48,7 +49,7 @@ export default function Attendance() {
           </TableHead>
           <TableBody>
             {rows.map((row) => (
-              <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+              <TableRow  key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                 <TableCell component="th" scope="row">{row.id}</TableCell>
                 <TableCell align="center">{row.employee}</TableCell>
                 <TableCell align="center">{row.role}</TableCell>

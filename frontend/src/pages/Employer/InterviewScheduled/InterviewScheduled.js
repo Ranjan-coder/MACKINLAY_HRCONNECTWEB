@@ -69,7 +69,7 @@ const InterviewScheduled = () => {
   const rows = interviewedUsers.map((user, index) => {
     console.log(user); 
     return (
-      <tr key={index} className={InterviewStyle.Maincontainer}>
+      <tr key={index} className={InterviewStyle.Maincontainer} >
         <td className={InterviewStyle.name_column}>
           <div className={InterviewStyle.name_content}>
             <Image
@@ -77,11 +77,11 @@ const InterviewScheduled = () => {
               roundedCircle
               className={InterviewStyle.avatar}
             />
-            <span className={InterviewStyle.name}>{user.userName}</span>
+            <span className={`${InterviewStyle.name} keep-text-black`}>{user.userName}</span>
           </div>
         </td>
         <td className={InterviewStyle.data_cell}>
-          <span className={InterviewStyle.gold_star}>&#9733;</span>
+          <span className={`${InterviewStyle.gold_star} keep-text-black`} >&#9733;</span>
           {user.interviewType}
         </td>
         <td className={InterviewStyle.data_cell}>

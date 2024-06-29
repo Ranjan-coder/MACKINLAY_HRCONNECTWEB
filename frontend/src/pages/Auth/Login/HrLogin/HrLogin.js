@@ -204,7 +204,7 @@ function HrLogin({ toggleLoginType, isHRLogin }) {
                     />
                   </div>
                   <div style={{ textAlign: "center", marginTop: "20px" }}>
-                    <span
+                    <span className="keep-text-black"
                       style={{
                         borderBottom: isHRLogin ? "2px solid #FF0000" : "none",
                         cursor: "pointer",
@@ -213,7 +213,7 @@ function HrLogin({ toggleLoginType, isHRLogin }) {
                     >
                       Job Seeker
                     </span>
-                    <span
+                    <span className="keep-text-black"
                       style={{
                         borderBottom: isHRLogin ? "none" : "2px solid #FF0000",
                         marginLeft: "20px",
@@ -243,7 +243,7 @@ function HrLogin({ toggleLoginType, isHRLogin }) {
                       />
                     </Form>
                   </div>
-                  <div
+                  <div  className="keep-text-black"
                     style={{
                       paddingTop: "10px",
                       fontSize: "16px",
@@ -253,7 +253,7 @@ function HrLogin({ toggleLoginType, isHRLogin }) {
                     onClick={handleHrSignup}
                   >
                     Don't have an account?
-                    <span style={{ color: "rgba(35, 88, 251, 1)" }}>
+                    <span   className="keep-text-blue"style={{ color: "rgba(35, 88, 251, 1)" }}>
                       {" "}
                       Create Account
                     </span>

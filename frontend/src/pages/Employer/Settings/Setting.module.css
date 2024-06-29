@@ -15,7 +15,6 @@
   display: flex;
   align-items: center;
   gap: 1em;
-  /* background: rgb(235, 252, 255); */
   padding: 1em;
   border-radius: 15px 15px 0 0;
   border-bottom: 1px solid #000;
@@ -24,6 +23,7 @@
 .__hrImg[alt='profile_img'] {
   width: 5em;
   height: 5em;
+  object-fit: cover;
   margin: 0px 10px;
   border-radius: 50%;
   border: 1px solid rgb(200, 200, 200);
@@ -43,8 +43,6 @@
 .setting_opt_left {
   width: 28%;
   height: calc(100vh - 247px);
-  /* overflow-y: scroll; */
-  /* scrollbar-width: thin; */
   padding: 0 .2em;
 }
 
@@ -87,7 +85,6 @@
 }
 
 .setting_opt_right {
-  /* border: 1px solid red; */
   padding: 0 20px;
   width: 70%;
   height: calc(100vh - 247px);
@@ -95,17 +92,23 @@
   scrollbar-width: none;
 }
 
-/*--------------------------different box design----------------*/
-.__defaultText{
+
+/* Personal Info ----- */
+.__personalInfo{
+  /* border: 1px solid red; */
+  padding: 10em 16em;
+}
+
+/* /--------------------------different box design----------------/ */
+.__defaultText {
   display: grid;
   place-items: center;
   margin: 25vh auto;
 }
 
-/*------------------------profile design container1----------*/
+/* /------------------------profile design container1----------/ */
 .Profile_cont1 {
   border-radius: 5px;
-  /* width: 95%; */
   margin-top: 2em;
   display: flex;
   align-items: center;
@@ -153,7 +156,6 @@
 }
 
 .__popupDelete {
-  /* border: 1px solid rgb(125, 125, 125); */
   border-radius: 10px;
   height: 15em;
   width: 32em;
@@ -188,11 +190,10 @@
   color: white;
 }
 
-/*-------------------profile design container2-------------*/
+/* /-------------------profile design container2-------------/ */
 .Profile_cont2 {
   border: 1px solid black;
   border-radius: 20px;
-  /* width: 95%; */
   height: 30vh;
   display: flex;
   flex-direction: column;
@@ -207,24 +208,24 @@
   font-weight: 600;
   border-bottom: 1px solid gray;
   padding: 6px 10px;
+  cursor: pointer;
 }
 
 .Profile_cont2_One p {
   font-size: 20px;
 }
 
-/*---------------------appearance container-----------------*/
+/* /---------------------appearance container-----------------/ */
 .Appearance {
   padding: 7px;
   line-height: 2.2;
 }
 
-/*-------------------------notification------------------*/
+/* /-------------------------notification------------------/ */
 .notification {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-
 }
 
 .checkboxex {
@@ -246,6 +247,198 @@
   color: blue;
 }
 
-/* @media only screen and (min-width: 768px) {
-  .setting_opt_active {}
-} */
+/* Dark mode popup styles */
+.darkModePopup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popupContent {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  width: 30vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.popupContent h3 {
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.popupContent p {
+  margin-bottom: 20px;
+  font-size: 16px;
+  color: #1e1717;
+}
+
+.popupContent div {
+  margin-bottom: 10px;
+}
+
+.popupContent label {
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.popupContent label input[type="checkbox"] {
+  margin-right: 10px;
+  transform: scale(1.2);
+  cursor: pointer;
+}
+
+/* privacy setting */
+.privacySettings {
+  padding: 20px;
+  border: 1px solid black;
+  border-radius: 20px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0px 3px 3px gray;
+}
+
+.privacySettings h3 {
+  margin-bottom: 20px;
+  border-bottom: 1px solid grey;
+}
+
+.privacySettings section {
+  margin-bottom: 20px;
+}
+
+.privacySettings h4 {
+  margin-bottom: 10px;
+  border-bottom: 1px solid grey;
+}
+
+/* support content */
+.supportContent {
+  padding: 20px;
+  border-radius: 10px;
+  height: auto;
+}
+
+.supportContent p {
+  margin-bottom: 1vh;
+}
+
+.contactDetails {
+  margin-top: 1vh;
+}
+
+.feedbackForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.feedbackForm h4 {
+  margin-bottom: 10px;
+}
+
+.feedbackForm textarea {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  height: 10vw;
+}
+
+.feedbackForm button {
+  padding: 10px 20px;
+  background: linear-gradient(90deg, #01378f 0%, #0050D1 100%);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 300ms linear;
+  width: 40vh;
+}
+
+.feedbackForm button:hover {
+  transform: scale(1.03);
+}
+
+.feedbackForm input[type="file"] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.supportContent {
+  border: 1px solid black;
+  border-radius: 20px;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0px 3px 3px gray;
+
+}
+
+.supportContent h3 {
+  border-bottom: 1px solid grey;
+}
+
+.contactDetails h4 {
+  border-bottom: 1px solid grey;
+}
+
+.supportOptions h4 {
+  border-bottom: 1px solid grey;
+}
+
+.feedbackForm h4 {
+  border-bottom: 1px solid grey;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .setting_opt_left {
+    width: 100%;
+    height: auto;
+    margin-bottom: 1em;
+  }
+
+  .setting_opt_right {
+    width: 100%;
+    height: auto;
+  }
+
+  .Setting_opt_container {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .setting_opt {
+    width: 100%;
+  }
+
+  .setting_opt_active {
+    width: 100%;
+  }
+
+  .__popupDelete {
+    width: 90%;
+    left: 5%;
+  }
+
+  .popupContent {
+    width: 90%;
+  }
+}
