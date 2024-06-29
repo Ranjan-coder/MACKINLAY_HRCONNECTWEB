@@ -37,8 +37,8 @@ export default function LeaveRequests() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+            {rows.map((row,index) => (
+              <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                 <TableCell component="th" scope="row">{row.candidateName}</TableCell>
                 <TableCell align="right">{row.id}</TableCell>
                 <TableCell align="right">{row.role}</TableCell>

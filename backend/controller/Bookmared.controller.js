@@ -6,14 +6,15 @@ const HrUser = require("../model/users/HrUserModel");
 const createBookmark = async (req, res) => {
     const { HrEmail } = req.params;
     const { email, profileImage, name, jobTitle
-        , biography, country, job_title, employmentType, jobDescription, skills, resume, location } = req.body;
+        , biography, country, job_title, employmentType, jobDescription, skills, resume, location,_id } = req.body;
     try {
 
         // Matching the current HR - Email and User - Email with 
         const mongooseResponse = await bookmarkedCollection.create({
+             userId:_id,
             employeeEmail: HrEmail,
             email: email,
-            Job_title: jobTitle,
+            Job_title: job_title,
             profileImage,
             name: name,
             biography: biography,
@@ -66,7 +67,7 @@ const getBookmark = async (req, res) => {
                 bookmarkedUser: mongooseResponse
             })
         } else {
-            res.status(404).json({
+            res.status(200).json({
                 success: false,
                 bookmarkedUser: mongooseResponse
             })
@@ -77,39 +78,55 @@ const getBookmark = async (req, res) => {
 }
 
 const removeBookmark = async (req, res) => {
-
-    const [employeeEmail, email, Job_title] = req.params.HrEmail.split("-");
     try {
-        const mongooseResponse = await bookmarkedCollection.deleteMany({
-            employeeEmail: employeeEmail,
-            email: email,
-            Job_title: Job_title,
+      const [employeeEmail, email, Job_title] = req.params.HrEmail.split("-");
+    //   console.log(`employeeEmail: ${employeeEmail}, email: ${email}, Job_title: ${Job_title}`);
+
+      // Delete the bookmarked user from the bookmarkedCollection
+      const mongooseResponse = await bookmarkedCollection.deleteMany({
+        employeeEmail: employeeEmail,
+        email: email,
+        // Job_title: Job_title,
+      });
+      // console.log(mongooseResponse);
+
+      // Find the HrUser and update the bookmarkUser array
+      const mongooseUser = await HrUser.findOne({ email: employeeEmail });
+      // console.log(mongooseUser);
+      if (!mongooseUser) {
+        return res.status(404).json({
+          success: false,
+          msg: "HrUser not found",
         });
-        const mongooseUser = await HrUser.findOne({ email: employeeEmail });
+      }
 
-        await HrUser.updateOne({ email: employeeEmail }, {
-            bookmarkUser: mongooseUser.bookmarkUser.filter((data) => data.email === email).filter((data) => data.job_title !== Job_title)
-        });
+      // Ensure bookmarkUser is an array
+      if (!Array.isArray(mongooseUser.bookmarkUser)) {
+        mongooseUser.bookmarkUser = [];
+      }
 
-        if (mongooseResponse) {
-            return res.status(200).json({
-                success: true,
-                msg: "User removed from  bookmarked collection"
-            })
+      // Update the bookmarkUser array by filtering out the removed bookmark
+      const updatedBookmarkUser = mongooseUser.bookmarkUser.filter(
+        (data) => !(data.email === email && data.Job_title === Job_title)
+      );
 
-        } else {
-            return res.status(200).json({
-                success: false,
-                msg: "Something went wrong, Try again later"
-            })
-        }
+      await HrUser.updateOne(
+        { email: employeeEmail },
+        { $set: { bookmarkUser: updatedBookmarkUser } }
+      );
 
-
+      return res.status(200).json({
+        success: true,
+        msg: "User removed from bookmarked collection",
+      });
     } catch (error) {
-        res.status(500).send(`Internal server Error : ${error.message}`)
+      console.error(`Internal Server Error: ${error.message}`);
+      res.status(500).json({
+        success: false,
+        msg: `Internal server error: ${error.message}`,
+      });
     }
-}
-
+  };  
 
 module.exports = {
     createBookmark,
