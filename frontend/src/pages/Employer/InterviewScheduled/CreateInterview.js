@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Interviewcss from "./Interview.module.css";
-import maleImage from '../../../Assets/Male-Image.png';
 import { IoStar } from "react-icons/io5";
 import { BsPersonVideo } from "react-icons/bs";
 import { GrTextAlignFull } from "react-icons/gr";
@@ -16,8 +15,9 @@ import { BsFileImage } from "react-icons/bs";
 
 function Interview() {
   const navigation = useNavigate();
+  const {HrEmail}=useParams();
   const location = useLocation();
-  const { userEmail, userName } = location.state;
+  const { userEmail, userName ,UserProfile} = location.state;
   const [file, setFile] = useState(null);
   const [interviewDetails, setInterviewDetails] = useState({
     interviewType: "",
@@ -51,7 +51,7 @@ function Interview() {
         formData.append("file", file);
       }
 
-      const response = await axios.post(`http://localhost:8585/api/interview/schedule-interview`, formData, {
+      const response = await axios.post(`http://localhost:8585/api/interview/schedule-interview/${HrEmail}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -72,7 +72,8 @@ function Interview() {
     <div className={Interviewcss.main_containers}>
       <div className={Interviewcss.uppercontainer}>
         <div className={Interviewcss.uppercontainer_left}>
-          <img className={Interviewcss.upper_cont_img} src={maleImage} alt="network-error" />
+          <img className={Interviewcss.upper_cont_img} src= {UserProfile ??
+                      "https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg"} alt="network-error" />
           <div className={Interviewcss.uppercontainer_left1}>
             <p>{userName}</p>
             <p>
@@ -100,6 +101,8 @@ function Interview() {
               <option value="walk">Walk-in-drive</option>
               <option value="virtual">Virtual</option>
               <option value="face">Face to face</option>
+              <option value="Ai">Interview With Ai</option>
+
             </select>
           </div>
           <div className={`${Interviewcss.formSub_con} ${Interviewcss.formSub_contain}`}>
