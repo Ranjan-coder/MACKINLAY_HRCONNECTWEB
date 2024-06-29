@@ -158,10 +158,10 @@ export default function Payroll() {
               <Row>
                 <Col xxl={7} xl={7} lg={7} md={7}>
                   {Data.map((pay, index) => (
-                    <div className={PayrollStyle.area_chart_style_prop}>
+                    <div key={index} className={PayrollStyle.area_chart_style_prop}>
                       <div
                         className={PayrollStyle.paypal_area_chart_title}
-                        key={index}
+                       
                       >
                         <div className={PayrollStyle.area_chart_title}>
                           Payment History

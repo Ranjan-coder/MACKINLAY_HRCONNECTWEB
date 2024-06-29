@@ -8,7 +8,7 @@ const User = require("../model/users/UserModel");
 
 const create = async (req, res) => {
   try {
-    console.log('File:', req.file);
+    // console.log('File:', req.file);
 
     if (!req.file || !req.file.buffer) {
       return res.status(400).json({ message: "File is missing" });

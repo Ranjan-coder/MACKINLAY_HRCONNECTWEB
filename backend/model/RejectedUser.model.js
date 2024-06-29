@@ -37,7 +37,7 @@ const RejectSchema = new mongoose.Schema({
     resume: [
         {
             filename: String,
-            path: String,
+            url: String,
             uploadedAt: {
                 type: Date,
                 default: Date.now,

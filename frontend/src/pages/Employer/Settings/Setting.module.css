@@ -193,16 +193,17 @@
 /* /-------------------profile design container2-------------/ */
 .Profile_cont2 {
   border: 1px solid black;
-  border-radius: 20px;
-  height: 30vh;
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
   box-shadow: 0px 3px 3px gray;
+  cursor: pointer;
 }
 
 .Profile_cont2_One {
   display: flex;
   justify-content: flex-start;
+  align-items:baseline;
   gap: 1vw;
   font-size: 18px;
   font-weight: 600;
@@ -218,7 +219,7 @@
 /* /---------------------appearance container-----------------/ */
 .Appearance {
   padding: 7px;
-  line-height: 2.2;
+  /* line-height: 2.2; */
 }
 
 /* /-------------------------notification------------------/ */
