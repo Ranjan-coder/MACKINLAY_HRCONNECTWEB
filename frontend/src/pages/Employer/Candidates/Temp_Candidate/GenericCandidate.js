@@ -29,7 +29,7 @@ ShowApplicantDetails ? <GenericApplicantView CbToogleDetails={CbToggleDetails} U
             User?.map((user) => {
               // console.log(user);
               return (
-                <div className={hrdashboard.__appliedUsers} key={user._id} onClick={(e) => handleUserCardClick(e, user?._id)}>
+                <div className={hrdashboard.__appliedUsers} key={user._id} onClick={(e) => handleUserCardClick(e, user?.email)}>
                   <div className={hrdashboard.__appliedHeader}>
                     <img className={hrdashboard.__userPF} src={user.profileImage ?? 'https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg'} alt="" onError={(e) => { e.target.src = `https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg`; e.onError = null; }} />
                     <section>
