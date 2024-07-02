@@ -22,7 +22,7 @@ function GenericApplicantView({ Users, bookmarkUser, selectedUser, CbToogleDetai
   const [SelectedResume, setSelectedResume] = useState(null);
 
   useEffect(() => {
-    setUserDetails(Users?.filter((data) => data._id === selectedUserid));
+    setUserDetails(Users?.filter((data) => data.email === selectedUserid));
   }, [selectedUserid, Users]);
 
   const handleToggleCardActive = (e, id, email, jobTitle, userJobID) => {

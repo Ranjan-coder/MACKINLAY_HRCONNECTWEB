@@ -71,7 +71,7 @@ Chart.register(ArcElement);
         fetchUsers();
           // eslint-disable-next-line react-hooks/exhaustive-deps
 
-    }, [hremail,baseUrl,dispatch,candidatetype]);
+    }, [hremail,baseUrl,dispatch,candidatetype,ShortedCandidates]);
 
 
     const handelChangeCandidates = (type) => {
@@ -111,8 +111,8 @@ Chart.register(ArcElement);
 
         await axios.patch(`${baseUrl}/user/My-jobs/applicationStatus/${user?.email}`, {
             applicationStatus: {
-                JobStatus: "Selected",
-                StatusText: "Selected",
+                JobStatus: "Shortlisted",
+                StatusText: "Shortlisted",
                 updatedAt: Date.now(),
             },
             userJobID: user?.jobID,
@@ -149,8 +149,8 @@ Chart.register(ArcElement);
 
        await axios.patch(`${baseUrl}/user/My-jobs/applicationStatus/${user?.email}`, {
             applicationStatus: {
-                JobStatus: "Rejected",
-                StatusText: "Rejected",
+                JobStatus: "Not-Shortlisted",
+                StatusText: "Not-Shortlisted",
                 updatedAt: Date.now(),
             },
             userJobID: user?.jobID,
@@ -158,7 +158,7 @@ Chart.register(ArcElement);
             if (response.data.status) {
                 socket.emit("HrSendNotification", JSON.stringify({
                     userEmail: user?.email,
-                    NotificatioNText: `Sorry, You are not selected for ${user?.jobTitle} role by HR.`,
+                    NotificatioNText: `Sorry, You are not shortlisted for ${user?.jobTitle} role by HR.`,
                     updatedAt: Date.now(),
                 }));
             }
@@ -347,7 +347,7 @@ Chart.register(ArcElement);
                                             <td>{item.jobTitle}</td>
                                             <td>{item.AppliedDate}</td>
                                             <td key={index} style={{ cursor: "pointer" }} onClick={(e) => handleShowResume(e, item.resume[0].url)}>{item.resume[0].filename.split('.'||"-")[0]}</td>
-                                            <td><button className='bulkAction_btn' onClick={(e) => handleViewProfile(e,item?._id)} >View Profile</button></td>
+                                            <td><button className='bulkAction_btn' onClick={(e) => handleViewProfile(e,item?.email)} >View Profile</button></td>
                                         </tr>
                                     ))}
                                 </tbody>
