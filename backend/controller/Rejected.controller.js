@@ -11,7 +11,7 @@ const createReject = async (req, res) => {
         profileImage,
         name,
         jobTitle,
-        jobID, // Assuming this is the job ID
+        jobID, 
         biography,
         country,
         employmentType,

@@ -13,6 +13,7 @@ const InterviewScheduled = () => {
   useEffect(() => {
     fetchInterviewedUsers();
 },[HrEmail]);
+const userProfile=localStorage.getItem('profileImage')
   const fetchInterviewedUsers = async () => {
     try {
       const response = await axios.get(`http://localhost:8585/api/interview/getCandidate/${HrEmail}`);
@@ -37,7 +38,7 @@ const InterviewScheduled = () => {
         <td className={InterviewStyle.name_column}>
           <div className={InterviewStyle.name_content}>
             <Image
-              src={user.profileImage ?? "https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg"}
+              src={ userProfile?? "https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg"}
               roundedCircle
               className={InterviewStyle.avatar}
             />

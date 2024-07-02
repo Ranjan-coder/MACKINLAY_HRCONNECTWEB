@@ -10,7 +10,7 @@ export default function InterviewWithAI() {
 
   useEffect(() => {
     fetchInterviewedUsers();
-  },[HrEmail]);
+  }, [HrEmail]);
 
   const fetchInterviewedUsers = async () => {
     try {
@@ -39,6 +39,12 @@ export default function InterviewWithAI() {
     navigate("/webcaminterview");
   };
 
+  const isJoinButtonEnabled = (interviewDate, interviewTime) => {
+    const interviewDateTime = new Date(`${interviewDate}T${interviewTime}`);
+    const currentTime = new Date();
+    return currentTime < interviewDateTime;
+  };
+
   return (
     <div className={interview.__interviewWithAI_Page}>
       <h2 style={{ color: "grey" }}>My Schedule</h2>
@@ -48,7 +54,7 @@ export default function InterviewWithAI() {
             <div key={index} className={interview.__interview_Details}>
               <div
                 className={interview.__Interview_Timings}
-                style={{ backgroundColor: "yellow" }} 
+                style={{ backgroundColor: "yellow" }}
               >
                 <div className={interview.__interview_Dates}>
                   {user.interviewType} Interview
@@ -57,7 +63,11 @@ export default function InterviewWithAI() {
                 </div>
                 <p className={interview.__interview_Times}>{user.interviewTime}</p>
               </div>
-              <button className={interview.__btn_meet_Calls} onClick={handleClick}>
+              <button
+                className={interview.__btn_meet_Calls}
+                onClick={handleClick}
+                disabled={!isJoinButtonEnabled(user.interviewDate, user.interviewTime)}
+              >
                 Join Now
               </button>
             </div>
@@ -69,14 +79,14 @@ export default function InterviewWithAI() {
           <img className={interview.no_interview} src={no_interview} alt="No Interviews" />
         </div>
       )}
-      
+
       {showPopUp && (
         <div className={interview.__popup_instruction}>
           <h4 className={interview.Instruction_Heading}>Instruction</h4>
-         <ul>
-          <li>Locate your camera App;</li>
-          <li>Depending on your device computer,smartphone,tablet ,find the camera application.It might be labeled as "Camera" or above </li>
-         </ul>
+          <ul>
+            <li>Locate your camera App;</li>
+            <li>Depending on your device computer, smartphone, tablet, find the camera application. It might be labeled as "Camera" or above </li>
+          </ul>
           <div className={interview.__buttons}>
             <button
               className={interview.__btn_Cancel}

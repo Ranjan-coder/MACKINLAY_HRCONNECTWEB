@@ -8,7 +8,7 @@ const HrUser = require("../model/users/HrUserModel");
 const createShortlist = async (req, res) => {
     const { HrEmail } = req.params;
     const {
-        _id, // User _id
+        _id, 
         email,
         profileImage,
         name,
@@ -25,7 +25,7 @@ const createShortlist = async (req, res) => {
     } = req.body;
 
     try {
-        // Check if the candidate already exists in shortlistedCollection
+        
         const existCandidate = await shortlistedCollection.findOne({
             email: email,
             Job_title: jobTitle

@@ -115,12 +115,14 @@ p {
 }
 
 .__popup_instruction {
-    width: 100%;
+    width: 90%;
     background: white;
     border: 1px solid rgb(180, 139, 139);
     border-radius: 10px;
     padding: 1em 2em;
     z-index: 3;
+    position: absolute;
+    top: 13%;
     
 }
 

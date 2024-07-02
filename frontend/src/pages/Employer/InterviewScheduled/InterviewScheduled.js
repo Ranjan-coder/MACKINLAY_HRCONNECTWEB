@@ -19,7 +19,7 @@ const InterviewScheduled = () => {
   const nav=useNavigate()
   useEffect(() => {
     fetchInterviewedUsers();
-  }, []);
+  }, [HrEmail]);
  const UserProfile=location.state
   const fetchInterviewedUsers = async () => {
     try {
