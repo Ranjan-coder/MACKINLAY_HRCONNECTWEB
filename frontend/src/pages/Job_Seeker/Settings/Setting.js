@@ -152,6 +152,14 @@ function Setting() {
                 </label>
                 <label>
                   <input type="checkbox" />
+                  <span>Available,To join in 15 days</span>
+                </label>
+                <label>
+                  <input type="checkbox" />
+                  <span>Available,To join in 30 days</span>
+                </label>
+                <label>
+                  <input type="checkbox" />
                   <span>Flexible, I am casually looking</span>
                 </label>
               </div>
