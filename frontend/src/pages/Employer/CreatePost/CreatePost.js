@@ -151,7 +151,10 @@ export default function CreatePost() {
         <div className={createPost.__postDetails}>
 
           <div className={createPost.__imgContainer}>
-            <img className={createPost.__previewImg} src={post.jobPoster} alt="preview img" onError={(e) => { e.target.src = `${noImg}`; e.onError = null; }} onClick={(e) => imgRef.current.click()} />
+            <img className={createPost.__previewImg} 
+            src={post.jobPoster} alt="preview img" 
+            onError={(e) => { e.target.src = `${noImg}`; e.onError = null; }} 
+            onClick={(e) => imgRef.current.click()} />
             {
               !post.jobPoster && <p className={createPost.__previewImgText}>
                 drop your image here or <span

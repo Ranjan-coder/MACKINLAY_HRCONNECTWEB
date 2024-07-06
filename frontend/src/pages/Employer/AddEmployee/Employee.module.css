@@ -1,61 +1,48 @@
-.Employee_main {
-    width: 80vw;
-
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
+/* .Employee_main {
+    border: 1px solid rgb(173, 173, 173);
+} */
+
 .upper_text {
-    margin-left: 2vw;
-    width: 10vw;
     font-size: 24px;
     font-weight: bold;
 }
 
-.empMain {
+.__main_Container {
+    border: 1px solid red;
     display: flex;
     justify-content: space-evenly;
-    margin-top: 10vh;
+    flex-wrap: wrap;
+    margin-top: 5vh;
+    padding: 1em 0;
 }
 
-.sub_conatiner {
+.container1, .container2, .container3 {
+    /* border: 1px solid; */
     height: 72vh;
-    width: 24vw;
+    min-width: 20em;
+    flex-grow: 1;
 }
 
 .container1 {
     border: 1px solid rgb(194, 192, 192);
     border-radius: 8px;
-}
-
-
-.circle {
-    margin-top: 8vh;
-    margin-left: 5vw;
-    height: 26vh;
-    width: 13vw;
-    border: 2px dashed rgb(182, 180, 180);
-    border-radius: 50%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
-
-.cir {
-    width: 80%;
-    height: 80%;
-    background-color: rgb(224, 224, 224);
+.__uploadPhoto{
+    width: 12em;
+    height: 12em;
+    /* border: 1px solid; */
     border-radius: 50%;
-    align-items: center;
-    text-align: center;
-}
-
-.circle_img {
-    font-size: 32px;
-    color: gray;
-    margin-top: 6vh;
-}
-
-.cir p {
-    color: gray;
+    cursor: pointer;
 }
 
 .detail {
@@ -67,7 +54,9 @@
 }
 
 /*----------------------------container2----------------*/
-.container2 {
+.container2,
+.container3 {
+    /* border: 1px solid green; */
     padding-left: 10px;
     display: flex;
     gap: 2vh;
@@ -76,14 +65,19 @@
     font-size: 18px;
 }
 
+label {
+    font-size: 15px;
+    font-weight: 600;
+}
+
 .input {
-    color: rgb(209, 208, 208);
+    outline: none;
     font-size: 16px;
     padding: 8px;
-    width: 21vw;
+    width: 95%;
     line-height: 1.6;
-    border-radius: 10px;
-    border-color: rgb(199, 197, 197);
+    border-radius: 8px;
+    border: 1px solid rgb(180, 180, 180);
     height: 8vh;
 }
 
@@ -93,27 +87,18 @@
     height: 8vh;
     color: gray;
     border-radius: 8px;
-    width: 22vw;
+    width: 95%;
     border-color: rgb(194, 193, 193);
 }
 
-.container3 {
-    padding-left: 10px;
-    display: flex;
-    gap: 2vh;
-    flex-direction: column;
-    justify-content: space-evenly;
-    font-size: 18px;
-}
-
-.button {
-    background-color: rgb(4, 4, 167);
+.__addButton {
+    background: linear-gradient(90deg, #0050D1 0%, #00296B 100%);
     color: white;
     font-size: 18px;
     padding: 13px;
     width: 24vw;
-    margin-top: 9vh;
-    margin-left: 1.5vw;
-    border-color: none;
+    margin: 2em 0;
+    border: none;
+    outline: none;
     border-radius: 8px;
 }

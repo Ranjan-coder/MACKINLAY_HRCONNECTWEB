@@ -120,54 +120,24 @@ export default function TopBar() {
     <>
       <div className={layout.__topbar}>
         <div className={layout.__searchbar}>
-          <FontAwesomeIcon
-            className={layout.__topbar_Icon}
-            icon={faMagnifyingGlass}
-          />
-          <input
-            className={layout.__input}
-            type="text"
-            name="searchText"
-            id="searchText"
-            placeholder="search by keyword......"
-            onChange={handleSearchInputChange}
-            value={searhOption.searchText}
-          />
+          <FontAwesomeIcon className={layout.__topbar_Icon} icon={faMagnifyingGlass} />
+          <input className={layout.__input} type="text" name="searchText" id="searchText" placeholder="search by keyword......" onChange={handleSearchInputChange} value={searhOption.searchText} />
           {isListening ? (
-            <IoMicOutline
-              className={layout.__topbar_Icon}
-              onClick={toggleMicListening}
-            />
+            <IoMicOutline className={layout.__topbar_Icon} onClick={toggleMicListening} />
           ) : (
-            <IoMicOffOutline
-              className={layout.__topbar_Icon}
-              onClick={toggleMicListening}
-            />
+            <IoMicOffOutline className={layout.__topbar_Icon} onClick={toggleMicListening} />
           )}
         </div>
-        <button
-          onClick={() => navigateTo("/addemployee")}
-          className={layout.__btn_Add_Employee}
-        >
+        <button onClick={() => navigateTo("/addemployee")} className={layout.__btn_Add_Employee}>
           <FontAwesomeIcon icon={faUserPlus} /> Add Employee
         </button>
-        <VscSettings
-          className={layout.__btn_filter}
-          style={{ color: "white", fontSize: "25" }}
-        />
+        <VscSettings className={layout.__btn_filter} style={{ color: "white", fontSize: "25" }} />
         <Badge color="primary" badgeContent={notificationCount}>
-          <IoIosNotificationsOutline
-            className={layout.__btn_notfication}
-            style={{ color: "white", fontSize: "25" }}
-            onClick={() => SetToggleNotification(!ToggleNotification)}
-          />
+          <IoIosNotificationsOutline className={layout.__btn_notfication} style={{ color: "white", fontSize: "25" }} onClick={() => SetToggleNotification(!ToggleNotification)} />
         </Badge>
       </div>
       {ToggleNotification && (
-        <NotificationBox
-          notificationCounter={setNotificationCount}
-          CbCloseNotification={SetToggleNotification}
-        />
+        <NotificationBox notificationCounter={setNotificationCount} CbCloseNotification={SetToggleNotification} />
       )}
     </>
   );
