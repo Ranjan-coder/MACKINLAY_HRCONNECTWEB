@@ -3,8 +3,8 @@ const {
   savedJobCollection,
   appliedJobCollection,
 } = require("../../model/MyJob.model");
-const Otp = require("../../model/UserOtp")
-const sendUserOtpEmail = require("../../services/jobSeekerEmailService")
+const Otp = require("../../model/UserOtp");
+const sendUserOtpEmail = require("../../services/jobSeekerEmailService");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
@@ -13,9 +13,9 @@ const dotenv = require("dotenv");
 dotenv.config();
 const SECRET_KEY = process.env.SECRET_KEY;
 const UserSession = require("../../model/users/UserSession");
-const cloudinary = require('cloudinary').v2;
-const streamifier = require('streamifier');
-const { recommendJobsForUser } = require('../recommendationLogic');
+const cloudinary = require("cloudinary").v2;
+const streamifier = require("streamifier");
+const { recommendJobsForUser } = require("../recommendationLogic");
 
 // Configure Cloudinary
 cloudinary.config({
@@ -24,6 +24,27 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+const getUserThroughId = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (user.stillWorking) {
+      user.experience = user.calculateExperience();
+      await user.save();
+    }
+
+    user.password = undefined;
+
+    res.json({ userDetails: user, success: true });
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
 
 const getUser = async (req, res) => {
   try {
@@ -32,6 +53,12 @@ const getUser = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+
+    if (user.stillWorking) {
+      user.experience = user.calculateExperience();
+      await user.save();
+    }
+
     user.password = undefined;
 
     res.json({ userDetails: user, success: true });
@@ -44,15 +71,17 @@ const checkEmail = async (req, res) => {
   const { email } = req.body;
   const user = await User.findOne({ email });
   if (user) {
-    return res.status(400).json({ message: 'Email already registered' });
+    return res.status(400).json({ message: "Email already registered" });
   }
-  res.status(200).json({ message: 'Email is available' });
-}
+  res.status(200).json({ message: "Email is available" });
+};
 
 const checkPhoneNumberExists = async (req, res) => {
   try {
     const { phoneNumber } = req.body;
-    const existingUserByPhone = await User.findOne({ phone_number: phoneNumber });
+    const existingUserByPhone = await User.findOne({
+      phone_number: phoneNumber,
+    });
     if (existingUserByPhone) {
       return res.json({ available: false });
     }
@@ -79,10 +108,10 @@ const requestOtp = async (req, res) => {
     // console.log('Calling sendUserOtpEmail...');
     await sendUserOtpEmail(email, otp);
     // console.log('OTP email sent successfully.');
-    res.status(200).json({ msg: 'OTP sent' });
+    res.status(200).json({ msg: "OTP sent" });
   } catch (error) {
-    console.error('Failed to send OTP:', error);
-    res.status(500).json({ msg: 'Failed to send OTP', error: error.message });
+    console.error("Failed to send OTP:", error);
+    res.status(500).json({ msg: "Failed to send OTP", error: error.message });
   }
 };
 
@@ -91,12 +120,12 @@ const verifyOtp = async (req, res) => {
   const otpRecord = await Otp.findOne({ email, otp });
 
   if (!otpRecord) {
-    return res.status(400).json({ msg: 'Invalid OTP' });
+    return res.status(400).json({ msg: "Invalid OTP" });
   }
 
   await Otp.findOneAndDelete({ email, otp });
-  res.status(200).json({ msg: 'OTP verified' });
-}
+  res.status(200).json({ msg: "OTP verified" });
+};
 
 const signUp = async (req, res) => {
   try {
@@ -108,6 +137,7 @@ const signUp = async (req, res) => {
       dob,
       country,
       state,
+      city,
       college,
       course,
       course_start_date,
@@ -117,6 +147,8 @@ const signUp = async (req, res) => {
       company,
       company_start_date,
       company_end_date,
+      experience,
+      stillWorking, 
     } = req.body;
 
     const resumeFile = req.file;
@@ -124,25 +156,30 @@ const signUp = async (req, res) => {
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ message: `${email} is already registered` });
+      return res
+        .status(400)
+        .json({ message: `${email} is already registered` });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Adjust company_end_date to null if received as "null" from the frontend
-    const adjustedCompanyEndDate = company_end_date === "null" ? null : company_end_date;
+    const adjustedCompanyEndDate =
+      company_end_date === "null" ? null : company_end_date;
 
     // Upload the resume to Cloudinary
     const uploadStream = cloudinary.uploader.upload_stream(
       {
-        resource_type: 'raw', // Use 'raw' for non-image files like PDFs
-        folder: 'resumes',
+        resource_type: "raw", // Use 'raw' for non-image files like PDFs
+        folder: "resumes",
         public_id: `${resumeFile.originalname}_${Date.now()}`,
       },
       async (error, result) => {
         if (error) {
-          console.error('Error uploading to Cloudinary:', error);
-          return res.status(500).json({ message: 'Cloudinary upload error', error });
+          console.error("Error uploading to Cloudinary:", error);
+          return res
+            .status(500)
+            .json({ message: "Cloudinary upload error", error });
         }
 
         // Create the new user after the resume is uploaded
@@ -152,8 +189,9 @@ const signUp = async (req, res) => {
           name,
           phone_number,
           dob,
-          country,
-          state,
+          country, 
+          state, 
+          city,
           college,
           course,
           course_start_date,
@@ -162,16 +200,22 @@ const signUp = async (req, res) => {
           job_title: job_title || null,
           company: company || null,
           company_start_date: company_start_date || null,
-          company_end_date: adjustedCompanyEndDate,
+          // company_end_date: adjustedCompanyEndDate,
+          company_end_date: stillWorking ? null : company_end_date, 
+          experience: experience || null ,
+          stillWorking,
+          stillWorking: stillWorking || false,
           profileImage: req.body.profileImage || null,
           biography: req.body.biography || null,
           skills: req.body.skills || null,
           note: req.body.note || null,
-          resume: [{
-            filename: resumeFile.originalname,
-            url: result.secure_url,
-            public_id: result.public_id,
-          }],
+          resume: [
+            {
+              filename: resumeFile.originalname,
+              url: result.secure_url,
+              public_id: result.public_id,
+            },
+          ],
           savedJob: [],
           appliedJob: [],
         });
@@ -267,7 +311,7 @@ const login = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Internal Server Error"});
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
@@ -301,6 +345,7 @@ const logout = async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
 const forgotPassword = async (req, res) => {
   const { email } = req.body;
   try {
@@ -368,17 +413,20 @@ const updateUserField = async (req, res) => {
   try {
     const { email } = req.params;
     const updateFields = {};
-       // Check if a file is uploaded
-       if (req.file) {
-        const result = await uploadonCloudinary(req.file.buffer, req.file.originalname);
-        req.body.profileImage = result?.secure_url;
-      }
+    // Check if a file is uploaded
+    if (req.file) {
+      const result = await uploadonCloudinary(
+        req.file.buffer,
+        req.file.originalname
+      );
+      req.body.profileImage = result?.secure_url;
+    }
 
     req.body.skills =
       req.body.skills?.length > 0
         ? req.body.skills
-          ?.split(",")
-          .map((skill, index) => ({ name: skill.trim(), index }))
+            ?.split(",")
+            .map((skill, index) => ({ name: skill.trim(), index }))
         : "";
 
     for (const key in req.body) {
@@ -420,29 +468,35 @@ const deleteUser = async (req, res) => {
   const { email } = req.params;
   let id = req.params.id;
   const deleteUser = await User.deleteOne({ email });
-  const deleteAppliedJobs = await appliedJobCollection.findOneAndDelete({ jobID: id });
-  const deletesavedJobs = await savedJobCollection.findOneAndDelete({ jobID: id });
+  const deleteAppliedJobs = await appliedJobCollection.findOneAndDelete({
+    jobID: id,
+  });
+  const deletesavedJobs = await savedJobCollection.findOneAndDelete({
+    jobID: id,
+  });
   try {
-    if (deleteUser.acknowledged &&
+    if (
+      deleteUser.acknowledged &&
       deletesavedJobs.acknowledged &&
-      deleteAppliedJobs.acknowledged) {
+      deleteAppliedJobs.acknowledged
+    ) {
       res.send({
         success: true,
-        msg: "Account deleted succesfully"
-      })
-    }
-    else {
+        msg: "Account deleted succesfully",
+      });
+    } else {
       res.send({
         success: false,
-        msg: "Account not found !!"
-      })
+        msg: "Account not found !!",
+      });
     }
   } catch (error) {
-    res.status(401).json({ success: false, error })
+    res.status(401).json({ success: false, error });
   }
-}
+};
 
 module.exports = {
+  getUserThroughId,
   getUser,
   deleteUser,
   checkEmail,
@@ -454,5 +508,5 @@ module.exports = {
   forgotPassword,
   resetPassword,
   updateUserField,
-  logout
+  logout,
 };

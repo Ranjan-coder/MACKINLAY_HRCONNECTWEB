@@ -1,6 +1,7 @@
 const HrRoutes = require("express").Router();
 
 const {
+    searchCandidates,
     getHR,
     checkEmail,
     requestOtp,
@@ -20,6 +21,7 @@ HrRoutes.post("/request-otp", requestOtp);
 HrRoutes.post("/verify-otp", verifyOtp);
 HrRoutes.post("/signup", upload, signUp);
 HrRoutes.post("/login", login);
+HrRoutes.get("/search-candidates", searchCandidates);
 HrRoutes.post("/forgot-password", forgotPassword);
 HrRoutes.post("/reset-password/:token", resetPassword);
 HrRoutes.patch("/update-hr/:email", uploadProfile, HRupdateUserField);

@@ -552,3 +552,9 @@ iframe:focus {
 iframe[seamless] {
     display: block;
 }
+
+.__latest_Post_Header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

@@ -1,5 +1,6 @@
 const userRoutes = require("express").Router();
 const {
+  getUserThroughId,
   signUp,
   login,
   forgotPassword,
@@ -32,6 +33,7 @@ const {
 const {recommendJobsForUser} = require("../controller/recommendationLogic")
 
 userRoutes.get("/user", getUser);
+userRoutes.get("/user/:id", getUserThroughId);
 userRoutes.post("/check-email", checkEmail);
 userRoutes.post("/checkPhoneNumber", checkPhoneNumberExists);
 userRoutes.post("/request-otp", requestOtp);
