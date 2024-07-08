@@ -107,9 +107,9 @@ const searchCandidates = async (req, res) => {
       }
     });
 
-    console.log('Constructed Query:', JSON.stringify(query, null, 2));
+    // console.log('Constructed Query:', JSON.stringify(query, null, 2));
     const profiles = await User.find(query);
-    console.log('Profiles Found:', profiles);
+    // console.log('Profiles Found:', profiles);
 
     if (!profiles || profiles.length === 0) {
       return res.status(404).json({ error: "No profiles found matching query" });
