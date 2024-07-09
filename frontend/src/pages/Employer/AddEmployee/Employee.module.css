@@ -22,11 +22,13 @@
     padding: 1em 0;
 }
 
-.container1, .container2, .container3 {
+.container1,
+.container2,
+.container3 {
     /* border: 1px solid; */
     height: 72vh;
-    min-width: 20em;
-    flex-grow: 1;
+    width: 20em;
+    /* flex-grow: 1; */
 }
 
 .container1 {
@@ -37,7 +39,8 @@
     justify-content: center;
     align-items: center;
 }
-.__uploadPhoto{
+
+.__uploadPhoto {
     width: 12em;
     height: 12em;
     /* border: 1px solid; */
@@ -66,7 +69,7 @@
 }
 
 label {
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 600;
 }
 
