@@ -290,17 +290,19 @@
 }
 
 .__PostPreviewPage_Skils {
+    /* border: 1px solid red; */
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
+    flex-wrap: wrap;
     gap: 15px;
-    font-weight: 700;
+    font-weight: 500;
     font-size: 20px;
 }
 
 .__PostPreviewPage_Skils strong {
     font-size: 19px;
-    font-weight: 500;
+    /* font-weight: 500; */
     width: 120px;
 }
 

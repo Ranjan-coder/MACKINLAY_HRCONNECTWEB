@@ -45,7 +45,7 @@ function HrLogin({ toggleLoginType, isHRLogin }) {
         const response = await axios.get(
           `${baseUrl}/hr/get-hr?email=${formData.email}`
         );
-        const userData = response.data;
+        const userData = response.data.hrDetails;
         setName(userData.name);
       } catch (error) {
         console.error("Error:", error.response.data);
@@ -204,7 +204,7 @@ function HrLogin({ toggleLoginType, isHRLogin }) {
                     />
                   </div>
                   <div style={{ textAlign: "center", marginTop: "20px" }}>
-                    <span
+                    <span  className="keep-text-black"
                       style={{
                         borderBottom: isHRLogin ? "2px solid #FF0000" : "none",
                         cursor: "pointer",
@@ -213,7 +213,7 @@ function HrLogin({ toggleLoginType, isHRLogin }) {
                     >
                       Job Seeker
                     </span>
-                    <span
+                    <span  className="keep-text-black"
                       style={{
                         borderBottom: isHRLogin ? "none" : "2px solid #FF0000",
                         marginLeft: "20px",
@@ -243,7 +243,7 @@ function HrLogin({ toggleLoginType, isHRLogin }) {
                       />
                     </Form>
                   </div>
-                  <div
+                  <div  className="keep-text-black"
                     style={{
                       paddingTop: "10px",
                       fontSize: "16px",
@@ -253,7 +253,7 @@ function HrLogin({ toggleLoginType, isHRLogin }) {
                     onClick={handleHrSignup}
                   >
                     Don't have an account?
-                    <span style={{ color: "rgba(35, 88, 251, 1)" }}>
+                    <span  className="keep-text-blue" style={{ color: "rgba(35, 88, 251, 1)" }}>
                       {" "}
                       Create Account
                     </span>
@@ -338,7 +338,7 @@ function HrLogin({ toggleLoginType, isHRLogin }) {
                     <div style={{ cursor: "pointer" }}>
                       <span
                         onClick={handlePassword}
-                        className={hrLoginStyle.forgot_pass}
+                        className={`${hrLoginStyle.forgot_pass} keep-text-blue`}
                       >
                         Forgot Password?
                       </span>

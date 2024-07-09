@@ -138,26 +138,6 @@ const getHR = async (req, res) => {
   }
 };
 
-//Delete HR
-const deleteHR = async (req, res) => {
-  const { email } = req.params;
-  const deleteHr = await Hr.deleteOne({ email });
-  try {
-    if (deleteHr.deletedCount) {
-      res.send({
-        success: true,
-        msg: "Account deleted successfully",
-      });
-    } else {
-      res.send({
-        success: false,
-        msg: "Account not found !!",
-      });
-    }
-  } catch (err) {
-    res.status(401).json({ success: false }, err);
-  }
-};
 
 const checkEmail = async (req, res) => {
   const { email } = req.body;
@@ -429,6 +409,28 @@ const HRupdateUserField = async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+//Delete HR
+const deleteHR = async (req, res) => {
+  try {
+    const { email } = req.params;
+    const deleteHr = await Hr.deleteOne({ email });
+    if (deleteHr.deletedCount) {
+      res.send({
+        success: true,
+        msg: "Account deleted successfully"
+      })
+    }
+    else {
+      res.send({
+        success: false,
+        msg: "Account not found !!"
+      })
+    }
+  } catch (err) {
+    res.status(401).json({ success: false }, err);
+  }
+}
 
 module.exports = {
   searchCandidates,

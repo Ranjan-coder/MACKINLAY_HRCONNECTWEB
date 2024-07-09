@@ -530,14 +530,14 @@ const Signup = () => {
             <div className={signupStyle.step_flex_container}>
               <div className={signupStyle.step_1_part_1}>
                 <h1
-                  className={` ${signupStyle.kumar_one_regular} ${signupStyle.step_1_banner_heading_signup}`}
+                  className={` ${signupStyle.kumar_one_regular} ${signupStyle.step_1_banner_heading_signup} keep-text-linear`}
                 >
                   WELCOME <br />
                   BACK
                 </h1>
                 <div className={signupStyle.create_account_name_container}>
-                  <h3>Create an Account</h3>
-                  <div>
+                  <h3 className="keep-text-black">Create an Account</h3>
+                  <div className="keep-text-black">
                     To keep connected with us please signup <br /> with your
                     personal info
                   </div>
@@ -545,7 +545,7 @@ const Signup = () => {
               </div>
 
               <div className={signupStyle.step_1_part_2}>
-                <h3 className={signupStyle.upload_resume_heading}>
+                <h3 className={`${signupStyle.upload_resume_heading} keep-text-black`}>
                   Upload Resume
                 </h3>
                 <Form onSubmit={nextStep}>
@@ -571,7 +571,7 @@ const Signup = () => {
                   </div>
                 </Form>
                 <div className={signupStyle.forgot_style1}>
-                  <span
+                  <span  className="keep-text-black"
                     onClick={handleLogin}
                     style={{
                       cursor: "pointer",
@@ -580,7 +580,7 @@ const Signup = () => {
                     }}
                   >
                     Already have an account?
-                    <span style={{ color: "rgba(35, 88, 251, 1)" }}>
+                    <span className="keep-text-blue" style={{ color: "rgba(35, 88, 251, 1)" }}>
                       Login here
                     </span>
                   </span>

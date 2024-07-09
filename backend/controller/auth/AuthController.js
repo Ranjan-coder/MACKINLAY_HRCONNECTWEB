@@ -3,8 +3,9 @@ const {
   savedJobCollection,
   appliedJobCollection,
 } = require("../../model/MyJob.model");
-const Otp = require("../../model/UserOtp");
-const sendUserOtpEmail = require("../../services/jobSeekerEmailService");
+const jobCollection = require("../../model/Job.Model");
+const Otp = require("../../model/UserOtp")
+const sendUserOtpEmail = require("../../services/jobSeekerEmailService")
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
@@ -465,21 +466,24 @@ const updateUserField = async (req, res) => {
 
 //Delete User
 const deleteUser = async (req, res) => {
-  const { email } = req.params;
-  let id = req.params.id;
-  const deleteUser = await User.deleteOne({ email });
-  const deleteAppliedJobs = await appliedJobCollection.findOneAndDelete({
-    jobID: id,
-  });
-  const deletesavedJobs = await savedJobCollection.findOneAndDelete({
-    jobID: id,
-  });
   try {
-    if (
-      deleteUser.acknowledged &&
+    const { email } = req.params;
+    const deleteUser = await User.deleteOne({ email });
+    const deleteAppliedJobs = await appliedJobCollection.deleteMany({ userEmail: email });
+    const deletesavedJobs = await savedJobCollection.deleteMany({ userEmail: email });
+    const result = await jobCollection.updateMany(
+      {
+        appliedBy: {
+          $elemMatch: {
+            email: email
+          }
+        }
+      }, { $pull: { appliedBy: { email: email } } }
+    );
+    if (deleteUser.acknowledged &&
       deletesavedJobs.acknowledged &&
-      deleteAppliedJobs.acknowledged
-    ) {
+      deleteAppliedJobs.acknowledged &&
+      result.acknowledged) {
       res.send({
         success: true,
         msg: "Account deleted succesfully",

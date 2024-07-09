@@ -106,7 +106,7 @@ const HrJobDetail = ({ jobId, ShowApplicantDetails, CbToggleDetails }) => {
                     <img className={hrdashboard.__userPF} src={user.profileImage ?? 'https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg'} alt="" onError={(e) => { e.target.src = `https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg`; e.onError = null; }} />
                     <section>
                       <span style={{ fontSize: '20px' }}><strong>{user.name}</strong></span>
-                      <p style={{ fontSize: '15px', overflow: "hidden", display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 2 }}>{user.biography}</p>
+                      <p style={{ fontSize: '15px', }}>{user?.biography?.slice(0,80)}...</p>
                     </section>
                     <FaRegBookmark className={hrdashboard.__bookmark} style={{ fontSize: '20px' }} />
                   </div>

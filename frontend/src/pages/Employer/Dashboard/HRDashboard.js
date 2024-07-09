@@ -3,11 +3,7 @@ import hrdashboard from "./HrDashboard.module.css";
 import layout from "../components/RecruiterLayout.module.css";
 import user from "../../../Assets/user.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faArrowUpRightFromSquare,
-  faTrash,
-  faMagnifyingGlass
-} from "@fortawesome/free-solid-svg-icons";
+import { faArrowUpRightFromSquare, faTrash , faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
 import { IoMicOutline } from "react-icons/io5";
 import { IoMicOffOutline } from "react-icons/io5";
 import Carousel from "react-multi-carousel";
@@ -53,9 +49,7 @@ export default function HRDashboard() {
       .get(`${baseUrl}/jobs/get-job/${localStorage.getItem("email")}`)
       .then((response) => {
         setJobPost(response.data.jobs);
-        setSortedJob(
-          response.data.jobs.toSorted((a, b) => a.createdAt - b.createdAt)
-        );
+        setSortedJob(response.data.jobs.sort((a, b) => a.createdAt - b.createdAt));
         setLoading(false);
       });
   };
@@ -224,21 +218,19 @@ export default function HRDashboard() {
               {jobPost.length > 0 &&
                 jobPost.map((data) => (
                   <div
-                    className={`${hrdashboard.__posts} ${
-                      selectedJobId === data._id ? hrdashboard.activeCard : ""
-                    }`}
+                    className={`${hrdashboard.__posts} ${selectedJobId === data._id ? hrdashboard.activeCard : ""} keep-text-black`}
                     key={data._id}
                     onClick={() => handleJobCardClick(data._id)}
                   >
-                    <div className={hrdashboard.__postTitle}>
+                    <div className={`${hrdashboard.__postTitle} keep-text-black`}>
                       <img
                         className={hrdashboard.__postLogo}
                         src={data.jobPoster}
                         alt=""
                       />
-                      <p>
+                      <p className="keep-text-black">
                         {data.jobTitle.slice(0, 15)}...
-                        <span style={{ fontSize: "13px", display: "block" }}>
+                        <span className="keep-text-black" style={{ fontSize: "13px", display: "block" }}>
                           <CalculateTimeAgo time={data.createdAt} />
                         </span>
                       </p>
@@ -247,16 +239,16 @@ export default function HRDashboard() {
                         icon={faArrowUpRightFromSquare}
                       />
                     </div>
-                    <div className={hrdashboard.__post_body}>
+                    <div className={`${hrdashboard.__post_body} `}>
                       <span>{data.location}</span>
                       <span>{data.jobExperience} years</span>
                     </div>
-                    <div className={hrdashboard.__post_Footer}>
+                    <div className={`${hrdashboard.__post_Footer} keep-text-black`}>
                       {" "}
-                      <span>
+                      <span className="keep-text-black">
                         {data.totalApplication ? data.totalApplication : 0}
                       </span>{" "}
-                      application(s){" "}
+                      application(s)
                     </div>
                   </div>
                 ))}
@@ -342,19 +334,19 @@ export default function HRDashboard() {
                             onClick={() => handleDelete(jobs._id)}
                           />
                         </div>
-                        <div className={hrdashboard.__user_Post_body}>
+                        <div className={`${hrdashboard.__user_Post_body}`}>
                           <img
                             className={hrdashboard.__latestPosts_Img}
                             src={jobs.jobPoster}
                             alt=""
                           />
-                          <p className={hrdashboard.__user_Post_info}>
-                            {jobs.jobDescription}
+                          <p className={`${hrdashboard.__user_Post_info} `}>
+                          {jobs.jobDescription}
                           </p>
                         </div>
-                        <div className={hrdashboard.__user_Post_Footer}>
-                          <h6 className={hrdashboard.__user_Post_Timestamp}>
-                            {formattedDate(jobs.createdAt)}
+                        <div className={`${hrdashboard.__user_Post_Footer} `}>
+                        <h6 className={`${hrdashboard.__user_Post_Timestamp}`}>
+                        {formattedDate(jobs.createdAt)}
                           </h6>
                           <button className={hrdashboard.__btn_Repost}>
                             Repost

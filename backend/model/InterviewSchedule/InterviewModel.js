@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const interviewSchema = new mongoose.Schema({
+  hrEmail: {
+    type: String,
+    required: true,
+  },
   userEmail: {
     type: String,
     required: true,

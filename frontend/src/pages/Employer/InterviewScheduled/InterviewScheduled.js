@@ -6,7 +6,7 @@ import axios from "axios";
 import InterviewStyle from "./InterviewScheduled.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarXmark, faCalendarCheck, faCalendarDays } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 
 const InterviewScheduled = () => {
@@ -14,14 +14,16 @@ const InterviewScheduled = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [feedback, setFeedback] = useState("");
+  const {HrEmail}=useParams()
+  const location =useLocation()
   const nav=useNavigate()
   useEffect(() => {
     fetchInterviewedUsers();
-  }, []);
-
+  }, [HrEmail]);
+ const UserProfile=location.state
   const fetchInterviewedUsers = async () => {
     try {
-      const response = await axios.get('http://localhost:8585/api/interview/getCandidate');
+      const response = await axios.get(`http://localhost:8585/api/interview/getCandidate/${HrEmail}`);
       console.log(response.data); 
       if (response.data.success) {
         setInterviewedUsers(response.data.data);
@@ -73,16 +75,17 @@ const InterviewScheduled = () => {
         <td className={InterviewStyle.name_column}>
           <div className={InterviewStyle.name_content}>
             <Image
-              src={user.UserProfile}
+              src={ UserProfile ??
+                "https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg"}
               roundedCircle
               className={InterviewStyle.avatar}
             />
-            <span className={InterviewStyle.name}>{user.userName}</span>
-          </div>
+            <span className={`${InterviewStyle.name} keep-text-black`}>{user.userName}</span>
+            </div>
         </td>
         <td className={InterviewStyle.data_cell}>
-          <span className={InterviewStyle.gold_star}>&#9733;</span>
-          {user.interviewType}
+        <span className={`${InterviewStyle.gold_star} keep-text-black`} >&#9733;</span>
+        {user.interviewType}
         </td>
         <td className={InterviewStyle.data_cell}>
           {user.interviewDate}

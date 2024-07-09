@@ -37,20 +37,20 @@ export default function JobListDetailedView() {
   const [IsLoading, setLoading] = useState(false);
   const { id } = useParams();
 
-const handleView = async () =>{
-  try {
-    const pathname = window.location.pathname;
-    const segments = pathname.split('/');
-    const jobId = segments[segments.length - 1]; 
+  const handleView = async () => {
+    try {
+      const pathname = window.location.pathname;
+      const segments = pathname.split('/');
+      const jobId = segments[segments.length - 1];
 
-    const email = localStorage.getItem('email');
-    axios.post(`${baseUrl}/jobs/update-job-views/${jobId}?userEmail=${email}`);
+      const email = localStorage.getItem('email');
+      axios.post(`${baseUrl}/jobs/update-job-views/${jobId}?userEmail=${email}`);
 
-  } catch (error) {
-    console.error('Error updating job views:', error);
+    } catch (error) {
+      console.error('Error updating job views:', error);
+    }
+
   }
-
-}
 
 
   const loadJobDetails = (e, jobID) => {
@@ -121,7 +121,7 @@ const handleView = async () =>{
       try {
         // Fetch recommended jobs
         const recommendedJobsResponse = await axios.post(`${baseUrl}/recommendations`, { email });
-  
+
         if (recommendedJobsResponse.data.success && recommendedJobsResponse.data.recommendedJobs.length > 0) {
           setAllJobData(recommendedJobsResponse.data.recommendedJobs);
         } else {
@@ -133,7 +133,7 @@ const handleView = async () =>{
             setAllJobData([]);
           }
         }
-  
+
         // Fetch job details separately if needed
         const jobDetailsResponse = await axios.get(`${baseUrl}/jobs/job/${id}`);
         if (jobDetailsResponse.data.success) {
@@ -147,27 +147,22 @@ const handleView = async () =>{
         setLoading(false);
       }
     };
-  
+
     fetchData();
   }, [email, id]); // Make sure to include all dependencies
-    
 
-  
-    const targetRef = useRef(null);
-  
-    const scrollToTop = () => {
-      if (targetRef.current) {
-        targetRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-      // navigateTO('/dashboard/profile_details')
-    };
+  const targetRef = useRef(null);
 
-     
+  const scrollToTop = () => {
+    if (targetRef.current) {
+      targetRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    // navigateTO('/dashboard/profile_details')
+  };
+
+
   return (
-    <div
-      className={`${UserDashBoardStyle.detailed_view_full_full} mainViewDetailsPage`}
-      ref={targetRef}
-    >
+    <div className={`${UserDashBoardStyle.detailed_view_full_full} mainViewDetailsPage`} ref={targetRef}>
       {IsLoading ? (
         <Loader />
       ) : (
@@ -182,156 +177,104 @@ const handleView = async () =>{
                   onClick={(e) => loadJobDetails(e, item._id)}
                 >
                   <div onClick={handleView}>
-                  <div className={UserDashBoardStyle.detailed_view_full}>
-                    <div
-                      className={`${UserDashBoardStyle.detail_list_view_full}
-                   ${item._id === id && UserDashBoardStyle.selected}`}
-                    >
-                      <div className={UserDashBoardStyle.detail_list_view}>
-                        <div
-                          className={UserDashBoardStyle.detail_company_detail}
-                        >
-                          <div
-                            className={
-                              UserDashBoardStyle.detail_company_logo_Container
-                            }
-                          >
-                            <img
-                              src={item.jobPoster}
-                              alt={item.jobTitle}
-                              className={UserDashBoardStyle.detail_company_logo}
-                            />
+                    <div className={UserDashBoardStyle.detailed_view_full}>
+                      <div
+                        className={`${UserDashBoardStyle.detail_list_view_full}${item._id === id && UserDashBoardStyle.selected}`}>
+                        <div className={UserDashBoardStyle.detail_list_view}>
+                          <div className={UserDashBoardStyle.detail_company_detail}>
+                            <div className={UserDashBoardStyle.detail_company_logo_Container}>
+                              <img
+                                src={item.jobPoster}
+                                alt={item.jobTitle}
+                                className={UserDashBoardStyle.detail_company_logo}
+                              />
+                            </div>
+
+                            <div className={UserDashBoardStyle.detail_company_job_desc}>
+                              <h6 className={UserDashBoardStyle.detail_company_job_title}>
+                                {item.jobTitle.slice(0, 10)}...
+                              </h6>
+                              <h6 className={UserDashBoardStyle.detail_company_job_time}>
+                                <CalculateTimeAgo time={item.createdAt} />
+                              </h6>
+                              <div className={UserDashBoardStyle.detail_company_offer}>
+                                <img
+                                  src={money}
+                                  alt={"money_icon"}
+                                  className={
+                                    UserDashBoardStyle.detail_company_logo_money
+                                  }
+                                />
+                                {item.salaryRange} LPA
+                                <span className={UserDashBoardStyle.detail_company_logo_money_month}></span>
+                              </div>
+                            </div>
                           </div>
 
-                          <div
-                            className={
-                              UserDashBoardStyle.detail_company_job_desc
-                            }
-                          >
-                            <h6
-                              className={
-                                UserDashBoardStyle.detail_company_job_title
-                              }
-                            >
-                              {item.jobTitle.slice(0, 10)}...
-                            </h6>
-                            <h6
-                              className={
-                                UserDashBoardStyle.detail_company_job_time
-                              }
-                            >
-                              <CalculateTimeAgo time={item.createdAt} />
-                            </h6>
-                            <div
-                              className={
-                                UserDashBoardStyle.detail_company_offer
-                              }
-                            >
+                          <div className={UserDashBoardStyle.detail_company_offer_apply}>
+                            <div className={UserDashBoardStyle.detail_company_offer_fav}>
                               <img
-                                src={money}
-                                alt={"money_icon"}
+                                src={fav_icon}
+                                alt="Favorite Icon"
                                 className={
-                                  UserDashBoardStyle.detail_company_logo_money
+                                  UserDashBoardStyle.detail_company_offer_fav_image
                                 }
                               />
-                              {item.salaryRange} LPA
-                              <span
-                                className={
-                                  UserDashBoardStyle.detail_company_logo_money_month
-                                }
-                              ></span>
+                            </div>
+                            <div className={UserDashBoardStyle.detail_company_offer_apply_button}>
+                              {appliedJob?.some(
+                                (data) => data.jobID === item?._id
+                              ) ? (
+                                <button style={{ height: "28px", fontSize: "12px", borderRadius: "5px" }} className={UserDashBoardStyle.alreadyAppliedButton}>
+                                  Applied
+                                </button>
+                              ) : (
+                                <button className={UserDashBoardStyle.detail_company_offer_apply_button_style}>
+                                  Apply
+                                </button>
+                              )}
                             </div>
                           </div>
                         </div>
 
-                        <div
-                          className={
-                            UserDashBoardStyle.detail_company_offer_apply
-                          }
-                        >
-                          <div
-                            className={
-                              UserDashBoardStyle.detail_company_offer_fav
-                            }
-                          >
+                        <div className={UserDashBoardStyle.detail_company_location_details}>
+                          <div className={UserDashBoardStyle.detail_company_location_details_job}>
                             <img
-                              src={fav_icon}
-                              alt="Favorite Icon"
+                              src={location}
+                              alt={"location"}
                               className={
-                                UserDashBoardStyle.detail_company_offer_fav_image
+                                UserDashBoardStyle.detail_company_location_logo
                               }
                             />
+                            <h6 className={UserDashBoardStyle.detail_company_location_name}>
+                              {item.location}
+                            </h6>
                           </div>
-                          <div
-                            className={
-                              UserDashBoardStyle.detail_company_offer_apply_button
-                            }
-                          >
-                            <button
-                              className={
-                                UserDashBoardStyle.detail_company_offer_apply_button_style
-                              }
-                            >
-                              Apply
-                            </button>
+
+                          <div className={UserDashBoardStyle.detail_company_exp}>
+                            <img
+                              src={fresherImage}
+                              alt={"fresherImage"}
+                              className={UserDashBoardStyle.detail_exp_logo}
+                            />
+                            <h6 className={UserDashBoardStyle.detail_exp_name}>
+                              {item.jobExperience}
+                            </h6>
                           </div>
-                        </div>
-                      </div>
 
-                      <div
-                        className={
-                          UserDashBoardStyle.detail_company_location_details
-                        }
-                      >
-                        <div
-                          className={
-                            UserDashBoardStyle.detail_company_location_details_job
-                          }
-                        >
-                          <img
-                            src={location}
-                            alt={"location"}
-                            className={
-                              UserDashBoardStyle.detail_company_location_logo
-                            }
-                          />
-                          <h6
-                            className={
-                              UserDashBoardStyle.detail_company_location_name
-                            }
-                          >
-                            {item.location}
-                          </h6>
-                        </div>
-
-                        <div className={UserDashBoardStyle.detail_company_exp}>
-                          <img
-                            src={fresherImage}
-                            alt={"fresherImage"}
-                            className={UserDashBoardStyle.detail_exp_logo}
-                          />
-                          <h6 className={UserDashBoardStyle.detail_exp_name}>
-                            {item.jobExperience}
-                          </h6>
-                        </div>
-
-                        <div
-                          className={UserDashBoardStyle.detail_company_exp_time}
-                        >
-                          <img
-                            src={drop}
-                            alt={"drop"}
-                            className={UserDashBoardStyle.detail_exp_logo_time}
-                          />
-                          <h6
-                            className={UserDashBoardStyle.detail_exp_name_time}
-                          >
-                            {item.employmentType}
-                          </h6>
+                          <div className={UserDashBoardStyle.detail_company_exp_time}>
+                            <img
+                              src={drop}
+                              alt={"drop"}
+                              className={UserDashBoardStyle.detail_exp_logo_time}
+                            />
+                            <h6 className={UserDashBoardStyle.detail_exp_name_time}>
+                              {item.employmentType}
+                            </h6>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
                   </div>
                 </NavLink>
               ))}
@@ -344,15 +287,11 @@ const handleView = async () =>{
                 ) : (
                   <>
                     <div className={UserDashBoardStyle.detail_job_link_part}>
-                      <Link
-                        to="/dashboard"
-                        className={UserDashBoardStyle.close_button}
-                      >
+                      <Link to="/dashboard" className={UserDashBoardStyle.close_button}>
                         <IoCloseOutline />
                       </Link>
                     </div>
-                    <div
-                      className={UserDashBoardStyle.company_background_image}
+                    <div className={UserDashBoardStyle.company_background_image}
                       style={{
                         backgroundImage: `url(${jobDetails?.jobPoster})`,
                       }}
@@ -383,16 +322,10 @@ const handleView = async () =>{
                     <div className={UserDashBoardStyle.border_style}></div>
 
                     <div className={UserDashBoardStyle.company_description}>
-                      <div
-                        className={UserDashBoardStyle.company_description_title}
-                      >
+                      <div className={UserDashBoardStyle.company_description_title}>
                         Description
                       </div>
-                      <div
-                        className={
-                          UserDashBoardStyle.company_description_requirement
-                        }
-                      >
+                      <div className={UserDashBoardStyle.company_description_requirement}>
                         {jobDetails?.jobDescription}
                       </div>
                     </div>
@@ -401,19 +334,10 @@ const handleView = async () =>{
                         Skills Required
                       </div>
                       <div className={UserDashBoardStyle.company_skill_list}>
-                        <ul
-                          className={
-                            UserDashBoardStyle.company_skill_list_display
-                          }
-                        >
+                        <ul className={UserDashBoardStyle.company_skill_list_display}>
                           {jobDetails?.skilRequired?.map((skill, index) => {
                             return (
-                              <li
-                                key={index}
-                                className={
-                                  UserDashBoardStyle.company_skill_list_display_Item
-                                }
-                              >
+                              <li key={index} className={UserDashBoardStyle.company_skill_list_display_Item}>
                                 {skill.name}
                               </li>
                             );
@@ -484,23 +408,16 @@ const handleView = async () =>{
                       </div>
                     </div>
                     <div className={UserDashBoardStyle.company_apply_button}>
-                      {appliedJob?.some(
-                        (data) => data.jobID === jobDetails?._id
-                      ) ? (
-                        <button
-                          className={UserDashBoardStyle.alreadyAppliedButton}
-                        >
+                      {appliedJob?.some((data) => data.jobID === jobDetails?._id) ? (
+                        <button className={UserDashBoardStyle.alreadyAppliedButton}>
                           Already Applied
                         </button>
                       ) : (
-                        <Link
-                          className={
-                            UserDashBoardStyle.company_apply_button_one
-                          }
+                        <Link className={UserDashBoardStyle.company_apply_button_one}
                           to={'/dashboard/profile_details'}
                           state={jobDetails}
                           // onClick={(e) => handleApplyButtonClick(e, jobDetails)}
-                          onClick={()=>scrollToTop()}
+                          onClick={() => scrollToTop()}
                         >
                           APPLY
                         </Link>

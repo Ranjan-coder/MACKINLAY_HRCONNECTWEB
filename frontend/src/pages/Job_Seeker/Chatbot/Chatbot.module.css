@@ -5,7 +5,7 @@
 }
 
 .__chatbotPage {
-  border: 5px solid red;
+  /* border: 5px solid red; */
   height: calc(100vh - 70px);
 }
 
