@@ -27,7 +27,7 @@ function EmployeeAdd() {
                             onError={(e) => { e.target.src = `${upload}`; e.onError = null }}
                             onClick={(e) => imgRef.current.click()} />
                         {}
-                        <input type="file" accept="image/*" ref={imgRef} hidden name="jobPoster" />
+                        <input type="file" accept="image/*" ref={imgRef} hidden name="photo" />
                     </div>
 
                     <div className={AddEmp.detail}>
