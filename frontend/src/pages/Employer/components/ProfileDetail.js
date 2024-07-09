@@ -99,7 +99,7 @@ const ProfileDetail = () => {
               <span className={styles.profile_details_card_name}>
                 Experience:{" "}
               </span>
-              {profile.experience || "No experience"}
+              {profile.experience || "Fresher"}
             </Card.Text>
             <Card.Text className={styles.profile_details_card_text}>
               <span className={styles.profile_details_card_name}>

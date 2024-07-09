@@ -279,11 +279,10 @@ export default function HRDashboard() {
             <div className={hrdashboard.__latest_Post}>
               <div className={hrdashboard.__latest_Post_Header}>
                 <h3 style={{ margin: ".5em 0" }}>Latest Posts</h3>
-                <div className={layout.__searchbar}>
+                <div className={layout.__searchbar_hr}>
                   <FontAwesomeIcon
                     className={layout.__topbar_Icon}
                     icon={faMagnifyingGlass}
-                    // onClick={handleSearchCandidate}
                   />
                   <input
                     className={layout.__input}
@@ -293,7 +292,6 @@ export default function HRDashboard() {
                     placeholder="search post......"
                     onChange={handleSearchInputChange}
                     value={searhOption.searchText}
-                    // onClick={handleSearchCandidate}
                   />
                   {isListening ? (
                     <IoMicOutline

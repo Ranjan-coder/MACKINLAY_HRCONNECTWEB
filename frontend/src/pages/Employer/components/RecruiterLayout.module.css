@@ -159,6 +159,18 @@
   border: 1px solid black;
 }
 
+.__searchbar_hr{
+  background: white;
+  border-radius: 5px;
+  width: 30vw;
+  height: 2.5em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1em;
+  border: 1px solid black;
+}
+
 .__input {
   width: 80%;
   border: none;
