@@ -15,7 +15,9 @@ import { useDispatch } from "react-redux";
 import { handleUserLogin } from "../../../../Redux/ReduxSlice";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-import 'animate.css';
+import Select from "react-select";
+import { Country, State, City } from "country-state-city";
+import "animate.css";
 
 const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
 const newUrl = process.env.REACT_APP_BACKEND_BASE_URL_WITHOUT_API;
@@ -43,6 +45,7 @@ const Signup = () => {
     dob: "",
     country: "",
     state: "",
+    city:"",
     showPassword1: false,
     showPassword2: false,
     college: "",
@@ -54,10 +57,12 @@ const Signup = () => {
     company: "",
     company_start_date: "",
     company_end_date: "",
+    experience: "",
     userType: "user",
-    step: 1, // Initial step
+    stillWorking: "false",
+    step: 1,
   });
-console.log(formData);
+
   const nav = useNavigate();
 
   const currentYear = new Date().getFullYear();
@@ -91,6 +96,29 @@ console.log(formData);
     }
     console.log("Form details", formData);
   };
+
+  const handleSelectChange = (selectedOption, { name }) => {
+    setFormData({ ...formData, [name]: selectedOption.value });
+  };
+
+  const countryOptions = Country.getAllCountries().map((country) => ({
+    value: country.isoCode,
+    label: country.name,
+  }));
+
+  const stateOptions = formData.country
+    ? State.getStatesOfCountry(formData.country).map((state) => ({
+        value: state.isoCode,
+        label: state.name,
+      }))
+    : [];
+
+  const cityOptions = formData.state
+    ? City.getCitiesOfState(formData.country, formData.state).map((city) => ({
+        value: city.name,
+        label: city.name,
+      }))
+    : [];
 
   const handleOtpInputChange = (index, value) => {
     if (/^\d$/.test(value) || value === "") {
@@ -249,7 +277,6 @@ console.log(formData);
     setIsSaving(true);
 
     try {
-      // Check if the current step requires the resume
       if (formData.step === 1) {
         if (!formData.resume) {
           toast.error("Please upload your resume");
@@ -271,6 +298,12 @@ console.log(formData);
           toast.error("Please fill in all required fields");
           return;
         }
+
+        if(!isOtpValid){
+          toast.error("Please verify your email");
+          return;
+        }
+
         // Check if passwords match
         if (formData.password !== formData.conf_password) {
           toast.error("Passwords do not match");
@@ -371,58 +404,44 @@ console.log(formData);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const experience = formatDurationMonths(calculateDuration());
+    const updatedFormData = { ...formData, experience };
+
     setIsSubmitting(true);
-    if (formData.password !== formData.conf_password) {
-      toast.error("Passwords do not match");
-      setIsSubmitting(false);
-      return;
-    }
-    if (!formData.email || !isOtpValid) {
-      toast.error("Please enter a valid email and verify OTP");
-      setIsSubmitting(false);
-      return;
-    }
     try {
-      const {
-        resume,
-        name,
-        email,
-        password,
-        phone_number,
-        dob,
-        country,
-        state,
-        college,
-        course,
-        course_start_date,
-        course_end_date,
-        percentage,
-        job_title,
-        company,
-        company_start_date,
-        company_end_date,
-        userType,
-      } = formData;
+      const { name, email, userType } = formData;
 
       const formDataToSend = new FormData();
-      formDataToSend.append("name", name);
-      formDataToSend.append("email", email);
-      formDataToSend.append("password", password);
-      formDataToSend.append("phone_number", phone_number);
-      formDataToSend.append("dob", dob);
-      formDataToSend.append("country", country);
-      formDataToSend.append("state", state);
-      formDataToSend.append("college", college);
-      formDataToSend.append("course", course);
-      formDataToSend.append("course_start_date", course_start_date);
-      formDataToSend.append("course_end_date", course_end_date);
-      formDataToSend.append("percentage", percentage);
-      formDataToSend.append("job_title", job_title);
-      formDataToSend.append("company", company);
-      formDataToSend.append("company_start_date", company_start_date);
-      formDataToSend.append("company_end_date", company_end_date);
-      formDataToSend.append("resume", resume);
-      formDataToSend.append("userType", userType);
+      formDataToSend.append("name", updatedFormData.name);
+      formDataToSend.append("email", updatedFormData.email);
+      formDataToSend.append("password", updatedFormData.password);
+      formDataToSend.append("phone_number", updatedFormData.phone_number);
+      formDataToSend.append("dob", updatedFormData.dob);
+      formDataToSend.append("country", updatedFormData.country);
+      formDataToSend.append("state", updatedFormData.state);
+      formDataToSend.append("city", updatedFormData.city);
+      formDataToSend.append("college", updatedFormData.college);
+      formDataToSend.append("course", updatedFormData.course);
+      formDataToSend.append(
+        "course_start_date",
+        updatedFormData.course_start_date
+      );
+      formDataToSend.append("course_end_date", updatedFormData.course_end_date);
+      formDataToSend.append("percentage", updatedFormData.percentage);
+      formDataToSend.append("job_title", updatedFormData.job_title);
+      formDataToSend.append("company", updatedFormData.company);
+      formDataToSend.append(
+        "company_start_date",
+        updatedFormData.company_start_date
+      );
+      formDataToSend.append(
+        "company_end_date",
+        updatedFormData.company_end_date
+      );
+      formDataToSend.append("experience", updatedFormData.experience);
+      formDataToSend.append("stillWorking", stillWorking);
+      formDataToSend.append("resume", updatedFormData.resume);
+      formDataToSend.append("userType", updatedFormData.userType);
 
       const response = await axios.post(`${baseUrl}/signup`, formDataToSend, {
         headers: {
@@ -436,7 +455,7 @@ console.log(formData);
       dispatchTO(
         handleUserLogin({ token, email, name, userType, savedJob, appliedJob })
       );
-      toast.success(`Welcome ${name}`);
+      toast.success(`Welcome ${updatedFormData.name}`);
       setTimeout(() => {
         nav("/");
       }, 1500);
@@ -598,6 +617,7 @@ console.log(formData);
             </div>
           </div>
         )}
+
         {formData.step === 2 && (
           <div className={signupStyle.step_container}>
             <div className={signupStyle.step_flex_container}>
@@ -796,6 +816,35 @@ console.log(formData);
                 </h4>
                 <div>
                   <Form className="m-lg-3">
+                    <Select
+                      name="country"
+                      options={countryOptions}
+                      onChange={handleSelectChange}
+                      placeholder="Select Country"
+                      className={signupStyle.personal_input_field}
+                      value={countryOptions.find(option => option.value === formData.country)}
+                    />
+
+                    <Select
+                      name="state"
+                      options={stateOptions}
+                      onChange={handleSelectChange}
+                      placeholder="Select State"
+                      className={signupStyle.personal_input_field}
+                      value={stateOptions.find(option => option.value === formData.state)}
+                      isDisabled={!formData.country}
+                    />
+
+                    <Select
+                      name="city"
+                      options={cityOptions}
+                      onChange={handleSelectChange}
+                      placeholder="Select City"
+                      className={signupStyle.personal_input_field}
+                      value={cityOptions.find(option => option.value === formData.city)}
+                      isDisabled={!formData.state}
+                    />
+
                     <PhoneInput
                       country={"in"}
                       value={formData.phone_number}
@@ -803,7 +852,6 @@ console.log(formData);
                       inputProps={{
                         name: "phone_number",
                         required: true,
-                        autoFocus: true,
                         placeholder: "Enter Mobile Number",
                       }}
                       containerClass={signupStyle.customPhoneInput}
@@ -824,24 +872,6 @@ console.log(formData);
                       yearDropdownItemNumber={44}
                       className={signupStyle.react_date_form_control}
                       placeholderText="DD/MM/YYYY"
-                      required
-                    />
-
-                    <Form.Control
-                      type="text"
-                      name="country"
-                      placeholder="Select Country"
-                      onChange={handleChange}
-                      className={signupStyle.personal_input_field}
-                      required
-                    />
-
-                    <Form.Control
-                      type="text"
-                      name="state"
-                      placeholder="Select State"
-                      onChange={handleChange}
-                      className={signupStyle.personal_input_field}
                       required
                     />
                   </Form>
@@ -1096,6 +1126,7 @@ console.log(formData);
 
                   <div>
                     <input
+                      name="experience"
                       type="text"
                       value={formatDurationMonths(calculateDuration())}
                       readOnly

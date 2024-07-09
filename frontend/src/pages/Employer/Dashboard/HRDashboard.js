@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import hrdashboard from "./HrDashboard.module.css";
+import layout from "../components/RecruiterLayout.module.css";
 import user from "../../../Assets/user.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowUpRightFromSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faArrowUpRightFromSquare, faTrash , faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
+import { IoMicOutline } from "react-icons/io5";
+import { IoMicOffOutline } from "react-icons/io5";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import axios from "axios";
@@ -10,8 +13,9 @@ import { format } from "date-fns";
 import Loader from "../../Common-Components/Loaders/Loader";
 import { CalculateTimeAgo } from "../../Common-Components/TimeAgo";
 import HrJobDetail from "./HrJobDetail";
+import { handleSearchData } from "../../../Redux/ReduxFilterSlice";
 import toast from "react-hot-toast";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
 const responsive = {
   superLargeDesktop: { breakpoint: { max: 4000, min: 3000 }, items: 4 },
@@ -22,12 +26,15 @@ const responsive = {
 
 export default function HRDashboard() {
   const { SearchOptions } = useSelector((state) => state.Filter);
+  const [searhOption, setSearchOption] = useState({ searchText: "" });
+  const [isListening, setIsListening] = useState(false);
   const [jobPost, setJobPost] = useState([]);
   const [sortedJob, setSortedJob] = useState([]);
   const [selectedSort, setSelectedSort] = useState("Sort By");
   const [loading, setLoading] = useState(false);
   const [selectedJobId, setSelectedJobId] = useState(null);
   const [ShowApplicantDetails, setShowApplicantDetails] = useState(false);
+  const dispatch = useDispatch();
 
   const formattedDate = (timestamp) => {
     if (!timestamp) {
@@ -118,6 +125,50 @@ export default function HRDashboard() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [SearchOptions.searchText]);
+
+
+  const recognition = new window.webkitSpeechRecognition(); // Initialize speech recognition
+
+  recognition.continuous = false; // Enable continuous listening
+  recognition.lang = "en-US"; // Set the language for speech recognition
+
+  recognition.onresult = (event) => {
+    const transcript = event.results[event.results.length - 1][0].transcript;
+    setSearchOption({ ...searhOption, "searchText": transcript });
+    setIsListening(false);
+  };
+
+  recognition.onerror = (event) => {
+    console.error("Speech recognition error:", event.error);
+  };
+
+  const toggleMicListening = (e) => {
+    e.preventDefault();
+    if (isListening) {
+      recognition.stop(); // Stop speech recognition if it's currently listening
+      setIsListening(false);
+    } else {
+      recognition.start(); // Start speech recognition
+      setIsListening(true);
+    }
+  };
+
+  const handleSearchInputChange = (e) => {
+    setSearchOption({ ...searhOption, [e.target.name]: e.target.value });
+    console.log(searhOption);
+  };
+
+  useEffect(() => {
+    const setTextTimeOut = setTimeout(() => {
+      if (searhOption.searchText || searhOption.Location) {
+        dispatch(handleSearchData(searhOption));
+      } else {
+        dispatch(handleSearchData(searhOption));
+      }
+    }, 1000);
+    return () => clearTimeout(setTextTimeOut);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searhOption]);
 
   return (
     <div className={hrdashboard.__dashboard_Page}>
@@ -220,15 +271,45 @@ export default function HRDashboard() {
             <div className={hrdashboard.__latest_Post}>
               <div className={hrdashboard.__latest_Post_Header}>
                 <h3 style={{ margin: ".5em 0" }}>Latest Posts</h3>
+                <div className={layout.__searchbar_hr}>
+                  <FontAwesomeIcon
+                    className={layout.__topbar_Icon}
+                    icon={faMagnifyingGlass}
+                  />
+                  <input
+                    className={layout.__input}
+                    type="text"
+                    name="searchText"
+                    id="searchText"
+                    placeholder="search post......"
+                    onChange={handleSearchInputChange}
+                    value={searhOption.searchText}
+                  />
+                  {isListening ? (
+                    <IoMicOutline
+                      className={layout.__topbar_Icon}
+                      onClick={toggleMicListening}
+                    />
+                  ) : (
+                    <IoMicOffOutline
+                      className={layout.__topbar_Icon}
+                      onClick={toggleMicListening}
+                    />
+                  )}
+                </div>
               </div>
               <section className={hrdashboard.__latestPosts}>
-                {
-                  sortedJob.length === 0 ? <h2>No Job Found</h2> : <>
-
+                {sortedJob.length === 0 ? (
+                  <h2>No Job Found</h2>
+                ) : (
+                  <>
                     {sortedJob.map((jobs, index) => (
                       <div
-                        className={`${hrdashboard.__user_Post} ${selectedJobId === jobs._id ? hrdashboard.activeCard : ""
-                          }`}
+                        className={`${hrdashboard.__user_Post} ${
+                          selectedJobId === jobs._id
+                            ? hrdashboard.activeCard
+                            : ""
+                        }`}
                         key={index}
                         onClick={() => handleJobCardClick(jobs._id)}
                       >
@@ -274,7 +355,7 @@ export default function HRDashboard() {
                       </div>
                     ))}
                   </>
-                }
+                )}
               </section>
             </div>
           )}

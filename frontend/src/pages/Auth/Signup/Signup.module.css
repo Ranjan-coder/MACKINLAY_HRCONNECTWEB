@@ -83,7 +83,7 @@
 
 .step_button {
   font-family: roboto;
-  margin-top: 8vh;
+  margin-top: 3vh;
   border: none;
   padding: 8px;
   width: 15vw;
@@ -104,7 +104,7 @@
 }
 
 .personal_input_field {
-  border-radius: 12px !important;
+  border-radius: 6px !important;
   margin-bottom: 15px;
   width: 22vw !important;
   font-family: roboto;
@@ -145,7 +145,7 @@
   width: 22vw !important;
   padding: 10px;
   border: 1px solid #ccc;
-  border-radius: 14px !important;
+  border-radius: 6px !important;
   font-size: 16px;
 }
 
@@ -155,7 +155,7 @@
   border: 1px solid #ccc;
   padding-top: 5px; padding-bottom: 5px;
   padding-left: 10px;
-  border-radius: 14px;
+  border-radius: 6px;
 }
 
 .step_4_part_2 {
