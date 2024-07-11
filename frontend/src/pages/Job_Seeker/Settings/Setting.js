@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import SettingStyle from "../Settings/Setting.module.css";
 import { useNavigate } from "react-router-dom";
 import { GoTrash } from "react-icons/go";
-import { FaArrowRight } from "react-icons/fa";
 import { FaSync } from "react-icons/fa";
 import { RiUserSettingsFill } from "react-icons/ri";
 import { TbUserExclamation } from "react-icons/tb";
@@ -51,14 +50,6 @@ function Setting() {
     applyDarkMode();
   };
 
-  const handleLogOut = () => {
-    dispatch(handleUserLogOut());
-    toast.success(`${name} Logged out!!`);
-    setTimeout(() => {
-      navi("/dashboard");
-    }, 1000);
-  };
-
   const [del, setDel] = useState(false);
 
   const handleDeleteAccount = () => {
@@ -89,8 +80,6 @@ function Setting() {
   };
 
   const handleDoneClick = () => {
-    // Add any necessary logic when "Done" is clicked inside job preference
-    // For now, simply toggle settingtype to an empty string to hide the section
     setsettingtype("");
   };
 
