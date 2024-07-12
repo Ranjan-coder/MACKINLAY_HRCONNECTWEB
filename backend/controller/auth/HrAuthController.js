@@ -1,6 +1,7 @@
 const Hr = require("../../model/users/HrUserModel");
 const User = require("../../model/users/UserModel");
 const Otp = require("../../model/Otp");
+const jobCollection = require("../../model/Job.Model");
 const sendOtpEmail = require("../../services/recruiterEmailService");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -415,7 +416,8 @@ const deleteHR = async (req, res) => {
   try {
     const { email } = req.params;
     const deleteHr = await Hr.deleteOne({ email });
-    if (deleteHr.deletedCount) {
+    const deleteJobs = await jobCollection.deleteMany({employeeEmail: email});
+    if (deleteHr.acknowledged && deleteJobs.acknowledged) {
       res.send({
         success: true,
         msg: "Account deleted successfully"

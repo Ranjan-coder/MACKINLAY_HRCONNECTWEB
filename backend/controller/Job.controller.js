@@ -128,7 +128,7 @@ const update = async (req, res) => {
 };
 
 const remove = async (req, res) => {
-  try {
+  try { 
     let id = req.params.id;
     const data = await jobCollection.findByIdAndDelete(id);
     await User.updateMany({ $pull: { userSavedJob: { jobID: id } } });

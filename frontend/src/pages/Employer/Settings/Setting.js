@@ -56,7 +56,7 @@ function Setting() {
   };
 
   const handleAgree = () => {
-    axios.delete(`http://localhost:8585/api/delete-user/${email}`)
+    axios.delete(`http://localhost:8585/api/hr/delete-hr/${email}`)
       .then((response) => {
         if (response.data.success) {
           toast.success(`${response.data.msg}`);
