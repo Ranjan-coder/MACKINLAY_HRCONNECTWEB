@@ -19,7 +19,7 @@ function Interview() {
   const navigation = useNavigate();
   const { HrEmail } = useParams();
   const location = useLocation();
-  const { userEmail, userName, UserProfile, _id } = location.state;
+  const { userEmail, userName, UserProfile, UserId } = location.state;
   console.log(location.state);
   const [file, setFile] = useState(null);
   const [interviewDetails, setInterviewDetails] = useState({
@@ -117,7 +117,7 @@ function Interview() {
         </div>
         <div className="col-md-6 text-right">
           <p>Candidate ID:</p>
-          <p>{_id}</p>
+          <p>{UserId}</p>
         </div>
       </div>
       <hr />
