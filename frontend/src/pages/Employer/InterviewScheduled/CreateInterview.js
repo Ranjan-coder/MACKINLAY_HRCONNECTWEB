@@ -135,10 +135,9 @@ function Interview() {
               value={interviewDetails.interviewType}
               onChange={handleChange}
             >
-              <option value=""></option>
+              <option value="" disabled>Select</option>
               <option value="walk">Walk-in-drive</option>
               <option value="virtual">Virtual</option>
-              <option value="face">Face to face</option>
               <option value="Ai">Interview With Ai</option>
             </select>
           </div>
