@@ -1,6 +1,7 @@
 const Hr = require("../../model/users/HrUserModel");
 const User = require("../../model/users/UserModel");
 const Otp = require("../../model/Otp");
+const jobCollection = require("../../model/Job.Model");
 const sendOtpEmail = require("../../services/recruiterEmailService");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -58,7 +59,7 @@ const searchCandidates = async (req, res) => {
             while (operatorStack.length && operatorStack[operatorStack.length - 1] !== '(') {
               queryStack.push(applyOperator(operatorStack.pop(), queryStack.pop(), queryStack.pop()));
             }
-            operatorStack.pop(); 
+            operatorStack.pop();
           } else {
             queryStack.push({ job_title: { $regex: new RegExp(token, 'i') } });
           }
@@ -82,7 +83,7 @@ const searchCandidates = async (req, res) => {
 
       if (mandatoryKeywords) {
         const mandatoryKeywordsArray = mandatoryKeywords.split(',').map(word => word.trim());
-        query.$and = mandatoryKeywordsArray.map(word => ({ 
+        query.$and = mandatoryKeywordsArray.map(word => ({
           $or: [
             { job_title: { $regex: new RegExp(word, 'i') } },
             { company: { $regex: new RegExp(word, 'i') } },
@@ -415,7 +416,8 @@ const deleteHR = async (req, res) => {
   try {
     const { email } = req.params;
     const deleteHr = await Hr.deleteOne({ email });
-    if (deleteHr.deletedCount) {
+    const deleteJobs = await jobCollection.deleteMany({ employeeEmail: email });
+    if (deleteHr.acknowledged && deleteJobs.acknowledged) {
       res.send({
         success: true,
         msg: "Account deleted successfully"

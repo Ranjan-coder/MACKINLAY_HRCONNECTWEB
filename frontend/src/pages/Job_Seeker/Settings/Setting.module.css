@@ -172,16 +172,6 @@
   margin: 25vh auto;
 }
 
-/* /------------------------profile design container1----------/ */
-.Profile_cont1 {
-  border-radius: 5px;
-  margin-top: 2em;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 1.5em;
-}
-
 .__pfEditBtn,
 .__pfLogoutBtn,
 .__pfDeleteBtn {
@@ -205,6 +195,7 @@
   align-items: center;
   justify-content: center;
   gap: 1em;
+  margin: auto;
 }
 
 .__pfLogoutBtn {

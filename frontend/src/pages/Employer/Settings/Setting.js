@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import SettingStyle from '../Settings/Setting.module.css';
 import { useNavigate } from 'react-router-dom';
 import { GoTrash } from 'react-icons/go';
-import { FaArrowRight } from 'react-icons/fa';
 import { FaSync } from 'react-icons/fa';
 import { RiUserSettingsFill } from 'react-icons/ri';
 import { TbUserExclamation } from 'react-icons/tb';
@@ -46,15 +45,6 @@ function Setting() {
     applyDarkMode();
   };
 
-  const handleLogOut = () => {
-    dispatch(handleUserLogOut());
-    toast.success(`${name} Logged out!!`);
-    setTimeout(() => {
-      navi('/dashboard');
-    }, 1000);
-  };
-
-
   const [del, setDel] = useState(false);
 
   const handleDeleteAccount = () => {
@@ -66,7 +56,7 @@ function Setting() {
   };
 
   const handleAgree = () => {
-    axios.delete(`http://localhost:8585/api/delete-user/${email}`)
+    axios.delete(`http://localhost:8585/api/hr/delete-hr/${email}`)
       .then((response) => {
         if (response.data.success) {
           toast.success(`${response.data.msg}`);
@@ -86,11 +76,11 @@ function Setting() {
       });
   };
 
-  const handleDoneClick = () => {
-    // Add any necessary logic when "Done" is clicked inside job preference
-    // For now, simply toggle settingtype to an empty string to hide the section
-    setsettingtype('');
-  };
+  // const handleDoneClick = () => {
+  //   // Add any necessary logic when "Done" is clicked inside job preference
+  //   // For now, simply toggle settingtype to an empty string to hide the section
+  //   setsettingtype('');
+  // };
 
   // Function to render content based on setting type
   const renderSettingContent = () => {
@@ -108,31 +98,13 @@ function Setting() {
                 <p><RiUserSettingsFill /></p>
                 <span>Job Preference</span>
               </div>
-              <div className={SettingStyle.Profile_cont2_One} onClick={() => navi("/settings/editprofile")}>
+              <div className={SettingStyle.Profile_cont2_One} onClick={() => navi("/Setting/Editprofile")}>
                 <p><TbUserExclamation /></p>
                 <span>Personal Info</span>
               </div>
             </div>
-
-            <div className={SettingStyle.Profile_cont1}>
-              <button className={SettingStyle.__pfEditBtn} onClick={() => { navi('/settings/editprofile') }}>Edit My Profile</button>
-              <button className={SettingStyle.__pfLogoutBtn} onClick={handleLogOut}> <FaArrowRight />Logout</button>
-              <button className={SettingStyle.__pfDeleteBtn} onClick={handleDeleteAccount}> <GoTrash /> Delete Account</button>
-            </div>
-            {
-              del && <div className={SettingStyle.__popupDelete}>
-                <p>Are you sure you want to delete ??</p>
-                <p>
-                  <button className={SettingStyle.__btnAgree} onClick={handleAgree}>Agree</button>
-                  <button className={SettingStyle.__btnCancel} onClick={handlePopupClose}>Cancel</button>
-                </p>
-              </div>
-            }
-
           </div>
         );
-
-
 
       case 'Setting/privacy':
         return (
@@ -141,20 +113,16 @@ function Setting() {
             <section>
               <h4>Information We Collect</h4>
               <p>We collect information to provide better services to all our users. This may include:</p>
-              <ul>
-                <li>Personal information such as name and email address.</li>
-                <li>Usage data such as browsing history and interactions with our platform.</li>
-                <li>Device information such as IP address and browser type.</li>
-              </ul>
+              <li>Personal information such as name and email address.</li>
+              <li>Usage data such as browsing history and interactions with our platform.</li>
+              <li>Device information such as IP address and browser type.</li>
             </section>
             <section>
               <h4>How We Use Information</h4>
               <p>We use the information we collect from all of our services to provide, maintain, protect, and improve them. This includes:</p>
-              <ul>
-                <li>Customizing user experience and delivering personalized content.</li>
-                <li>Analyzing trends and usage patterns to enhance our services.</li>
-                <li>Preventing fraudulent activities and ensuring security.</li>
-              </ul>
+              <li>Customizing user experience and delivering personalized content.</li>
+              <li>Analyzing trends and usage patterns to enhance our services.</li>
+              <li>Preventing fraudulent activities and ensuring security.</li>
             </section>
             <section>
               <h4>Information You Share</h4>
@@ -167,18 +135,25 @@ function Setting() {
             <section>
               <h4>Information We Share</h4>
               <p>We do not share personal information with companies, organizations, and individuals outside of our company unless one of the following circumstances applies:</p>
-              <ul>
-                <li>With your consent</li>
-                <li>For external processing by trusted service providers</li>
-                <li>For legal reasons such as complying with legal obligations or responding to legal requests</li>
-              </ul>
+              <li>With your consent</li>
+              <li>For external processing by trusted service providers</li>
+              <li>For legal reasons such as complying with legal obligations or responding to legal requests</li>
             </section>
+            <button className={SettingStyle.__pfDeleteBtn} onClick={handleDeleteAccount}> <GoTrash /> Delete Account</button>
+            {
+              del && <div className={SettingStyle.__popupDelete}>
+                <p>Are you sure you want to delete ??</p>
+                <p>
+                  <button className={SettingStyle.__btnAgree} onClick={handleAgree}>Agree</button>
+                  <button className={SettingStyle.__btnCancel} onClick={handlePopupClose}>Cancel</button>
+                </p>
+              </div>
+            }
           </div>
         );
 
       case 'Setting/service':
         return (
-
           <div className={SettingStyle.serviceSettings}>
             <h3>Service Settings</h3>
             <section>
@@ -201,7 +176,7 @@ function Setting() {
 
       case 'Setting/appearance':
         return (
-          <div className={`${SettingStyle.Appearance} ${SettingStyle.Profile_cont2}`}>
+          <div className={`${SettingStyle.Profile_cont2}`}>
             <div className={SettingStyle.Profile_cont2_One} onClick={() => setDarkModePopup(true)}>
               <span>Dark Mode</span>
             </div>
@@ -253,11 +228,9 @@ function Setting() {
             </div>
             <div className={SettingStyle.supportOptions}>
               <h4>Support Options</h4>
-              <ul>
-                <li>Live Chat Support</li>
-                <li>Email Support</li>
-                <li>Phone Support</li>
-              </ul>
+              <li>Live Chat Support</li>
+              <li>Email Support</li>
+              <li>Phone Support</li>
             </div>
             <form className={SettingStyle.feedbackForm}>
               <h4>Submit Feedback</h4>
@@ -292,7 +265,7 @@ function Setting() {
             <i className="fa-solid fa-user" /> Profile
           </div>
           <div className={settingtype === 'Setting/privacy' ? SettingStyle.setting_opt_active : SettingStyle.setting_opt} onClick={() => setsettingtype('Setting/privacy')}>
-            <i className="fa-solid fa-lock" /> Privacy & Service
+            <i className="fa-solid fa-lock" /> Privacy & Security
           </div>
           <div className={settingtype === 'Setting/appearance' ? SettingStyle.setting_opt_active : SettingStyle.setting_opt} onClick={() => setsettingtype('Setting/appearance')}>
             <i className="fa-solid fa-wand-magic-sparkles" /> Appearance
