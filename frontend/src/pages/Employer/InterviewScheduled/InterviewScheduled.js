@@ -9,6 +9,8 @@ import { faCalendarXmark, faCalendarCheck, faCalendarDays } from "@fortawesome/f
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 
+const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL
+
 const InterviewScheduled = () => {
   const [interviewedUsers, setInterviewedUsers] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -17,13 +19,15 @@ const InterviewScheduled = () => {
   const {HrEmail}=useParams()
   const location =useLocation()
   const nav=useNavigate()
+
   useEffect(() => {
     fetchInterviewedUsers();
   }, [HrEmail]);
+  
  const UserProfile=location.state
   const fetchInterviewedUsers = async () => {
     try {
-      const response = await axios.get(`http://localhost:8585/api/interview/getCandidate/${HrEmail}`);
+      const response = await axios.get(`${baseUrl}/interview/getCandidate/${HrEmail}`);
       console.log(response.data); 
       if (response.data.success) {
         setInterviewedUsers(response.data.data);

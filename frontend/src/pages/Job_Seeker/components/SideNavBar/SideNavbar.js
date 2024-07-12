@@ -18,7 +18,7 @@ import { useNavigate } from "react-router-dom";
 import toast from 'react-hot-toast';
 import axios from 'axios'
 
-const newUrl = process.env.REACT_APP_BACKEND_BASE_URL_WITHOUT_API
+const newUrl = process.env.REACT_APP_BACKEND_BASE_URL
 
 const menuItems = [
   {
@@ -75,8 +75,9 @@ function SideNavbar() {
 
   const handleLogoutClick = async () => {
     try {
+      const userEmail = localStorage.getItem("email")
       dispatch(handleUserLogOut());
-      const response = await axios.get(`${newUrl}/logout`);
+      const response = await axios.post(`${newUrl}/logout?email=${userEmail}`);
       if (response.status !== 200) {
         throw new Error('Logout failed');
       }

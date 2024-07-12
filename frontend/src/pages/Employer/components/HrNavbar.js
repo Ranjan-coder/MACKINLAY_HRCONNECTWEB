@@ -10,6 +10,9 @@ import { useMediaQuery } from 'react-responsive'
 import toast from 'react-hot-toast';
 import { useSelector, useDispatch } from 'react-redux'
 import { handleUserLogOut } from '../../../Redux/ReduxSlice';
+import axios from 'axios';
+
+const newUrl = process.env.REACT_APP_BACKEND_BASE_URL
 
 export default function HR_Navbar() {
   const navigateTo = useNavigate()
@@ -18,13 +21,23 @@ export default function HR_Navbar() {
   const dispatch = useDispatch();
   const { name, profileImage } = useSelector((state) => state.Assessment.currentUser);
   // console.log(profileImage);
-  const handleLogoutClick = () => {
-    dispatch(handleUserLogOut());
-    toast.success(`${name} Logged out !!`)
-    setTimeout(() => {
-      navigateTo("/login")
-    }, 1000);
-  }
+  const handleLogoutClick = async () => {
+    try {
+      const userEmail = localStorage.getItem("email")
+      dispatch(handleUserLogOut());
+      const response = await axios.post(`${newUrl}/hr/logout?email=${userEmail}`);
+      if (response.status !== 200) {
+        throw new Error('Logout failed');
+      }
+      toast.success(`${name} Logged out !!`);
+      setTimeout(() => {
+        navigateTo("/login");
+      }, 1000);
+    } catch (error) {
+      console.error('Logout failed:', error);
+      toast.error('Logout failed. Please try again.');
+    }
+  };
 
   useEffect(() => {
     setTabletView(tabScreen)

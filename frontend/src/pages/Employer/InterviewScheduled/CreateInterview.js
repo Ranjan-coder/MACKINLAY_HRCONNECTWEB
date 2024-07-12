@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import toast from "react-hot-toast";
-import Interviewcss from "./Interview.module.css";
+import toast, { Toaster } from "react-hot-toast";
+import styles from "./Interview.module.css";
 import { IoStar } from "react-icons/io5";
 import { BsPersonVideo } from "react-icons/bs";
 import { GrTextAlignFull } from "react-icons/gr";
@@ -13,11 +13,14 @@ import { IoLocationOutline } from "react-icons/io5";
 import { IoMdAttach } from "react-icons/io";
 import { BsFileImage } from "react-icons/bs";
 
+const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
+
 function Interview() {
   const navigation = useNavigate();
-  const {HrEmail}=useParams();
+  const { HrEmail } = useParams();
   const location = useLocation();
-  const { userEmail, userName ,UserProfile} = location.state;
+  const { userEmail, userName, UserProfile, UserId } = location.state;
+  console.log(location.state);
   const [file, setFile] = useState(null);
   const [interviewDetails, setInterviewDetails] = useState({
     interviewType: "",
@@ -51,122 +54,196 @@ function Interview() {
         formData.append("file", file);
       }
 
-      const response = await axios.post(`http://localhost:8585/api/interview/schedule-interview/${HrEmail}`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axios.post(
+        `${baseUrl}/interview/schedule-interview/${HrEmail}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
       if (response.data.success) {
         toast.success(response.data.message);
-        navigation('/interview_scheduled');
+        navigation("/interview_scheduled");
       } else {
         toast.error(response.data.message);
       }
     } catch (error) {
-      console.error("Error scheduling interview:", error.response ? error.response.data : error.message);
+      console.error(
+        "Error scheduling interview:",
+        error.response ? error.response.data : error.message
+      );
       toast.error("Failed to schedule interview.");
     }
   };
 
+  const handleCancel = () => {
+    setInterviewDetails({
+      interviewType: "",
+      interviewDate: "",
+      interviewTime: "",
+      interviewerName: "",
+      location: "",
+      description: "",
+    });
+   setTimeout(() => {
+    navigation("/hr_dashboard")
+   }, 500);
+   toast.error("Interview Schedule Cancelled");
+  };
+
   return (
-    <div className={Interviewcss.main_containers}>
-      <div className={Interviewcss.uppercontainer}>
-        <div className={Interviewcss.uppercontainer_left}>
-          <img className={Interviewcss.upper_cont_img} src= {UserProfile ??
-                      "https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg"} alt="network-error" />
-          <div className={Interviewcss.uppercontainer_left1}>
-            <p>{userName}</p>
+    <>
+    <Toaster/>
+    <div className={`container ${styles.mainContainer}`}>
+      <div className={`row mb-4 ${styles.upperContainer}`}>
+        <div className="col-md-6 d-flex align-items-center">
+          <img
+            className={styles.upperContImg}
+            src={
+              UserProfile ??
+              "https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg"
+            }
+            alt="network-error"
+          />
+          <div className="ml-3">
+            <p style={{marginLeft:"10px"}}>{userName}</p>
             <p>
-              <IoStar className={Interviewcss.star} />
+              <IoStar className={styles.star} />
               4.0
             </p>
           </div>
         </div>
-        <div className={Interviewcss.uppercontainer_right}>
+        <div className="col-md-6 text-right">
           <p>Candidate ID:</p>
-          <p>12345678</p>
+          <p>{UserId}</p>
         </div>
       </div>
-      <hr className={Interviewcss.horizontal_line}></hr>
-      <div className={Interviewcss.formMain_cont}>
-        <div className={Interviewcss.formMain_cont1}>
-          <div className={Interviewcss.formSub_con1}>
-            <label htmlFor="interviewType" className={Interviewcss.box}>
+      <hr />
+      <div className={styles.formMain}>
+        <div className="row">
+          <div className={`col-md-6 ${styles.formSub}`}>
+            <label htmlFor="interviewType" className={styles.label}>
               <BsPersonVideo />
               Interview type
             </label>
-            <br />
-            <select id="interviewType" name="interviewType" className={Interviewcss.boxes} value={interviewDetails.interviewType} onChange={handleChange}>
-              <option value=""></option>
+            <select
+              id="interviewType"
+              name="interviewType"
+              className="form-control"
+              value={interviewDetails.interviewType}
+              onChange={handleChange}
+            >
+              <option value="" disabled>Select</option>
               <option value="walk">Walk-in-drive</option>
               <option value="virtual">Virtual</option>
-              <option value="face">Face to face</option>
               <option value="Ai">Interview With Ai</option>
-
             </select>
           </div>
-          <div className={`${Interviewcss.formSub_con} ${Interviewcss.formSub_contain}`}>
-            <label htmlFor="description" className={Interviewcss.box}>
+          <div className={`col-md-6 ${styles.formSub}`}>
+            <label htmlFor="description" className={styles.label}>
               <GrTextAlignFull />
               Description
             </label>
-            <textarea id="description" name="description" className={`${Interviewcss.description_input} ${Interviewcss.des}`} value={interviewDetails.description} onChange={handleChange} />
+            <textarea
+              id="description"
+              name="description"
+              className="form-control"
+              value={interviewDetails.description}
+              onChange={handleChange}
+            ></textarea>
           </div>
         </div>
-        <div className={Interviewcss.formMain_cont2}>
-          <div className={Interviewcss.formSub_con}>
-            <label htmlFor="interviewDate" className={Interviewcss.box}>
+        <div className="row">
+          <div className={`col-md-6 ${styles.formSub}`}>
+            <label htmlFor="interviewDate" className={styles.label}>
               <FaRegCalendarAlt />
               Interview date
             </label>
-            <input type="date" id="interviewDate" name="interviewDate" className={Interviewcss.description_input} value={interviewDetails.interviewDate} onChange={handleChange} />
+            <input
+              type="date"
+              id="interviewDate"
+              name="interviewDate"
+              className="form-control"
+              value={interviewDetails.interviewDate}
+              onChange={handleChange}
+            />
           </div>
-          <div className={Interviewcss.formSub_con}>
-            <label htmlFor="interviewTime" className={Interviewcss.box}>
+          <div className={`col-md-6 ${styles.formSub}`}>
+            <label htmlFor="interviewTime" className={styles.label}>
               <MdAccessTime />
               Interview time
             </label>
-            <input type="time" id="interviewTime" name="interviewTime" className={Interviewcss.description_input} value={interviewDetails.interviewTime} onChange={handleChange} />
+            <input
+              type="time"
+              id="interviewTime"
+              name="interviewTime"
+              className="form-control"
+              value={interviewDetails.interviewTime}
+              onChange={handleChange}
+            />
           </div>
         </div>
-        <div className={Interviewcss.formMain_cont3}>
-          <div className={Interviewcss.formSub_con}>
-            <label htmlFor="interviewerName" className={Interviewcss.box}>
+        <div className="row">
+          <div className={`col-md-6 ${styles.formSub}`}>
+            <label htmlFor="interviewerName" className={styles.label}>
               <FaUser />
               Interviewer name
             </label>
-            <input type="text" id="interviewerName" name="interviewerName" className={Interviewcss.description_input} value={interviewDetails.interviewerName} onChange={handleChange} />
+            <input
+              type="text"
+              id="interviewerName"
+              name="interviewerName"
+              className="form-control"
+              value={interviewDetails.interviewerName}
+              onChange={handleChange}
+            />
           </div>
-          <div className={Interviewcss.formSub_con}>
-            <label htmlFor="location" className={Interviewcss.box}>
+          <div className={`col-md-6 ${styles.formSub}`}>
+            <label htmlFor="location" className={styles.label}>
               <IoLocationOutline />
               Location
             </label>
-            <input type="text" id="location" name="location" className={Interviewcss.description_input} value={interviewDetails.location} onChange={handleChange} />
+            <input
+              type="text"
+              id="location"
+              name="location"
+              className="form-control"
+              value={interviewDetails.location}
+              onChange={handleChange}
+            />
           </div>
         </div>
       </div>
       <div>
-        <p className={Interviewcss.fileupload}>
+        <p className={styles.fileUpload}>
           <IoMdAttach />
           Attachments
         </p>
-        <div className={Interviewcss.filebox}>
-          <BsFileImage className={Interviewcss.imgs} />
+        <div className={styles.fileBox}>
+          <BsFileImage />
           <span> Drop your image here or</span>
           <label htmlFor="file">
-            <span className={Interviewcss.f}>browse</span>
+            <span>browse</span>
           </label>
           <input type="file" id="file" onChange={handleFileChange}></input>
         </div>
       </div>
-      <div className={Interviewcss.last_container}>
-        <button className={Interviewcss.cancel_btn}>Cancel</button>
-        <button className={Interviewcss.Interview_btn} onClick={handleSchedule}>
+      <div className={`mt-4 ${styles.buttonGroup}`}>
+        <button className="btn btn-secondary" onClick={handleCancel}>
+          Cancel
+        </button>
+        <button
+          className="btn"
+          style={{ backgroundColor: "#0050d1", color: "white" }}
+          onClick={handleSchedule}
+        >
           Schedule Interview
         </button>
       </div>
     </div>
+    </>
   );
 }
 

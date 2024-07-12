@@ -1,4 +1,5 @@
 const Hr = require("../../model/users/HrUserModel");
+const employerSession = require("../../model/users/EmployerSession");
 const User = require("../../model/users/UserModel");
 const Otp = require("../../model/Otp");
 const jobCollection = require("../../model/Job.Model");
@@ -233,6 +234,13 @@ const signUp = async (req, res) => {
     });
     await newHr.save();
 
+    const newUserSession = new employerSession({
+      userId: newHr._id,
+      startTime: new Date(),
+      endTime: null,
+    });
+    await newUserSession.save();
+
     // Generate JWT token
     const token = jwt.sign({ userId: newHr._id }, SECRET_KEY, {
       expiresIn: "2d",
@@ -277,10 +285,26 @@ const login = async (req, res) => {
     }
 
     // Compare passwords
-    const isPasswordValid = await bcrypt.compare(password, hr.password);
+    const isPasswordValid =  bcrypt.compare(password, hr.password);
     if (!isPasswordValid) {
       return res.status(401).json({ message: "Authentication failed" });
     }
+
+    let userSession = await employerSession.findOne({
+      userId: hr._id,
+      endTime: null,
+    });
+    if (!userSession) {
+      userSession = new employerSession({
+        userId: hr._id,
+        startTime: new Date(),
+        endTime: null,
+      });
+    } else {
+      userSession.startTime = new Date();
+    }
+
+    await userSession.save();
 
     // Generate JWT token
     const token = jwt.sign({ userId: hr._id }, SECRET_KEY, { expiresIn: "2d" });
@@ -294,6 +318,37 @@ const login = async (req, res) => {
       userType: "employee",
     });
   } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+const logout = async (req, res) => {
+  try {
+    const { email } = req.query;
+    if (!email) {
+      return res.status(400).json({ message: "Email is required" });
+    }
+
+    // Find the user by email
+    const user = await Hr.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update the endTime of the active session for the user
+    const session = await employerSession.findOneAndUpdate(
+      { userId: user._id, endTime: null },
+      { endTime: new Date() },
+      { new: true }
+    );
+
+    if (!session) {
+      return res.status(404).json({ message: "Active session not found" });
+    }
+
+    return res.status(200).json({ message: "Logout successful" });
+  } catch (error) {
+    console.error(error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
@@ -442,6 +497,7 @@ module.exports = {
   verifyOtp,
   signUp,
   login,
+  logout,
   forgotPassword,
   resetPassword,
   HRupdateUserField,

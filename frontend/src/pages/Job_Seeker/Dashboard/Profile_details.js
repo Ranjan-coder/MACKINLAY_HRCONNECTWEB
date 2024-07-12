@@ -38,8 +38,7 @@ const Profile_details = () => {
 
   const getFirstResumeFilename = () => {
     if (userData.resume && userData.resume.length > 0) {
-
-      const resumesData=userData.resume;
+      const resumesData = userData.resume;
       const sortedResumes = resumesData.sort(
         (a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt)
       );
@@ -257,6 +256,17 @@ const Profile_details = () => {
                   </div>
 
                   {/* <h2>Basic Details</h2> */}
+                  <div style={{marginLeft:"28vw", marginTop:"-4vh"}}>
+                    <h4 style={{marginLeft:"-20px", marginBottom:'8px'}}>Profile Image</h4>
+                      <img
+                        src={
+                          userData.profileImage ??
+                          `https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg`
+                        }
+                        alt="network Error"
+                        style={{height:"100px", width:"100px", borderRadius:"50%"}}
+                      />
+                    </div>
                   <div className={Profile_style.name_section}>
                     <div className={Profile_style.input_name_container}>
                       <label htmlFor="firstname">First Name</label>
@@ -467,7 +477,7 @@ const Profile_details = () => {
                     onClick={(e) => handleApply(e, Job)}
                     disabled={isApplying}
                   >
-                    {isApplying? "Job Applying..." : "APPLY JOB"}
+                    {isApplying ? "Job Applying..." : "APPLY JOB"}
                   </button>
                 </form>
               </div>
