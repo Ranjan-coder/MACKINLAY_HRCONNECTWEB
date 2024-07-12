@@ -602,6 +602,33 @@ function EmployerRoutes() {
           }
         />
         <Route
+          path="/analytics/weekly"
+          element={
+            <Suspense>
+              {" "}
+              <HRAnalytics />{" "}
+            </Suspense>
+          }
+        />
+        <Route
+          path="/analytics/monthly"
+          element={
+            <Suspense>
+              {" "}
+              <HRAnalytics />{" "}
+            </Suspense>
+          }
+        />
+        <Route
+          path="/analytics/yearly"
+          element={
+            <Suspense>
+              {" "}
+              <HRAnalytics />{" "}
+            </Suspense>
+          }
+        />
+        <Route
           path="/candidates"
           element={
             <Suspense>
