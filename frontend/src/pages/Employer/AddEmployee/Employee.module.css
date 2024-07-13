@@ -14,7 +14,7 @@
 }
 
 .__main_Container {
-    border: 1px solid red;
+    /* border: 1px solid red; */
     display: flex;
     justify-content: space-evenly;
     flex-wrap: wrap;
@@ -27,12 +27,12 @@
 .container3 {
     /* border: 1px solid; */
     height: 72vh;
-    width: 20em;
+    width: 18em;
     /* flex-grow: 1; */
 }
 
 .container1 {
-    border: 1px solid rgb(194, 192, 192);
+    /* border: 1px solid rgb(194, 192, 192); */
     border-radius: 8px;
     display: flex;
     flex-direction: column;
