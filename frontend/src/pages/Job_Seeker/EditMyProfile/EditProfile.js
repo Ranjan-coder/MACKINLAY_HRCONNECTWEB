@@ -165,6 +165,7 @@ function EditProfile() {
             website,
             gender,
             marital_status,
+            experience
           } = response.data.userDetails;
           console.log(response.data.userDetails);
 
@@ -186,6 +187,7 @@ function EditProfile() {
             website,
             gender,
             marital_status,
+            experience
           });
 
           SetSkilsTags(
@@ -682,6 +684,27 @@ function EditProfile() {
               />
             </div>
           </div>
+
+          <div className={styleSheet.Form__inputBox}>
+              <label
+                htmlFor="experience"
+                className={styleSheet.Form__inputBox_Label}
+              >
+                {" "}
+                Experience
+              </label>
+              <input
+                type="text"
+                name="experience"
+                value={userDetails.experience ?? ""}
+                id="experience"
+                placeholder="Fresher"
+                className={styleSheet.Form__input}
+                onChange={handleOnChange}
+                autoComplete="off"
+                readOnly
+              />
+            </div>
 
           {/* About the user */}
           <div

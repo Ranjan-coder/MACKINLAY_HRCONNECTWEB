@@ -1,5 +1,5 @@
 .webcam_main_container {
-  height: 100vh;
+ margin-top: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -7,6 +7,65 @@
 .webcam_main_container > * {
   width: 45%;
   height: 70vh;
+}
+.wecampart{
+  display: flex;
+  justify-content: space-around;
+}
+
+video {
+  border-radius: 10px;
+}
+.webcammic{
+  /* position: relative; */
+  background-color: rgb(222, 222, 243);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+}
+.Search_MICICON {
+  /* right: 50px; */
+  margin-left: 10px;
+  margin-top: 10px;
+  font-size: 30px;
+  color: #4caf50;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.Search_MICICON:hover {
+  color: #f44336;
+}
+.webcamvideo{
+  background-color: rgb(222, 222, 243);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+}
+.Search_VEOICON{
+  margin-left: 10px;
+  margin-top: 10px;
+  right: 50px;
+  font-size: 30px;
+  color: #4caf50;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+.Search_VEOICON:hover {
+  color: #f44336;
+}
+button {
+  background-color: #e70d18;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #053307;
 }
 
 .hrquestion_block {

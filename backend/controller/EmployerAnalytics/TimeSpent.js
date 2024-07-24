@@ -1,5 +1,5 @@
-const UserSession = require("../../model/users/UserSession");
-const User = require("../../model/users/UserModel");
+const employerSession = require("../../model/users/EmployerSession");
+const HrUser = require("../../model/users/HrUserModel");
 
 const calculateTimePeriod = (period) => {
   const today = new Date();
@@ -36,12 +36,12 @@ const calculateTimePeriod = (period) => {
 exports.getWeeklyTimeSpent = async (req, res) => {
   try {
     const { email } = req.query;
-    const user = await User.findOne({ email });
+    const user = await HrUser.findOne({ email });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
     const periodFilter = calculateTimePeriod("weekly");
-    const timeSpent = await UserSession.aggregate([
+    const timeSpent = await employerSession.aggregate([
       { $match: { userId: user._id, ...periodFilter } },
       {
         $group: {
@@ -63,12 +63,12 @@ exports.getWeeklyTimeSpent = async (req, res) => {
 exports.getMonthlyTimeSpent = async (req, res) => {
   try {
     const { email } = req.query;
-    const user = await User.findOne({ email });
+    const user = await HrUser.findOne({ email });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
     const periodFilter = calculateTimePeriod("monthly");
-    const timeSpent = await UserSession.aggregate([
+    const timeSpent = await employerSession.aggregate([
       { $match: { userId: user._id, ...periodFilter } },
       {
         $group: {
@@ -90,12 +90,12 @@ exports.getMonthlyTimeSpent = async (req, res) => {
 exports.getYearlyTimeSpent = async (req, res) => {
   try {
     const { email } = req.query;
-    const user = await User.findOne({ email });
+    const user = await HrUser.findOne({ email });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
     const periodFilter = calculateTimePeriod("yearly");
-    const timeSpent = await UserSession.aggregate([
+    const timeSpent = await employerSession.aggregate([
       { $match: { userId: user._id, ...periodFilter } },
       {
         $group: {
@@ -108,63 +108,6 @@ exports.getYearlyTimeSpent = async (req, res) => {
     const timeSpentInMinutes = Math.floor(totalTimeSpent / (1000 * 60));
 
     res.json({ timeSpent: timeSpentInMinutes });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
-
-exports.getWeeklyLoginFrequency = async (req, res) => {
-  try {
-    const { email, period } = req.query;
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-    const periodFilter = calculateTimePeriod("weekly");
-    const loginFrequency = await UserSession.countDocuments({
-      userId: user._id,
-      ...periodFilter,
-    });
-    res.json({ loginFrequency });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
-
-exports.getMonthlyLoginFrequency = async (req, res) => {
-  try {
-    const { email } = req.query;
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-    const periodFilter = calculateTimePeriod("monthly");
-    const loginFrequency = await UserSession.countDocuments({
-      userId: user._id,
-      ...periodFilter,
-    });
-    res.json({ loginFrequency });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
-
-exports.getYearlyLoginFrequency = async (req, res) => {
-  try {
-    const { email } = req.query;
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-    const periodFilter = calculateTimePeriod("yearly");
-    const loginFrequency = await UserSession.countDocuments({
-      userId: user._id,
-      ...periodFilter,
-    });
-    res.json({ loginFrequency });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });

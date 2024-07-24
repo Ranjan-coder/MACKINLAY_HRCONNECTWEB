@@ -76,6 +76,19 @@ const Addemployee = lazy(() =>
 const MainContainer = lazy(() =>
   import("../pages/Employer/components/MainContainer.js")
 );
+
+const SearchCandidates = lazy(() =>
+  import("../pages/Employer/components/SearchCandidates.js")
+);
+
+const SearchResults = lazy(() =>
+  import("../pages/Employer/components/SearchResults.js")
+);
+
+const ProfileDetail = lazy(() =>
+  import("../pages/Employer/components/ProfileDetail.js")
+);
+
 const HRDashboard = lazy(() =>
   import("../pages/Employer/Dashboard/HRDashboard.js")
 );
@@ -460,6 +473,35 @@ function EmployerRoutes() {
           }
         />
         <Route
+          path="/search-candidates"
+          element={
+            <Suspense>
+              {" "}
+              <SearchCandidates/>{" "}
+            </Suspense>
+          }
+        />
+        <Route
+          path="/searched-candidates"
+          element={
+            <Suspense>
+              {" "}
+              <SearchResults/>{" "}
+            </Suspense>
+          }
+        />
+
+        <Route
+          path="/profile/:id"
+          element={
+            <Suspense>
+              {" "}
+              <ProfileDetail/>{" "}
+            </Suspense>
+          }
+        />
+
+        <Route
           path="/create_post"
           element={
             <Suspense>
@@ -552,6 +594,33 @@ function EmployerRoutes() {
         />
         <Route
           path="/analytics"
+          element={
+            <Suspense>
+              {" "}
+              <HRAnalytics />{" "}
+            </Suspense>
+          }
+        />
+        <Route
+          path="/analytics/weekly"
+          element={
+            <Suspense>
+              {" "}
+              <HRAnalytics />{" "}
+            </Suspense>
+          }
+        />
+        <Route
+          path="/analytics/monthly"
+          element={
+            <Suspense>
+              {" "}
+              <HRAnalytics />{" "}
+            </Suspense>
+          }
+        />
+        <Route
+          path="/analytics/yearly"
           element={
             <Suspense>
               {" "}

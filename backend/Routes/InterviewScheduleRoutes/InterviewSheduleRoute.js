@@ -3,8 +3,8 @@ const { InterviewScheduleController, GetCandidate} = require("../../controller/I
 const { FeedbackController } = require("../../controller/InterviewSchedule/FeedbackController");
 const InterviewSheduleRoute=express.Router();
 
-InterviewSheduleRoute.post('/schedule-interview',InterviewScheduleController)
-InterviewSheduleRoute.get('/getCandidate',GetCandidate)
+InterviewSheduleRoute.post('/schedule-interview/:HrEmail', InterviewScheduleController);
+InterviewSheduleRoute.get('/getCandidate/:HrEmail', GetCandidate);
 InterviewSheduleRoute.post('/send-feedback',FeedbackController)
 
 module.exports ={InterviewSheduleRoute};

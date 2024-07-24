@@ -1,201 +1,101 @@
-.main_containers {
-    overflow-y: auto !important;
-    scrollbar-width: none !important;
-    scroll-behavior: smooth !important;
-    height: 100vh !important;
+.mainContainer {
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  animation: fadeIn 0.5s ease-in-out;
 }
 
-.uppercontainer {
-    display: flex;
-    justify-content: space-around;
-    gap: 40vw;
-    width: 100%;
-    height: 15vh;
-    align-items: center;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-.uppercontainer_left {
-    display: flex;
-    justify-content: flex-start;
-    gap: 2vw;
-    width: 20vw;
-    text-align: center;
+.upperContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-
-.upper_cont_img {
-    width: 6vw;
-    height: 12vh;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
+.upperContImg {
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
 }
 
-.uppercontainer_left1 {
-    display: flex;
-    flex-direction: column;
-    gap: 1vh;
-    justify-content: center;
-    font-size: 20px;
+.upperContImg:hover {
+  transform: scale(1.1);
 }
 
 .star {
-    color: rgb(253, 229, 12);
+  color: #ffd700;
 }
 
-.uppercontainer_right {
-    display: flex;
-    flex-direction: column;
-    gap: 1vh;
-    justify-content: center;
-    font-size: 20px;
+.formMain {
+  margin-bottom: 20px;
 }
 
-.horizontal_line {
-    color: gray;
+.formSub {
+  margin-bottom: 15px;
 }
 
-/*---------------form container--------------------*/
-.formMain_cont {
-    margin-top: 2vh;
+.label {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  margin-bottom: 5px;
 }
 
-.formMain_cont1 {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
+.label svg {
+  margin-right: 5px;
 }
 
-.formMain_cont2 {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
+.fileUpload {
+  margin-bottom: 15px;
+  font-weight: bold;
 }
 
-.formMain_cont3 {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
+.fileBox {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border: 2px dashed #007bff;
+  border-radius: 8px;
+  background-color: #e9ecef;
+  transition: background-color 0.3s ease;
 }
 
-.formSub_con {
-    display: flex;
-    flex-direction: column;
-    gap: 2vh;
-    min-width: 16vw;
-    font-size: 18px;
-    margin-top: 6vh;
+.fileBox:hover {
+  background-color: #d6e0f5;
 }
 
-.formSub_contain {
-    margin-top: 2vh;
+.fileBox span {
+  margin-left: 10px;
 }
 
-.formSub_con1 {
-    display: flex;
-    flex-direction: column;
-    min-width: 16vw;
-    font-size: 18px;
-    margin-top: 1.5vh;
-    border-radius: 10px;
+.fileBox label {
+  color: #007bff;
+  cursor: pointer;
 }
 
-.box {
-    border: 1px solid rgb(180, 178, 178);
-    text-align: center;
-    padding: 8px;
-    width: 16vw;
-    display: flex;
-    justify-content: flex-start;
-    gap: 2vw;
-    border-radius: 6px;
+.buttonGroup {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
 }
 
-.boxes {
-    border-radius: 5px;
-    height: 7vh;
-    width: 22vw;
-    box-shadow: 0px 4px 4px rgb(172, 170, 170);
-    border: none;
+.buttonGroup button {
+  transition: transform 0.3s ease;
 }
 
-.description_input {
-    border: none;
-    border-radius: 5px;
-    height: 7vh;
-    box-shadow: 0px 4px 4px rgb(172, 170, 170);
-    font-size: 18px;
-    width: 22vw;
-    border-color: gray;
-}
-
-.des {
-    height: 15vh;
-    width: 25vw;
-}
-
-.fileupload {
-    border: 2px solid gray;
-    width: 12vw;
-    padding: 7px;
-    margin-left: 10vw;
-    margin-top: 10vh;
-    font-size: 18px;
-    border-radius: 7px;
-}
-
-.filebox {
-    border: 2px dashed gray;
-    width: 50vw;
-    height: 34vh;
-    margin-left: 10vw;
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    align-items: center;
-    margin-top: 1vh;
-    padding-top: 15px;
-    border-radius: 10px;
-    font-size: 18px;
-    box-shadow: 3px 3px 3px 3px gainsboro;
-}
-
-.f {
-    color: rgb(6, 177, 245);
-    font-weight: bold;
-    margin-left: 0.6vw;
-}
-
-.imgs {
-
-    font-size: 45px;
-    position: relative;
-    bottom: 10vh;
-    left: 20vw;
-    color: gray;
-}
-
-.last_container {
-    display: flex;
-    gap: 2vw;
-    /* justify-content: space-evenly; */
-    margin-top: 10vh;
-    margin-left: 20vw;
-    width: 25vw;
-}
-
-.cancel_btn {
-    width: 7vw;
-    color: gray;
-    border-radius: 4px;
-    font-size: 16px;
-    border-color: rgb(168, 166, 166);
-}
-
-.Interview_btn {
-    background-color: green;
-    color: white;
-    border-radius: 4px;
-    border-color: rgb(180, 179, 179);
-    width: 12vw;
+.buttonGroup button:hover {
+  transform: scale(1.05);
 }

@@ -1,5 +1,6 @@
 const userRoutes = require("express").Router();
 const {
+  getUserThroughId,
   signUp,
   login,
   forgotPassword,
@@ -15,11 +16,9 @@ const {
 } = require("../controller/auth/AuthController");
 const { upload, uploadProfile } = require("../middleware/fileUploadMiddleware");
 const {
-  getHalfHourlyLoginFrequency,
   getWeeklyLoginFrequency,
   getMonthlyLoginFrequency,
   getYearlyLoginFrequency,
-  getHalfHourlyTimeSpent,
   getWeeklyTimeSpent,
   getMonthlyTimeSpent,
   getYearlyTimeSpent,
@@ -32,6 +31,7 @@ const {
 const {recommendJobsForUser} = require("../controller/recommendationLogic")
 
 userRoutes.get("/user", getUser);
+userRoutes.get("/user/:id", getUserThroughId);
 userRoutes.post("/check-email", checkEmail);
 userRoutes.post("/checkPhoneNumber", checkPhoneNumberExists);
 userRoutes.post("/request-otp", requestOtp);
@@ -40,11 +40,9 @@ userRoutes.post("/signup", upload, signUp); // Ensure 'upload' middleware is use
 userRoutes.post("/login", login);
 userRoutes.post("/recommendations", recommendJobsForUser)
 userRoutes.post("/logout", logout);
-userRoutes.get("/analytics/login-frequency/half-hourly", getHalfHourlyLoginFrequency);
 userRoutes.get("/analytics/login-frequency/weekly", getWeeklyLoginFrequency);
 userRoutes.get("/analytics/login-frequency/monthly", getMonthlyLoginFrequency);
 userRoutes.get("/analytics/login-frequency/yearly", getYearlyLoginFrequency);
-userRoutes.get("/analytics/time-spent/half-hourly", getHalfHourlyTimeSpent);
 userRoutes.get("/analytics/time-spent/weekly", getWeeklyTimeSpent);
 userRoutes.get("/analytics/time-spent/monthly", getMonthlyTimeSpent);
 userRoutes.get("/analytics/time-spent/yearly", getYearlyTimeSpent);

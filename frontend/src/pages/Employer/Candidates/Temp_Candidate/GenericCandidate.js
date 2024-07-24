@@ -1,20 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React, {  useState } from 'react'
 import hrdashboard from "../../Dashboard/HrDashboard.module.css";
-// import ApplicantsDetails from '../../Dashboard/ApplicantsDetails'
-// import { FaRegBookmark } from 'react-icons/fa';
-import axios from 'axios';
 import GenericApplicantView from './GenericApplicantView';
 
 
-export const GenericCandidate = ({type,job,Users,ShowApplicantDetails, CbToggleDetails}) => {
+export const GenericCandidate = ({type,Users,ShowApplicantDetails, CbToggleDetails,bookmarkUser}) => {
   // console.log(Users);
-  console.log(job);
+  // console.log(job);
+  const[bookmarkUsers]=useState(bookmarkUser)
   const [selectedUser, setSelectedUsers] = useState([]);
-  const[User,setUser]=useState([])
-  console.log(User);
-  const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
-  console.log(baseUrl);
-  const hremail=localStorage.getItem('email')
+  const[User]=useState(Users)
+  console.log(bookmarkUsers);
+
 
   const handleUserCardClick = (e, userEmail) => {
     e.preventDefault();
@@ -22,45 +18,23 @@ export const GenericCandidate = ({type,job,Users,ShowApplicantDetails, CbToggleD
     setSelectedUsers(userEmail)
 
   }
-  useEffect(()=>{
-    if(type==="Bookmarked"){
-      axios.get(`${baseUrl}/user/bookmarkd/get-bookmark/${hremail}`)
-      .then((res)=>setUser(res.data.bookmarkedUser)).catch((err)=>console.log(err))
-     
-    }
-    else if(type==="Shortlised"){
-      axios.get(`${baseUrl}/user/shortlisted/get-shortlist/${hremail}`)
-      .then((res)=>setUser(res.data.shortlisedUser)).catch((err)=>console.log(err))
-
-
-    }
-    else if(type==="Rejected"){
-      axios.get(`${baseUrl}/user/rejected/get-rejected/${hremail}`)
-      .then((res)=>setUser(res.data.rejectedUser)).catch((err)=>console.log(err))
-}
-    else{
-      setUser([])
-    }
-  },[type,baseUrl,hremail])
-
-  
 
   return (
     <>
         <h1>{type} Candidates</h1>
     {
-        ShowApplicantDetails ? <GenericApplicantView CbToogleDetails={CbToggleDetails} AllUser={Users} selectedUser={selectedUser} /> : 
-        <div className={hrdashboard.__appliedUserList}>
+ShowApplicantDetails ? <GenericApplicantView CbToogleDetails={CbToggleDetails} Users={User} selectedUser={selectedUser} bookmarkUser={bookmarkUsers}/>
+: <div className={hrdashboard.__appliedUserList}>
           {
             User?.map((user) => {
-              console.log(user);
+              // console.log(user);
               return (
-                <div className={hrdashboard.__appliedUsers} key={user._id} onClick={(e) => handleUserCardClick(e, user?.email, user?.jobID, user?.jobTitle)}>
+                <div className={hrdashboard.__appliedUsers} key={user._id} onClick={(e) => handleUserCardClick(e, user?.email)}>
                   <div className={hrdashboard.__appliedHeader}>
                     <img className={hrdashboard.__userPF} src={user.profileImage ?? 'https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg'} alt="" onError={(e) => { e.target.src = `https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg`; e.onError = null; }} />
                     <section>
                       <span style={{ fontSize: '20px' }}><strong>{user.name}</strong></span>
-                      <p style={{ fontSize: '15px' }}>{user.biography}</p>
+                      <p style={{ fontSize: '15px' }}>{user?.biography?.slice(0,30)}</p>
                     </section>
                     {/* bookmark here */}
                     {/* <FaRegBookmark style={{ fontSize: '20px' }} /> */}

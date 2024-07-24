@@ -208,7 +208,7 @@ function UserLogin({ toggleLoginType, isHRLogin }) {
                     />
                   </div>
                   <div style={{ textAlign: "center", marginTop: "20px" }}>
-                    <span
+                    <span  className="keep-text-black"
                       style={{
                         borderBottom: isHRLogin ? "none" : "2px solid #FF0000",
                         cursor: "pointer",
@@ -216,7 +216,7 @@ function UserLogin({ toggleLoginType, isHRLogin }) {
                     >
                       Job Seeker
                     </span>
-                    <span
+                    <span  className="keep-text-black"
                       onClick={toggleLoginType}
                       style={{
                         color: isHRLogin ? "#FF0000" : "#00296B",
@@ -257,7 +257,7 @@ function UserLogin({ toggleLoginType, isHRLogin }) {
                     </Button>
                   </div>
                   <div className={LoginStyle.forgot_style1}>
-                    <span
+                    <span  className="keep-text-black"
                       onClick={handleSignup}
                       style={{
                         cursor: "pointer",
@@ -266,7 +266,7 @@ function UserLogin({ toggleLoginType, isHRLogin }) {
                       }}
                     >
                       Don't have an account?
-                      <span style={{ color: "rgba(35, 88, 251, 1)", paddingLeft:"2px" }}>
+                      <span  className="keep-text-blue" style={{ color: "rgba(35, 88, 251, 1)", paddingLeft:"2px" }}>
                        Create Account
                       </span>
                     </span>

@@ -100,6 +100,8 @@ function Status() {
   const [IsLoading, setLoading] = useState(false);
   const [appliedJOB, setAppliedJOB] = useState([]);
   const [FilterAppliedJOB, setFilterAppliedJOB] = useState([]);
+  console.log(FilterAppliedJOB);
+  console.log(appliedJOB);
   const [SelectedJobStatus, setSelectedJobStatus] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const [showFeedbackPopup, setshowFeedbackPopup] = useState(false);

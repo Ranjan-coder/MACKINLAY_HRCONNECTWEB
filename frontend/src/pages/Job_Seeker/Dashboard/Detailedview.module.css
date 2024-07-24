@@ -259,7 +259,7 @@
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 5px;
   align-items: center;
   padding: 5px;
 }
@@ -274,7 +274,6 @@
   background-color: rgba(255, 184, 0, 1);
   color: white !important;
   text-transform: uppercase;
-  margin-right: 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;

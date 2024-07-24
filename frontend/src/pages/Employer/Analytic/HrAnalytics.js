@@ -1,8 +1,8 @@
-import React from "react";
+import React,{useEffect, useState} from "react";
 import mailICON from "../../../Assets/mailICON.jpg";
 import clockICON from "../../../Assets/clockICON.jpg";
-import activeICON from "../../../Assets/ActiveICON.jpg";
-import callICON from "../../../Assets/callICON.png";
+// import activeICON from "../../../Assets/ActiveICON.jpg";  // Don't remove this block code
+// import callICON from "../../../Assets/callICON.png";   // Don't remove this block of code
 import {
   LineChart,
   Line,
@@ -19,8 +19,12 @@ import {
 import { PieChart, pieArcLabelClasses } from "@mui/x-charts/PieChart";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-// import { Line } from "react-chartjs-2";
+import userAnalyticsStyle from "../../Job_Seeker/Analytics/Analytics.module.css";
+import { NavLink, useLocation, useNavigate} from "react-router-dom";
 import hrAnalyticStyle from './HrAnalytics.module.css'
+import axios from "axios";
+
+const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL
 
 const dummyData = [
   {
@@ -53,15 +57,27 @@ const dummyData = [
   },
 ];
 
+
 const HRAnalytic = () => {
+  const { pathname } = useLocation();
+  const navigateTO = useNavigate();
+  useEffect(() => {
+    if (pathname === "/analytics") {
+      navigateTO("/analytics/weekly");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
+
+  const period = pathname.split('/')[2];
+
   return (
     <>
-      <div className={hrAnalyticStyle.hr_analytic_container}>
-        <HRAnalyticsPageCarousel />
-        {/* <SplineChart /> */}
+        <div className={hrAnalyticStyle.hr_analytic_container}>
+        <AnalyticsPageNavbar/>
+        <HRAnalyticsPageCarousel period={period}/>
         <HiringLineChart/>
         <EmailSentBarGraph data={dummyData} />
-        <PieArcLabel />
+        <PieArcLabel/>
       </div>
     </>
   );
@@ -69,7 +85,81 @@ const HRAnalytic = () => {
 
 export default HRAnalytic;
 
-function HRAnalyticsPageCarousel() {
+function AnalyticsPageNavbar() {
+  return (
+    <nav className={userAnalyticsStyle.analyticsPage__navbar}>
+      <NavLink
+        to={"/analytics/weekly"}
+        className={({ isActive }) =>
+          isActive ? `${userAnalyticsStyle.active} keep-text-black`
+            : `${userAnalyticsStyle.analyticsPage__navLInks} keep-text-black`
+        } >
+        Weekly
+      </NavLink>
+      <NavLink
+        to={"/analytics/monthly"}
+        className={({ isActive }) =>
+          isActive
+            ? `${userAnalyticsStyle.active} keep-text-black`
+            : `${userAnalyticsStyle.analyticsPage__navLInks} keep-text-black`
+        } >
+        Monthly
+      </NavLink>
+      <NavLink
+        to={"/analytics/yearly"}
+        className={({ isActive }) =>
+          isActive
+            ? `${userAnalyticsStyle.active} keep-text-black`
+            : `${userAnalyticsStyle.analyticsPage__navLInks} keep-text-black`
+        }>
+        Yearly
+      </NavLink>
+    </nav>
+  );
+}
+
+function HRAnalyticsPageCarousel({period}) {
+  const [email, setEmail] = useState(null);
+  const [timeSpent, setTimeSpent] = useState(null);
+
+  
+  useEffect(() => {
+    const fetchUserEmail = async () => {
+      try {
+        const storedEmail = localStorage.getItem("email");
+        setEmail(storedEmail);
+      } catch (error) {
+        console.error('Error fetching user email:', error);
+      }
+    };
+
+    fetchUserEmail();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (email) {
+          let timeSpentResponse;
+          if (period === 'weekly') {
+            timeSpentResponse = await axios.get(`${baseUrl}/hr/analytics/time-spent/weekly?email=${email}`);
+          } else if (period === 'monthly') {
+            timeSpentResponse = await axios.get(`${baseUrl}/hr/analytics/time-spent/monthly?email=${email}`);
+          } else if (period === 'yearly') {
+            timeSpentResponse = await axios.get(`${baseUrl}/hr/analytics/time-spent/yearly?email=${email}`);
+          }
+          setTimeSpent(timeSpentResponse.data.timeSpent);
+
+        }
+      } catch (error) {
+        console.error('Error fetching analytics data:', error);
+      }
+    };
+
+    fetchData();
+  }, [period, email]);
+
+
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
@@ -96,27 +186,27 @@ function HRAnalyticsPageCarousel() {
       cardData: "13 Mail",
       cardBG: "#ffffff",
     },
-    {
-      cardID: 2,
-      cardICON: callICON,
-      cardTitle: "Contacted by call",
-      cardData: "5 calls",
-      cardBG: "#ffffff",
-    },
+    // {
+    //   cardID: 2,
+    //   cardICON: callICON,
+    //   cardTitle: "Contacted by call",
+    //   cardData: "5 calls",
+    //   cardBG: "#ffffff",
+    // },                                           // Don't remove this block of code
     {
       cardID: 3,
       cardICON: clockICON,
       cardTitle: "Time Spent",
-      cardData: "15 Min",
+      cardData: `${timeSpent} Min`,
       cardBG: "#ffffff",
     },
-    {
-      cardID: 4,
-      cardICON: activeICON,
-      cardTitle: "Active users",
-      cardData: "5000",
-      cardBG: "#ffffff",
-    },
+    // {
+    //   cardID: 4,
+    //   cardICON: activeICON,
+    //   cardTitle: "Active users",
+    //   cardData: "5000",
+    //   cardBG: "#ffffff",
+    // },                                       // Don't remove this block of code
   ];
 
   return (
@@ -139,7 +229,7 @@ function HRAnalyticsPageCarousel() {
             className={hrAnalyticStyle.AnalyticsPageCarousel_Card}
             style={{ backgroundColor: `${data.cardBG}` }}
           >
-            <div className={hrAnalyticStyle.AnalyticsPageCarousel_CardTitle}>
+            <div className={`${hrAnalyticStyle.AnalyticsPageCarousel_CardTitle} keep-text-black`}>
               <img
                 src={data.cardICON}
                 alt=""
@@ -147,7 +237,7 @@ function HRAnalyticsPageCarousel() {
               />{" "}
               {data?.cardTitle}
             </div>
-            <p className={hrAnalyticStyle.AnalyticsPageCarousel_CardData}>
+            <p className={`${hrAnalyticStyle.AnalyticsPageCarousel_CardData} keep-text-black`}>
               <strong>{data.cardData}</strong>
             </p>
           </div>
@@ -195,28 +285,28 @@ const Hiringdata = [
   }
 ];
 
-const HiringLineChart = ()=>{
+const HiringLineChart = () => {
   return(
     <div className={hrAnalyticStyle.hr_bar_container}>
-    <div style={{paddingBottom:'10px'}}><strong>Hiring in past few months</strong></div>
-  <LineChart
-  width={500}
-  height={200}
-  data={Hiringdata}
-  syncId="anyId"
-  margin={{
-    top: 10,
-    right: 30,
-    left: 0,
-    bottom: 0
-  }}
->
-  <CartesianGrid strokeDasharray="3 3" />
-  <XAxis dataKey="name" />
-  <YAxis />
-  <Tooltip />
-  <Line type="monotone" dataKey="pv" stroke="#82ca9d" fill="#82ca9d" />
-</LineChart>
+        <div style={{ paddingBottom: '10px' }}><strong>Hiring in past few months</strong></div>
+      <LineChart
+        width={500}
+        height={200}
+        data={Hiringdata}
+        syncId="anyId"
+        margin={{
+          top: 10,
+          right: 30,
+          left: 0,
+          bottom: 0
+        }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="name" />
+        <YAxis />
+        <Tooltip />
+        <Line type="monotone" dataKey="pv" stroke="#82ca9d" fill="#82ca9d" />
+      </LineChart>
     </div>
   )
 }

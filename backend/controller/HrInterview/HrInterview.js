@@ -44,7 +44,7 @@ interviewUploadVideo = (req, res) => {
 
 const uploadHrQuestion = async (req, res) => {
   const mcq = new HrInterview({
-    hrquestion: req.body.question, // Assuming `question` is the key in the request body
+    hrquestion: req.body.question, 
   });
 
   try {
